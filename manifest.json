@@ -1,0 +1,9 @@
+{
+	"manifest_version": 2,
+	"name": "Quote",
+	"description": "Chrome extension that shows you customizable quotes on your new tab page",
+	"version": "0.0.1",
+	"chrome_url_overrides": {
+		"newtab": "index.html"
+	}
+}

@@ -1,0 +1,31 @@
+{
+  "name": "quote",
+  "version": "0.0.0",
+  "description": "Chrome extension that shows you customizable quotes on your new tab page",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/toksfifo/quote.git"
+  },
+  "author": "Toks Fifo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/toksfifo/quote/issues"
+  },
+  "homepage": "https://github.com/toksfifo/quote",
+  "dependencies": {
+    "gulp": "^3.9.0",
+    "gulp-angular-templatecache": "^1.7.0",
+    "gulp-autoprefixer": "^2.3.1",
+    "gulp-concat": "^2.6.0",
+    "gulp-minify-css": "^1.2.1",
+    "gulp-ng-annotate": "^1.1.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^2.0.4",
+    "gulp-uglify": "^1.4.0",
+    "yargs": "^3.22.2"
+  }
+}
