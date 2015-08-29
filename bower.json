@@ -1,0 +1,25 @@
+{
+  "name": "quote",
+  "version": "0.0.1",
+  "homepage": "https://github.com/toksfifo/quote",
+  "authors": [
+    "Toks Fifo <toksfifo@gmail.com>"
+  ],
+  "description": "Chrome extension that shows you customizable quotes on your new tab page",
+  "main": "index.html",
+  "moduleType": [
+    "node"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.4.5",
+    "angular-animate": "~1.4.5"
+  }
+}
