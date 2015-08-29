@@ -9,5 +9,5 @@ angular.module('quotes', [
 })
 
 .constant('Const', {
-	api: /*gulp-replace-env*/'prod db'/*end*/,
+	api: /*gulp-replace-env*/'dev db'/*end*/,
 });
