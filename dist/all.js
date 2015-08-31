@@ -39473,39 +39473,120 @@ angular.module('quote', [
 		.state('sample', {
 			url: '/sample',
 			templateUrl: 'components/sample/sample.html',
-			controller: 'SampleCtrl as sample'
+			controller: 'SampleCtrl as sample',
+			resolve: SampleCtrl.resolve
 		})
 
 	$urlRouterProvider.otherwise('sample');
 }])
 
 .run(function() {
-	console.log('running');
+	
 })
 
 .constant('Const', {
-	db: /*gulp-replace-env*/'https://quoteextension.firebaseio.com/dev'/*end*/,
+	db: /*gulp-replace-db*/'https://quoteextension.firebaseio.com/dev'/*end*/,
+	ref: /*gulp-replace-ref*/new Firebase('https://quoteextension.firebaseio.com/dev')/*end*/
 });
 angular.module("templates", []).run(["$templateCache", function($templateCache) {$templateCache.put("components/sample/sample.html","hello");}]);
 angular.module('quote')
+	.factory('AuthSvc', AuthSvc);
+
+function AuthSvc($q, $firebaseAuth, Const, UserSvc) {
+
+	var auth = $firebaseAuth(Const.ref);
+
+	var AuthSvc = {
+		checkAuth: checkAuth,
+		signupAnon: signupAnon,
+		logout: logout
+	};
+
+	return AuthSvc;
+
+	/**
+	 * Check if user is authenticated
+	 * @return {Promise} Resolves with authentication data || null
+	 */
+	function checkAuth() {
+		return auth.$waitForAuth();
+	}
+
+	/**
+	 * Sign up anonymously
+	 * @return {Promise} Resolves after new user has been created
+	 */
+	function signupAnon() {
+		return $q(function(resolve, reject) {
+			auth.$authAnonymously().then(function(authData) {
+				return UserSvc.createUser(authData.uid);
+			}, function(err) {
+				console.error('authAnonymously failed: ', err);
+				reject(err);
+			}).then(function(user) {
+				resolve(user);
+			});
+		});
+	}
+
+	/**
+	 * Logout
+	 */
+	function logout() {
+		auth.$unauth();
+	}
+}
+AuthSvc.$inject = ["$q", "$firebaseAuth", "Const", "UserSvc"];
+angular.module('quote')
 	.controller('SampleCtrl', SampleCtrl);
 
-function SampleCtrl(Const, $firebaseArray, $scope) {
-	console.log('sample');
-
-	var ref = new Firebase(Const.db);
-
-	ref.on('value', function(snap) {
-		console.log(snap.val());
-	});
-
-	$scope.messages = $firebaseArray(ref.child('farray'));
-
-	console.log($scope.messages);
-
-	// $scope.messages.$add({
-	// 	message: 'hallo',
-	// 	name: 'oh, nice'
-	// });
+SampleCtrl.resolve = {
+	authStatus: function(AuthSvc) {
+		return AuthSvc.checkAuth();
+	}
 }
-SampleCtrl.$inject = ["Const", "$firebaseArray", "$scope"];
+
+function SampleCtrl(Const, $firebaseArray, AuthSvc, $scope, authStatus) {
+
+	if (authStatus) {
+		console.log('already logged in as: ', authStatus);
+		// AuthSvc.logout();
+	} else {
+		AuthSvc.signupAnon().then(function(authData) {
+			console.log('logged in anonymously: ', authData);
+		});
+	}
+}
+SampleCtrl.$inject = ["Const", "$firebaseArray", "AuthSvc", "$scope", "authStatus"];
+angular.module('quote')
+	.factory('UserSvc', UserSvc);
+
+function UserSvc($firebaseObject, $q, Const) {
+
+	var UserSvc = {
+		createUser: createUser
+	};
+
+	return UserSvc;
+
+	/**
+	 * Add user to db/users
+	 * @param  {String} uid User's unique ID
+	 * @return {Promise}     Resolves when user is saved to db
+	 */
+	function createUser(uid) {
+		return $q(function(resolve, reject) {
+			var newUser = $firebaseObject(Const.ref.child('users').child(uid));
+			newUser.color = 'blue';
+			newUser.$save().then(function(user) {
+				resolve(user.key());
+			}, function(err) {
+				console.error('createUser failed on save:', err);
+				reject(err);
+			});
+		});
+
+		
+	}
+}
+UserSvc.$inject = ["$firebaseObject", "$q", "Const"];
