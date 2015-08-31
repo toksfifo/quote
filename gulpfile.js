@@ -45,7 +45,7 @@ function templates() {
 }
 
 function env() {
-	var env = args.prod ? "'prod db'" : "'dev db'";
+	var env = args.prod ? "'https://quoteextension.firebaseio.com/prod'" : "'https://quoteextension.firebaseio.com/dev'";
 
 	return gulp.src('src/app.js')
 		.pipe(replace(/\/\*gulp-replace-env\*\/(.*?)\/\*end\*\//g, '/*gulp-replace-env*/' + env + '/*end*/'))
@@ -58,6 +58,8 @@ function js() {
 		'bower_components/angular/angular.js',
 		'bower_components/angular-animate/angular-animate.js',
 		'bower_components/ui-router/release/angular-ui-router.js',
+		'bower_components/firebase/firebase.js',
+		'bower_components/angularfire/dist/angularfire.js',
 		'src/**/*.js'
 	]).pipe(concat('all.js'))
 	.pipe(ngAnnotate())
