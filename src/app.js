@@ -1,13 +1,24 @@
-angular.module('quotes', [
-	'templates'
+angular.module('quote', [
+	'templates',
+	'ui.router',
+	'firebase'
 ])
 
-// .config()
+.config(function($stateProvider, $urlRouterProvider) {
+	$stateProvider
+		.state('sample', {
+			url: '/sample',
+			templateUrl: 'components/sample/sample.html',
+			controller: 'SampleCtrl as sample'
+		})
+
+	$urlRouterProvider.otherwise('sample');
+})
 
 .run(function() {
 	console.log('running');
 })
 
 .constant('Const', {
-	api: /*gulp-replace-env*/'dev db'/*end*/,
+	db: /*gulp-replace-env*/'https://quoteextension.firebaseio.com/dev'/*end*/,
 });
