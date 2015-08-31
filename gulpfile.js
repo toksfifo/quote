@@ -48,7 +48,8 @@ function env() {
 	var env = args.prod ? "'https://quoteextension.firebaseio.com/prod'" : "'https://quoteextension.firebaseio.com/dev'";
 
 	return gulp.src('src/app.js')
-		.pipe(replace(/\/\*gulp-replace-env\*\/(.*?)\/\*end\*\//g, '/*gulp-replace-env*/' + env + '/*end*/'))
+		.pipe(replace(/\/\*gulp-replace-db\*\/(.*?)\/\*end\*\//g, '/*gulp-replace-db*/' + env + '/*end*/'))
+		.pipe(replace(/\/\*gulp-replace-ref\*\/(.*?)\/\*end\*\//g, '/*gulp-replace-ref*/' + 'new Firebase(' + env + ')/*end*/'))
 		.pipe(gulp.dest('src/'));
 }
 
