@@ -39488,16 +39488,23 @@ angular.module('quote', [
 	db: /*gulp-replace-db*/'https://quoteextension.firebaseio.com/dev'/*end*/,
 	ref: /*gulp-replace-ref*/new Firebase('https://quoteextension.firebaseio.com/dev')/*end*/
 });
-angular.module("templates", []).run(["$templateCache", function($templateCache) {$templateCache.put("components/sample/sample.html","hello");}]);
+angular.module("templates", []).run(["$templateCache", function($templateCache) {$templateCache.put("components/sample/sample.html","<button ng-click=\"sample.createPackage()\">Create Package</button>\n\n<br>\n\n<input type=\"text\" placeholder=\"Package Name\" ng-model=\"sample.packageName\">\n\n<br>\n\n<input type=\"text\" placeholder=\"Quote\" ng-model=\"sample.quote.body\">\n\n<br>\n\n<input type=\"text\" placeholder=\"Author\" ng-model=\"sample.quote.author\">\n\n<br>\n\n<input type=\"text\" placeholder=\"Link\" ng-model=\"sample.quote.link\">\n\n<br>\n\n<button ng-click=\"sample.addQuote()\">Add Quote</button>\n\n<button ng-click=\"sample.savePackage()\">Save Package</button>\n\n<br>\n\npackages:\n\n<div ng-repeat=\"(key, val) in packages\">\n	{{ val.name }}\n	<button ng-click=\"sample.addPackage(key)\">add</button>\n</div>");}]);
 angular.module('quote')
 	.factory('AuthSvc', AuthSvc);
 
 function AuthSvc($q, $firebaseAuth, Const, UserSvc) {
 
 	var auth = $firebaseAuth(Const.ref);
+	var uid = null;
+
+	// set uid on auth
+	auth.$onAuth(function(authData) {
+		uid = authData ? authData.uid : null;
+	});
 
 	var AuthSvc = {
 		checkAuth: checkAuth,
+		getUid: getUid,
 		signupAnon: signupAnon,
 		logout: logout
 	};
@@ -39510,6 +39517,14 @@ function AuthSvc($q, $firebaseAuth, Const, UserSvc) {
 	 */
 	function checkAuth() {
 		return auth.$waitForAuth();
+	}
+
+	/**
+	 * Get current user's unique ID
+	 * @return {String} uid || null
+	 */
+	function getUid() {
+		return uid;
 	}
 
 	/**
@@ -39546,7 +39561,25 @@ SampleCtrl.resolve = {
 	}
 }
 
-function SampleCtrl(Const, $firebaseArray, AuthSvc, $scope, authStatus) {
+function SampleCtrl(Const, $firebaseArray, $firebaseObject, AuthSvc, $scope, authStatus, $timeout) {
+
+	var vm = this;
+	var currentPackageID;
+
+	vm.createPackage = createPackage;
+	vm.addQuote = addQuote;
+	vm.savePackage = savePackage;
+	vm.quote = {
+		/**
+		 * body
+		 * text
+		 * link
+		 */
+	};
+	vm.packageName;
+	vm.addPackage = addPackage;
+	
+	$scope.packages;
 
 	if (authStatus) {
 		console.log('already logged in as: ', authStatus);
@@ -39556,8 +39589,51 @@ function SampleCtrl(Const, $firebaseArray, AuthSvc, $scope, authStatus) {
 			console.log('logged in anonymously: ', authData);
 		});
 	}
+
+	$firebaseObject(Const.ref.child('packages')).$bindTo($scope, 'packages');
+
+	function createPackage() {
+		var packages = Const.ref.child('packages');
+		currentPackageID = packages.push({
+			name: 'default',
+			creator: AuthSvc.getUid()
+		}, function(package) {
+			currentPackageID = currentPackageID.key();
+		});
+	}
+
+	function addQuote() {
+		var quotesOfPackage = Const.ref.child('quotes').child(currentPackageID);
+		quotesOfPackage.push({
+			body: vm.quote.body,
+			author: vm.quote.author,
+			link: vm.quote.link
+		}, function() {
+			vm.quote.body = '';
+			vm.quote.author = '';
+			vm.quote.link = '';
+		});
+	}
+
+	function savePackage() {
+		var package = Const.ref.child('packages').child(currentPackageID);
+		package.update({
+			name: vm.packageName
+		}, function(err) {
+			vm.packageName = '';
+		});
+	}
+
+	function addPackage(key) {
+		Const.ref.child('users')
+			.child(AuthSvc.getUid())
+			.child('packages')
+			.child('current')
+			.child(key)
+			.set(true);
+	}
 }
-SampleCtrl.$inject = ["Const", "$firebaseArray", "AuthSvc", "$scope", "authStatus"];
+SampleCtrl.$inject = ["Const", "$firebaseArray", "$firebaseObject", "AuthSvc", "$scope", "authStatus", "$timeout"];
 angular.module('quote')
 	.factory('UserSvc', UserSvc);
 

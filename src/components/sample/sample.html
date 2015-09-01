@@ -1,1 +1,32 @@
-hello
+<button ng-click="sample.createPackage()">Create Package</button>
+
+<br>
+
+<input type="text" placeholder="Package Name" ng-model="sample.packageName">
+
+<br>
+
+<input type="text" placeholder="Quote" ng-model="sample.quote.body">
+
+<br>
+
+<input type="text" placeholder="Author" ng-model="sample.quote.author">
+
+<br>
+
+<input type="text" placeholder="Link" ng-model="sample.quote.link">
+
+<br>
+
+<button ng-click="sample.addQuote()">Add Quote</button>
+
+<button ng-click="sample.savePackage()">Save Package</button>
+
+<br>
+
+packages:
+
+<div ng-repeat="(key, val) in packages">
+	{{ val.name }}
+	<button ng-click="sample.addPackage(key)">add</button>
+</div>

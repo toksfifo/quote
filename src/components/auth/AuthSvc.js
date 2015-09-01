@@ -4,9 +4,16 @@ angular.module('quote')
 function AuthSvc($q, $firebaseAuth, Const, UserSvc) {
 
 	var auth = $firebaseAuth(Const.ref);
+	var uid = null;
+
+	// set uid on auth
+	auth.$onAuth(function(authData) {
+		uid = authData ? authData.uid : null;
+	});
 
 	var AuthSvc = {
 		checkAuth: checkAuth,
+		getUid: getUid,
 		signupAnon: signupAnon,
 		logout: logout
 	};
@@ -19,6 +26,14 @@ function AuthSvc($q, $firebaseAuth, Const, UserSvc) {
 	 */
 	function checkAuth() {
 		return auth.$waitForAuth();
+	}
+
+	/**
+	 * Get current user's unique ID
+	 * @return {String} uid || null
+	 */
+	function getUid() {
+		return uid;
 	}
 
 	/**
