@@ -1,7 +1,7 @@
 angular.module('quote')
 	.factory('UserSvc', UserSvc);
 
-function UserSvc($firebaseObject, $q, Const) {
+function UserSvc($q, Const) {
 
 	var UserSvc = {
 		createUser: createUser
@@ -16,16 +16,16 @@ function UserSvc($firebaseObject, $q, Const) {
 	 */
 	function createUser(uid) {
 		return $q(function(resolve, reject) {
-			var newUser = $firebaseObject(Const.ref.child('users').child(uid));
-			newUser.color = 'blue';
-			newUser.$save().then(function(user) {
-				resolve(user.key());
-			}, function(err) {
-				console.error('createUser failed on save:', err);
-				reject(err);
-			});
+			Const.ref.child('users')
+				.child(uid)
+				.set({ color: 'blue' }, function(err) {
+					if (err) {
+						console.error('createUser failed on set:', err);
+						reject(err);
+					} else {
+						resolve(uid);
+					}
+				});
 		});
-
-		
 	}
 }
