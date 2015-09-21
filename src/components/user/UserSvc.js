@@ -20,7 +20,7 @@ function UserSvc($q, Const) {
 				.child(uid)
 				.set({ color: 'blue' }, function(err) {
 					if (err) {
-						console.error('createUser failed on save:', err);
+						console.error('createUser failed on set:', err);
 						reject(err);
 					} else {
 						resolve(uid);

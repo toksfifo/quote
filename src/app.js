@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('quote', [
 	'templates',
 	'ui.router',

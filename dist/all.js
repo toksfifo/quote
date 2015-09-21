@@ -39462,6 +39462,8 @@ if ( typeof Object.getPrototypeOf !== "function" ) {
     }
 })();
 
+'use strict';
+
 angular.module('quote', [
 	'templates',
 	'ui.router',
@@ -39488,23 +39490,16 @@ angular.module('quote', [
 	db: /*gulp-replace-db*/'https://quoteextension.firebaseio.com/dev'/*end*/,
 	ref: /*gulp-replace-ref*/new Firebase('https://quoteextension.firebaseio.com/dev')/*end*/
 });
-angular.module("templates", []).run(["$templateCache", function($templateCache) {$templateCache.put("components/sample/sample.html","<button ng-click=\"sample.createPackage()\">Create Package</button>\n\n<br>\n\n<input type=\"text\" placeholder=\"Package Name\" ng-model=\"sample.packageName\">\n\n<br>\n\n<input type=\"text\" placeholder=\"Quote\" ng-model=\"sample.quote.body\">\n\n<br>\n\n<input type=\"text\" placeholder=\"Author\" ng-model=\"sample.quote.author\">\n\n<br>\n\n<input type=\"text\" placeholder=\"Link\" ng-model=\"sample.quote.link\">\n\n<br>\n\n<button ng-click=\"sample.addQuote()\">Add Quote</button>\n\n<button ng-click=\"sample.savePackage()\">Save Package</button>\n\n<br>\n\npackages:\n\n<div ng-repeat=\"(key, val) in packages\">\n	{{ val.name }}\n	<button ng-click=\"sample.addPackage(key)\">add</button>\n</div>");}]);
+angular.module("templates", []).run(["$templateCache", function($templateCache) {$templateCache.put("components/sample/sample.html","<button ng-click=\"sample.createPackage()\">Create Package</button>\n\n<br>\n\n<input type=\"text\" placeholder=\"Package Name\" ng-model=\"sample.packageName\">\n\n<br>\n\n<input type=\"text\" placeholder=\"Quote\" ng-model=\"sample.quote.body\">\n\n<br>\n\n<input type=\"text\" placeholder=\"Author\" ng-model=\"sample.quote.author\">\n\n<br>\n\n<input type=\"text\" placeholder=\"Link\" ng-model=\"sample.quote.link\">\n\n<br>\n\n<button ng-click=\"sample.addQuote()\">Add Quote</button>\n\n<button ng-click=\"sample.savePackage()\">Save Package</button>\n\n<br>\n\npackages:\n\n<div ng-repeat=\"val in packages\">\n	{{ val.name }}\n	<button ng-click=\"sample.addPackage(val.$id)\">add</button>\n</div>\n\n<br>\n\ncreated:\n\n<div ng-repeat=\"val in created\">\n	{{ val.name }}\n	<button ng-click=\"sample.addPackage(val.$id)\">add</button>\n</div>\n\n<br>\n<br>\n\nsubscribed:\n\n<div ng-repeat=\"val in subscribed track by $index\">\n	{{ val.name }}\n</div>\n\n<br>\n\n\n<button ng-click=\"sample.getQuotes()\">Get Quotes</button>\n\n<div ng-repeat=\"(key, value) in sample.allQuotes\">\n	{{ value.body }} -{{ value.author }}\n</div>\n\n<br>\n\n<div ng-repeat=\"bundle in sample.myArray\">\n	quoteID: {{ bundle.quoteID }}\n	<br>\n	packageID: {{ bundle.packageID }}\n</div>\n\n<!-- <div ng-repeat=\"item in array\">{{ item|json }}</div>\n<button ng-click=\"pushA()\">PUSH</button> -->\n\n<button ng-click=\"sample.getQuote()\">GET QUOTE</button>\n\n<br>\n<br>\n\nquote: {{ sample.display.body }} -{{sample.display.author}}");}]);
 angular.module('quote')
 	.factory('AuthSvc', AuthSvc);
 
 function AuthSvc($q, $firebaseAuth, Const, UserSvc) {
 
 	var auth = $firebaseAuth(Const.ref);
-	var uid = null;
-
-	// set uid on auth
-	auth.$onAuth(function(authData) {
-		uid = authData ? authData.uid : null;
-	});
 
 	var AuthSvc = {
 		checkAuth: checkAuth,
-		getUid: getUid,
 		signupAnon: signupAnon,
 		logout: logout
 	};
@@ -39517,14 +39512,6 @@ function AuthSvc($q, $firebaseAuth, Const, UserSvc) {
 	 */
 	function checkAuth() {
 		return auth.$waitForAuth();
-	}
-
-	/**
-	 * Get current user's unique ID
-	 * @return {String} uid || null
-	 */
-	function getUid() {
-		return uid;
 	}
 
 	/**
@@ -39574,7 +39561,7 @@ function UserSvc($q, Const) {
 				.child(uid)
 				.set({ color: 'blue' }, function(err) {
 					if (err) {
-						console.error('createUser failed on save:', err);
+						console.error('createUser failed on set:', err);
 						reject(err);
 					} else {
 						resolve(uid);
@@ -39610,6 +39597,9 @@ function SampleCtrl(Const, $firebaseArray, $firebaseObject, AuthSvc, $scope, aut
 	};
 	vm.packageName;
 	vm.addPackage = addPackage;
+	vm.getQuotes = getQuotes;
+	vm.getQuote = getQuote;
+	vm.allQuotes;
 	
 	$scope.packages;
 
@@ -39622,25 +39612,37 @@ function SampleCtrl(Const, $firebaseArray, $firebaseObject, AuthSvc, $scope, aut
 		});
 	}
 
-	$firebaseObject(Const.ref.child('packages')).$bindTo($scope, 'packages');
+	$scope.packages = $firebaseArray(Const.ref.child('packages'));
+
+	$scope.created = $firebaseArray(Const.ref.child('packages').orderByChild('creator').equalTo(authStatus.uid));
+	
+	$scope.subscribed = [];
+	Const.ref.child('users').child(authStatus.uid).child('packages').child('subscribed').on('child_added', function(snapshot){
+		Const.ref.child('packages').child(snapshot.key()).on('value', function(snapshot) {
+			$timeout(function() {
+				// console.log(snapshot.val());
+				$scope.subscribed.push(snapshot.val());
+			})
+			
+		})
+	} );
 
 	function createPackage() {
-		var packages = Const.ref.child('packages');
-		currentPackageID = packages.push({
+		$scope.packages.$add({
 			name: 'default',
-			creator: AuthSvc.getUid()
-		}, function(package) {
-			currentPackageID = currentPackageID.key();
+			creator: authStatus.uid
+		}).then(function(ref) {
+			currentPackageID = ref.key();
 		});
 	}
 
 	function addQuote() {
-		var quotesOfPackage = Const.ref.child('quotes').child(currentPackageID);
-		quotesOfPackage.push({
+		var quotesOfPackage = $firebaseArray(Const.ref.child('quotes').child(currentPackageID));
+		quotesOfPackage.$add({
 			body: vm.quote.body,
 			author: vm.quote.author,
 			link: vm.quote.link
-		}, function() {
+		}).then(function(ref) {
 			vm.quote.body = '';
 			vm.quote.author = '';
 			vm.quote.link = '';
@@ -39648,21 +39650,81 @@ function SampleCtrl(Const, $firebaseArray, $firebaseObject, AuthSvc, $scope, aut
 	}
 
 	function savePackage() {
-		var package = Const.ref.child('packages').child(currentPackageID);
-		package.update({
-			name: vm.packageName
-		}, function(err) {
-			vm.packageName = '';
+		var package = $firebaseObject(Const.ref.child('packages').child(currentPackageID));
+		package.$loaded().then(function() {
+			package.name = vm.packageName;
+			package.$save().then(function(ref) {
+				vm.packageName = '';
+			});
 		});
 	}
 
 	function addPackage(key) {
 		Const.ref.child('users')
-			.child(AuthSvc.getUid())
+			.child(authStatus.uid)
 			.child('packages')
-			.child('current')
+			.child('subscribed')
 			.child(key)
 			.set(true);
+	}
+
+	function getQuotes() {
+		vm.myArray = [];
+
+		var packages = Const.ref.child('users')
+			.child(authStatus.uid)
+			.child('packages')
+			.child('subscribed');
+
+		var bundle = Const.ref.child('users')
+			.child(authStatus.uid)
+			.child('quotes');
+
+		bundle.set(null);
+
+		packages.once('value', function(snapshot) {
+			// console.log('packages:', snapshot.val());
+			snapshot.forEach(function(packageKey) {
+				// console.log('one package:', packageKey.val());
+				Const.ref.child('quotes').child(packageKey.key()).once('value', function(quotes) {
+					// console.log('quotes', quotes.val());
+					quotes.forEach(function(quote) {
+						// vm.myArray.push(quote.val());
+						// console.log(quote.val());
+						bundle.push({
+							packageID: packageKey.key(),
+							quoteID: quote.key()
+						});
+					});
+				});
+			});
+		});
+
+		
+		
+	}
+
+	function getQuote() {
+		var displayQuotes = $firebaseArray(Const.ref.child('users')
+			.child(authStatus.uid)
+			.child('quotes'));
+
+		displayQuotes.$loaded(function() {
+			if (displayQuotes.length === 0) {
+				// prompt to resubscribe or reset current
+			} else {
+				var index = randomNumber(0, displayQuotes.length - 1);
+				var display = displayQuotes[index];
+				vm.display = $firebaseObject(Const.ref.child('quotes').child(display.packageID).child(display.quoteID));
+				displayQuotes.$remove(index);
+			}
+
+		});
+
+	}
+
+	function randomNumber(min, max) {
+		return Math.floor(Math.random() * (max - min + 1)) + min;
 	}
 }
 SampleCtrl.$inject = ["Const", "$firebaseArray", "$firebaseObject", "AuthSvc", "$scope", "authStatus", "$timeout"];
