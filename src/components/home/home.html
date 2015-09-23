@@ -1,0 +1,18 @@
+<!-- HomeCtrl as home -->
+
+{{ home.quote.body }} -{{ home.quote.author }}
+
+<br>
+<br>
+
+<button ng-click="home.showSettings = !home.showSettings">Settings</button>
+<button ng-click="home.showForm = !home.showForm">Form</button>
+<button ng-click="home.generateQuoteList()">Generate Quotes</button>
+
+<!-- settings -->
+<div ng-if="home.showSettings" 
+	ng-include="'components/settings/settings.html'"></div>
+
+<!-- form -->
+<div ng-if="home.showForm" 
+	ng-include="'components/form/form.html'"></div>

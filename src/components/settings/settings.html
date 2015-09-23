@@ -1,0 +1,17 @@
+<div ng-controller="SettingsCtrl as settings">
+
+	hi
+
+	<!-- packages -->
+	<div ng-if="settings.showPackages" 
+		ng-include="'components/settings/packages/packages.html'"></div>
+
+	<!-- colors -->
+	<div ng-if="settings.showColors" 
+		ng-include="'components/settings/colors/colors.html'"></div>
+
+	<!-- account -->
+	<div ng-if="settings.showAccount" 
+		ng-include="'components/settings/account/account.html'"></div>
+	
+</div>

@@ -8,14 +8,14 @@ angular.module('quote', [
 
 .config(function($stateProvider, $urlRouterProvider) {
 	$stateProvider
-		.state('sample', {
-			url: '/sample',
-			templateUrl: 'components/sample/sample.html',
-			controller: 'SampleCtrl as sample',
-			resolve: SampleCtrl.resolve
+		.state('home', {
+			url: '/home',
+			templateUrl: 'components/home/home.html',
+			controller: 'HomeCtrl as home',
+			resolve: HomeCtrl.resolve
 		})
 
-	$urlRouterProvider.otherwise('sample');
+	$urlRouterProvider.otherwise('/home');
 })
 
 .run(function() {
