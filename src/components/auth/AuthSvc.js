@@ -28,12 +28,11 @@ function AuthSvc($q, $firebaseAuth, Const, UserSvc) {
 	function signupAnon() {
 		return $q(function(resolve, reject) {
 			auth.$authAnonymously().then(function(authData) {
-				return UserSvc.createUser(authData.uid);
+				return UserSvc.createUser(authData);
 			}, function(err) {
-				console.error('authAnonymously failed: ', err);
 				reject(err);
-			}).then(function(user) {
-				resolve(user);
+			}).then(function(authData) {
+				resolve(authData);
 			});
 		});
 	}

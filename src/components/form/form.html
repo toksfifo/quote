@@ -1,0 +1,29 @@
+<div ng-controller="FormCtrl as form">
+
+	<div ng-repeat="quote in form.quotesAdded">{{ quote.body }} -{{ quote.author}}</div>
+	
+	<br>
+
+	<input type="text" placeholder="Package Name" ng-model="form.packageName">
+
+	<br>
+
+	<input type="text" placeholder="Quote" ng-model="form.quoteCurrent.body">
+
+	<br>
+
+	<input type="text" placeholder="Author" ng-model="form.quoteCurrent.author">
+
+	<br>
+
+	<input type="text" placeholder="Link" ng-model="form.quoteCurrent.link">
+
+	<br>
+
+	<button ng-click="form.addQuote()">Add Quote</button>
+
+	<br>
+
+	<button ng-click="form.createPackage()">Save Package</button>
+
+</div>

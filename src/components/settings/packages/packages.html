@@ -1,0 +1,22 @@
+<div ng-controller="PackagesCtrl as packages">
+	<br>
+	all packages
+	<div ng-repeat="package in packages.packagesAll">
+		{{ package.name }}
+		<button ng-click="packages.addPackage(package.$id)">Add</button>
+	</div>
+
+	<br>
+	own packages
+	<div ng-repeat="package in packages.packagesOwn">
+		{{ package.name }}
+		<button ng-click="packages.addPackage(package.$id)">Add</button>
+	</div>
+
+	<br>
+	subscribed packages
+	<div ng-repeat="package in packages.packagesSubscribed">
+		{{ package.val().name }}
+		<button ng-click="packages.removePackage(package.key())">Remove</button>
+	</div>
+</div>
