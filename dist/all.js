@@ -39490,8 +39490,8 @@ angular.module('quote', [
 	db: /*gulp-replace-db*/'https://quoteextension.firebaseio.com/dev'/*end*/,
 	ref: /*gulp-replace-ref*/new Firebase('https://quoteextension.firebaseio.com/dev')/*end*/
 });
-angular.module("templates", []).run(["$templateCache", function($templateCache) {$templateCache.put("components/home/home.html","<!-- HomeCtrl as home -->\n\n{{ home.quote.body }} -{{ home.quote.author }}\n\n<br>\n<br>\n\n<button ng-click=\"home.showSettings = !home.showSettings\">Settings</button>\n<button ng-click=\"home.showForm = !home.showForm\">Form</button>\n<button ng-click=\"home.generateQuoteList()\">Generate Quotes</button>\n\n<!-- settings -->\n<div ng-if=\"home.showSettings\" \n	ng-include=\"\'components/settings/settings.html\'\"></div>\n\n<!-- form -->\n<div ng-if=\"home.showForm\" \n	ng-include=\"\'components/form/form.html\'\"></div>");
-$templateCache.put("components/form/form.html","<div ng-controller=\"FormCtrl as form\">\n\n	<div ng-repeat=\"quote in form.quotesAdded\">{{ quote.body }} -{{ quote.author}}</div>\n	\n	<br>\n\n	<input type=\"text\" placeholder=\"Package Name\" ng-model=\"form.packageName\">\n\n	<br>\n\n	<input type=\"text\" placeholder=\"Quote\" ng-model=\"form.quoteCurrent.body\">\n\n	<br>\n\n	<input type=\"text\" placeholder=\"Author\" ng-model=\"form.quoteCurrent.author\">\n\n	<br>\n\n	<input type=\"text\" placeholder=\"Link\" ng-model=\"form.quoteCurrent.link\">\n\n	<br>\n\n	<button ng-click=\"form.addQuote()\">Add Quote</button>\n\n	<br>\n\n	<button ng-click=\"form.createPackage()\">Save Package</button>\n\n</div>");
+angular.module("templates", []).run(["$templateCache", function($templateCache) {$templateCache.put("components/form/form.html","<div ng-controller=\"FormCtrl as form\">\n\n	<div ng-repeat=\"quote in form.quotesAdded\">{{ quote.body }} -{{ quote.author}}</div>\n	\n	<br>\n\n	<input type=\"text\" placeholder=\"Package Name\" ng-model=\"form.packageName\">\n\n	<br>\n\n	<input type=\"text\" placeholder=\"Quote\" ng-model=\"form.quoteCurrent.body\">\n\n	<br>\n\n	<input type=\"text\" placeholder=\"Author\" ng-model=\"form.quoteCurrent.author\">\n\n	<br>\n\n	<input type=\"text\" placeholder=\"Link\" ng-model=\"form.quoteCurrent.link\">\n\n	<br>\n\n	<button ng-click=\"form.addQuote()\">Add Quote</button>\n\n	<br>\n\n	<button ng-click=\"form.createPackage()\">Save Package</button>\n\n</div>");
+$templateCache.put("components/home/home.html","<!-- HomeCtrl as home -->\n\n{{ home.quote.body }} -{{ home.quote.author }}\n\n<br>\n<br>\n\n<button ng-click=\"home.showSettings = !home.showSettings\">Settings</button>\n<button ng-click=\"home.showForm = !home.showForm\">Form</button>\n<button ng-click=\"home.generateQuoteList()\">Generate Quotes</button>\n\n<!-- settings -->\n<div ng-if=\"home.showSettings\" \n	ng-include=\"\'components/settings/settings.html\'\"></div>\n\n<!-- form -->\n<div ng-if=\"home.showForm\" \n	ng-include=\"\'components/form/form.html\'\"></div>");
 $templateCache.put("components/settings/settings.html","<div ng-controller=\"SettingsCtrl as settings\">\n\n	hi\n\n	<!-- packages -->\n	<div ng-if=\"settings.showPackages\" \n		ng-include=\"\'components/settings/packages/packages.html\'\"></div>\n\n	<!-- colors -->\n	<div ng-if=\"settings.showColors\" \n		ng-include=\"\'components/settings/colors/colors.html\'\"></div>\n\n	<!-- account -->\n	<div ng-if=\"settings.showAccount\" \n		ng-include=\"\'components/settings/account/account.html\'\"></div>\n	\n</div>");
 $templateCache.put("components/settings/packages/packages.html","<div ng-controller=\"PackagesCtrl as packages\">\n	<br>\n	all packages\n	<div ng-repeat=\"package in packages.packagesAll\">\n		{{ package.name }}\n		<button ng-click=\"packages.addPackage(package.$id)\">Add</button>\n	</div>\n\n	<br>\n	own packages\n	<div ng-repeat=\"package in packages.packagesOwn\">\n		{{ package.name }}\n		<button ng-click=\"packages.addPackage(package.$id)\">Add</button>\n	</div>\n\n	<br>\n	subscribed packages\n	<div ng-repeat=\"package in packages.packagesSubscribed\">\n		{{ package.val().name }}\n		<button ng-click=\"packages.removePackage(package.key())\">Remove</button>\n	</div>\n</div>");}]);
 angular.module('quote')
@@ -39867,18 +39867,6 @@ function FormCtrl($scope, DataSvc) {
 }
 FormCtrl.$inject = ["$scope", "DataSvc"];
 angular.module('quote')
-	.controller('SettingsCtrl', SettingsCtrl);
-
-function SettingsCtrl() {
-
-	var vm = this;
-
-	vm.showPackages = true;
-	vm.showColors = false;
-	vm.showAccount = false;
-
-}
-angular.module('quote')
 	.controller('HomeCtrl', HomeCtrl);
 
 HomeCtrl.resolve = /*@ngInject*/ {
@@ -39952,6 +39940,18 @@ function HomeCtrl($scope, $q, authStatus, DataSvc, AuthSvc) {
 
 }
 HomeCtrl.$inject = ["$scope", "$q", "authStatus", "DataSvc", "AuthSvc"];
+angular.module('quote')
+	.controller('SettingsCtrl', SettingsCtrl);
+
+function SettingsCtrl() {
+
+	var vm = this;
+
+	vm.showPackages = true;
+	vm.showColors = false;
+	vm.showAccount = false;
+
+}
 angular.module('quote')
 	.factory('UserSvc', UserSvc);
 

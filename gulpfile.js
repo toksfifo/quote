@@ -14,10 +14,11 @@ var replace  = require('gulp-replace');
 
 
 // tasks
-gulp.task('default', ['js', 'css']);
+gulp.task('default', ['js', 'css', 'html']);
 gulp.task('watch', watch);
-gulp.task('build', ['cleanDist']);
+gulp.task('build', ['cleanDist', 'html']);
 
+gulp.task('html', html);
 gulp.task('templates', templates);
 
 gulp.task('env', env);
@@ -35,13 +36,20 @@ gulp.task('cleanDist', ['jsMinify', 'cssMinify'], cleanDist);
 function watch() {
 	gulp.watch('src/**/*.js', ['js']);
 	gulp.watch('src/**/*.scss', ['css']);
-	gulp.watch('src/**/*.html', ['templates']);
+	gulp.watch('src/**/*.html', ['templates', 'html']);
 }
 
 function templates() {
-	return gulp.src('src/**/*.html')
-		.pipe(templateCache({ standalone: true }))
-		.pipe(gulp.dest('src/'));
+	return gulp.src([
+		'src/**/*.html',
+		'!src/index.html'
+	]).pipe(templateCache({ standalone: true }))
+	.pipe(gulp.dest('src/'));
+}
+
+function html() {
+	return gulp.src('src/index.html')
+		.pipe(gulp.dest('dist/'));
 }
 
 function env() {
