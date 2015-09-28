@@ -39490,9 +39490,9 @@ angular.module('quote', [
 	db: /*gulp-replace-db*/'https://quoteextension.firebaseio.com/dev'/*end*/,
 	ref: /*gulp-replace-ref*/new Firebase('https://quoteextension.firebaseio.com/dev')/*end*/
 });
-angular.module("templates", []).run(["$templateCache", function($templateCache) {$templateCache.put("components/form/form.html","<div ng-controller=\"FormCtrl as form\">\n\n	<div ng-repeat=\"quote in form.quotesAdded\">{{ quote.body }} -{{ quote.author}}</div>\n	\n	<br>\n\n	<input type=\"text\" placeholder=\"Package Name\" ng-model=\"form.packageName\">\n\n	<br>\n\n	<input type=\"text\" placeholder=\"Quote\" ng-model=\"form.quoteCurrent.body\">\n\n	<br>\n\n	<input type=\"text\" placeholder=\"Author\" ng-model=\"form.quoteCurrent.author\">\n\n	<br>\n\n	<input type=\"text\" placeholder=\"Link\" ng-model=\"form.quoteCurrent.link\">\n\n	<br>\n\n	<button ng-click=\"form.addQuote()\">Add Quote</button>\n\n	<br>\n\n	<button ng-click=\"form.createPackage()\">Save Package</button>\n\n</div>");
+angular.module("templates", []).run(["$templateCache", function($templateCache) {$templateCache.put("components/home/home.html","<!-- HomeCtrl as home -->\n\n{{ home.quote.body }} -{{ home.quote.author }}\n\n<br>\n<br>\n\n<button ng-click=\"home.showSettings = !home.showSettings\">Settings</button>\n<button ng-click=\"home.showForm = !home.showForm\">Form</button>\n<button ng-click=\"home.generateQuoteList()\">Generate Quotes</button>\n\n<!-- settings -->\n<div ng-if=\"home.showSettings\" \n	ng-include=\"\'components/settings/settings.html\'\"></div>\n\n<!-- form -->\n<div ng-if=\"home.showForm\" \n	ng-include=\"\'components/form/form.html\'\"></div>");
+$templateCache.put("components/form/form.html","<div ng-controller=\"FormCtrl as form\">\n\n	<div ng-repeat=\"quote in form.quotesAdded\">{{ quote.body }} -{{ quote.author}}</div>\n	\n	<br>\n\n	<input type=\"text\" placeholder=\"Package Name\" ng-model=\"form.packageName\">\n\n	<br>\n\n	<input type=\"text\" placeholder=\"Quote\" ng-model=\"form.quoteCurrent.body\">\n\n	<br>\n\n	<input type=\"text\" placeholder=\"Author\" ng-model=\"form.quoteCurrent.author\">\n\n	<br>\n\n	<input type=\"text\" placeholder=\"Link\" ng-model=\"form.quoteCurrent.link\">\n\n	<br>\n\n	<button ng-click=\"form.addQuote()\">Add Quote</button>\n\n	<br>\n\n	<button ng-click=\"form.createPackage()\">Save Package</button>\n\n</div>");
 $templateCache.put("components/settings/settings.html","<div ng-controller=\"SettingsCtrl as settings\">\n\n	hi\n\n	<!-- packages -->\n	<div ng-if=\"settings.showPackages\" \n		ng-include=\"\'components/settings/packages/packages.html\'\"></div>\n\n	<!-- colors -->\n	<div ng-if=\"settings.showColors\" \n		ng-include=\"\'components/settings/colors/colors.html\'\"></div>\n\n	<!-- account -->\n	<div ng-if=\"settings.showAccount\" \n		ng-include=\"\'components/settings/account/account.html\'\"></div>\n	\n</div>");
-$templateCache.put("components/home/home.html","<!-- HomeCtrl as home -->\n\n{{ home.quote.body }} -{{ home.quote.author }}\n\n<br>\n<br>\n\n<button ng-click=\"home.showSettings = !home.showSettings\">Settings</button>\n<button ng-click=\"home.showForm = !home.showForm\">Form</button>\n<button ng-click=\"home.generateQuoteList()\">Generate Quotes</button>\n\n<!-- settings -->\n<div ng-if=\"home.showSettings\" \n	ng-include=\"\'components/settings/settings.html\'\"></div>\n\n<!-- form -->\n<div ng-if=\"home.showForm\" \n	ng-include=\"\'components/form/form.html\'\"></div>");
 $templateCache.put("components/settings/packages/packages.html","<div ng-controller=\"PackagesCtrl as packages\">\n	<br>\n	all packages\n	<div ng-repeat=\"package in packages.packagesAll\">\n		{{ package.name }}\n		<button ng-click=\"packages.addPackage(package.$id)\">Add</button>\n	</div>\n\n	<br>\n	own packages\n	<div ng-repeat=\"package in packages.packagesOwn\">\n		{{ package.name }}\n		<button ng-click=\"packages.addPackage(package.$id)\">Add</button>\n	</div>\n\n	<br>\n	subscribed packages\n	<div ng-repeat=\"package in packages.packagesSubscribed\">\n		{{ package.val().name }}\n		<button ng-click=\"packages.removePackage(package.key())\">Remove</button>\n	</div>\n</div>");}]);
 angular.module('quote')
 	.factory('AuthSvc', AuthSvc);
@@ -39821,79 +39821,6 @@ function DataSvc($q, $timeout, $firebaseArray, $firebaseObject, Const) {
 }
 DataSvc.$inject = ["$q", "$timeout", "$firebaseArray", "$firebaseObject", "Const"];
 angular.module('quote')
-	.controller('HomeCtrl', HomeCtrl);
-
-HomeCtrl.resolve = {
-	authStatus: function(AuthSvc) {
-		return AuthSvc.checkAuth();
-	}
-}
-
-function HomeCtrl($scope, $q, authStatus, DataSvc, AuthSvc) {
-
-	var vm = this;
-
-	vm.showSettings = false;
-	vm.showForm = false;
-	vm.generateQuoteList = generateQuoteList;
-	vm.quote;
-
-	init();
-
-	function init() {
-		getAuth().then(function(authStatus) {
-			$scope.authStatus = authStatus;
-			getQuote();
-		});
-	}
-
-	/**
-	 * Get main quote to display on new tab
-	 */
-	function getQuote() {
-		DataSvc.getQuote($scope.authStatus.uid).then(function(quote) {
-			if (quote === 0) {
-				// prompt to resubscribe or reset current
-				vm.quote = 'out of quotes';
-			} else {
-				vm.quote = quote;
-			}
-		}, function(err) {
-			console.log('couldn\'t get quote:', err);
-		});
-	}
-
-	/**
-	 * Get auth data if it exists, or signup anonymously
-	 * @return {Promise} Resolves with auth data
-	 */
-	function getAuth() {
-		return $q(function(resolve, reject) {
-			if (authStatus) {
-				resolve(authStatus);
-			} else {
-				AuthSvc.signupAnon().then(function(authData) {
-					resolve(authData);
-				}, function(err) {
-					console.log('auth anon failed:', err);
-				});
-			}
-		})
-	}
-
-	/**
-	 * Generate list of quotes to pull main quote from
-	 */
-	function generateQuoteList() {
-		DataSvc.generateQuoteList($scope.authStatus.uid).then(function() {
-		}, function(err) {
-			console.log('error generating quote list:', err);
-		});
-	}
-
-}
-HomeCtrl.$inject = ["$scope", "$q", "authStatus", "DataSvc", "AuthSvc"];
-angular.module('quote')
 	.controller('FormCtrl', FormCtrl);
 
 function FormCtrl($scope, DataSvc) {
@@ -39951,6 +39878,80 @@ function SettingsCtrl() {
 	vm.showAccount = false;
 
 }
+angular.module('quote')
+	.controller('HomeCtrl', HomeCtrl);
+
+HomeCtrl.resolve = /*@ngInject*/ {
+	authStatus: ["AuthSvc", function(AuthSvc) {
+		return AuthSvc.checkAuth();
+	}]
+}
+
+function HomeCtrl($scope, $q, authStatus, DataSvc, AuthSvc) {
+
+	var vm = this;
+
+	vm.showSettings = false;
+	vm.showForm = false;
+	vm.generateQuoteList = generateQuoteList;
+	vm.quote = {};
+
+	init();
+
+	function init() {
+		getAuth().then(function(authStatus) {
+			$scope.authStatus = authStatus;
+			getQuote();
+		});
+	}
+
+	/**
+	 * Get main quote to display on new tab
+	 */
+	function getQuote() {
+		DataSvc.getQuote($scope.authStatus.uid).then(function(quote) {
+			if (quote === 0) {
+				
+				// prompt to resubscribe or reset current
+				vm.quote.body = 'out of quotes';
+			} else {
+				vm.quote = quote;
+			}
+		}, function(err) {
+			console.log('couldn\'t get quote:', err);
+		});
+	}
+
+	/**
+	 * Get auth data if it exists, or signup anonymously
+	 * @return {Promise} Resolves with auth data
+	 */
+	function getAuth() {
+		return $q(function(resolve, reject) {
+			if (authStatus) {
+				resolve(authStatus);
+			} else {
+				AuthSvc.signupAnon().then(function(authData) {
+					resolve(authData);
+				}, function(err) {
+					console.log('auth anon failed:', err);
+				});
+			}
+		})
+	}
+
+	/**
+	 * Generate list of quotes to pull main quote from
+	 */
+	function generateQuoteList() {
+		DataSvc.generateQuoteList($scope.authStatus.uid).then(function() {
+		}, function(err) {
+			console.log('error generating quote list:', err);
+		});
+	}
+
+}
+HomeCtrl.$inject = ["$scope", "$q", "authStatus", "DataSvc", "AuthSvc"];
 angular.module('quote')
 	.factory('UserSvc', UserSvc);
 
