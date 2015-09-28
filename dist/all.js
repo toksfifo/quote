@@ -44288,7 +44288,7 @@ angular.module('quote', [
 angular.module("templates", []).run(["$templateCache", function($templateCache) {$templateCache.put("components/form/form.html","<div ng-controller=\"FormCtrl as form\">\n\n	<div ng-repeat=\"quote in form.quotesAdded\">{{ quote.body }} -{{ quote.author}}</div>\n	\n	<br>\n\n	<input type=\"text\" placeholder=\"Package Name\" ng-model=\"form.packageName\">\n\n	<br>\n\n	<input type=\"text\" placeholder=\"Quote\" ng-model=\"form.quoteCurrent.body\">\n\n	<br>\n\n	<input type=\"text\" placeholder=\"Author\" ng-model=\"form.quoteCurrent.author\">\n\n	<br>\n\n	<input type=\"text\" placeholder=\"Link\" ng-model=\"form.quoteCurrent.link\">\n\n	<br>\n\n	<button ng-click=\"form.addQuote()\">Add Quote</button>\n\n	<br>\n\n	<button ng-click=\"form.createPackage()\">Save Package</button>\n\n</div>");
 $templateCache.put("components/home/home.html","<!-- HomeCtrl as home -->\n\n{{ home.quote.body }} -{{ home.quote.author }}\n\n<br>\n<br>\n\n<button ng-click=\"home.showSettings = !home.showSettings\">Settings</button>\n<button ng-click=\"home.showForm = !home.showForm\">Form</button>\n<button ng-click=\"home.generateQuoteList()\">Generate Quotes</button>\n\n<!-- settings -->\n<div ng-if=\"home.showSettings\" \n	ng-include=\"\'components/settings/settings.html\'\"></div>\n\n<!-- form -->\n<div ng-if=\"home.showForm\" \n	ng-include=\"\'components/form/form.html\'\"></div>");
 $templateCache.put("components/settings/settings.html","<div ng-controller=\"SettingsCtrl as settings\">\n\n	hi\n\n	<!-- packages -->\n	<div ng-if=\"settings.showPackages\" \n		ng-include=\"\'components/settings/packages/packages.html\'\"></div>\n\n	<!-- colors -->\n	<div ng-if=\"settings.showColors\" \n		ng-include=\"\'components/settings/colors/colors.html\'\"></div>\n\n	<!-- account -->\n	<div ng-if=\"settings.showAccount\" \n		ng-include=\"\'components/settings/account/account.html\'\"></div>\n	\n</div>");
-$templateCache.put("components/settings/packages/packages.html","<div ng-controller=\"PackagesCtrl as packages\">\n	<br>\n	all packages\n	<div ng-repeat=\"package in packages.packagesAll\">\n		{{ package.name }}\n		<button ng-click=\"packages.addPackage(package.$id)\">Add</button>\n	</div>\n\n	<br>\n	own packages\n	<div ng-repeat=\"package in packages.packagesOwn\">\n		{{ package.name }}\n		<button ng-click=\"packages.addPackage(package.$id)\">Add</button>\n	</div>\n\n	<br>\n	subscribed packages\n	<div ng-repeat=\"package in packages.packagesSubscribed\">\n		{{ package.val().name }}\n		<button ng-click=\"packages.removePackage(package.key())\">Remove</button>\n	</div>\n</div>");}]);
+$templateCache.put("components/settings/packages/packages.html","<div ng-controller=\"PackagesCtrl as packages\">\n	<br>\n	all packages\n	<div ng-repeat=\"package in packages.packagesAll\">\n		{{ package.name }}\n		<button ng-click=\"packages.addPackage(package.$id)\">Add</button>\n	</div>\n\n	<br>\n	own packages\n	<div ng-repeat=\"package in packages.packagesOwn\">\n		{{ package.name }}\n		<button ng-click=\"packages.addPackage(package.$id)\">Add</button>\n	</div>\n\n	<br>\n	subscribed packages\n	<div ng-repeat=\"package in packages.packagesSubscribed\">\n		{{ package.name }}\n		<button ng-click=\"packages.removePackage(package.$id)\">Remove</button>\n	</div>\n</div>");}]);
 angular.module('quote')
 	.factory('AuthSvc', AuthSvc);
 
@@ -44385,7 +44385,7 @@ FormCtrl.$inject = ["$scope", "DataSvc"];
 angular.module('quote')
 	.factory('DataSvc', DataSvc);
 
-function DataSvc($q, $timeout, $firebaseArray, $firebaseObject, Const) {
+function DataSvc($q, $firebaseArray, $firebaseObject, Const) {
 
 	var DataSvc = {
 		getQuote: getQuote,
@@ -44538,35 +44538,27 @@ function DataSvc($q, $timeout, $firebaseArray, $firebaseObject, Const) {
 	/**
 	 * Get packages that a user is subscribed to
 	 * @param  {String} uid user ID
-	 * @return {Promise}     Resolves with (regular) array. The array is updated (because of reference) whenever the list of packages the user is subscribed to changes.
+	 * @return {Promise}     Resolves with $firebaseArray. Note that we're using (experimental) firebase-util here.
 	 */
 	function getPackagesSubscribed(uid) {
-		var packagesSubscribed = [];
-
 		return $q(function(resolve, reject) {
-			Const.ref.child('users')
-				.child(uid)
-				.child('packages')
-				.child('subscribed')
-				.on('value', function(packages) {
 
-					// empty array, but keep reference
-					packagesSubscribed.splice(0, packagesSubscribed.length);
+			// join /subscribed with /packages
+			var packagesSubscribed = $firebaseArray(new Firebase.util.NormalizedCollection(
+				Const.ref.child('users')
+					.child(uid)
+					.child('packages/subscribed'),
+				Const.ref.child('packages')
+			).select(
+				'packages.name',
+				'packages.creator'
+			).ref());
 
-					packages.forEach(function(package) {
-						Const.ref.child('packages')
-							.child(package.key())
-							.once('value', function(package) {
-								$timeout(function() {
-									packagesSubscribed.push(package);
-								});
-							}, function(err) {
-								reject(err);
-							});
-					});
-				});
-
-			resolve(packagesSubscribed);
+			packagesSubscribed.$loaded().then(function() {
+				resolve(packagesSubscribed);
+			}, function(err) {
+				reject(err);
+			});
 		});
 	}
 
@@ -44662,7 +44654,7 @@ function DataSvc($q, $timeout, $firebaseArray, $firebaseObject, Const) {
 	}
 
 }
-DataSvc.$inject = ["$q", "$timeout", "$firebaseArray", "$firebaseObject", "Const"];
+DataSvc.$inject = ["$q", "$firebaseArray", "$firebaseObject", "Const"];
 angular.module('quote')
 	.controller('HomeCtrl', HomeCtrl);
 

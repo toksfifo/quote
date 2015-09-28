@@ -16,7 +16,7 @@
 	<br>
 	subscribed packages
 	<div ng-repeat="package in packages.packagesSubscribed">
-		{{ package.val().name }}
-		<button ng-click="packages.removePackage(package.key())">Remove</button>
+		{{ package.name }}
+		<button ng-click="packages.removePackage(package.$id)">Remove</button>
 	</div>
 </div>

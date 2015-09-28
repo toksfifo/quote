@@ -1,7 +1,7 @@
 angular.module('quote')
 	.factory('DataSvc', DataSvc);
 
-function DataSvc($q, $timeout, $firebaseArray, $firebaseObject, Const) {
+function DataSvc($q, $firebaseArray, $firebaseObject, Const) {
 
 	var DataSvc = {
 		getQuote: getQuote,
@@ -154,35 +154,27 @@ function DataSvc($q, $timeout, $firebaseArray, $firebaseObject, Const) {
 	/**
 	 * Get packages that a user is subscribed to
 	 * @param  {String} uid user ID
-	 * @return {Promise}     Resolves with (regular) array. The array is updated (because of reference) whenever the list of packages the user is subscribed to changes.
+	 * @return {Promise}     Resolves with $firebaseArray. Note that we're using (experimental) firebase-util here.
 	 */
 	function getPackagesSubscribed(uid) {
-		var packagesSubscribed = [];
-
 		return $q(function(resolve, reject) {
-			Const.ref.child('users')
-				.child(uid)
-				.child('packages')
-				.child('subscribed')
-				.on('value', function(packages) {
 
-					// empty array, but keep reference
-					packagesSubscribed.splice(0, packagesSubscribed.length);
+			// join /subscribed with /packages
+			var packagesSubscribed = $firebaseArray(new Firebase.util.NormalizedCollection(
+				Const.ref.child('users')
+					.child(uid)
+					.child('packages/subscribed'),
+				Const.ref.child('packages')
+			).select(
+				'packages.name',
+				'packages.creator'
+			).ref());
 
-					packages.forEach(function(package) {
-						Const.ref.child('packages')
-							.child(package.key())
-							.once('value', function(package) {
-								$timeout(function() {
-									packagesSubscribed.push(package);
-								});
-							}, function(err) {
-								reject(err);
-							});
-					});
-				});
-
-			resolve(packagesSubscribed);
+			packagesSubscribed.$loaded().then(function() {
+				resolve(packagesSubscribed);
+			}, function(err) {
+				reject(err);
+			});
 		});
 	}
 
