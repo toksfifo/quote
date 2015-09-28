@@ -1,11 +1,11 @@
 angular.module('quote')
 	.controller('HomeCtrl', HomeCtrl);
 
-HomeCtrl.resolve = {
+HomeCtrl.resolve = /*@ngInject*/ {
 	authStatus: function(AuthSvc) {
 		return AuthSvc.checkAuth();
 	}
-}
+};
 
 function HomeCtrl($scope, $q, authStatus, DataSvc, AuthSvc) {
 
@@ -14,7 +14,7 @@ function HomeCtrl($scope, $q, authStatus, DataSvc, AuthSvc) {
 	vm.showSettings = false;
 	vm.showForm = false;
 	vm.generateQuoteList = generateQuoteList;
-	vm.quote;
+	vm.quote = {};
 
 	init();
 
@@ -22,6 +22,8 @@ function HomeCtrl($scope, $q, authStatus, DataSvc, AuthSvc) {
 		getAuth().then(function(authStatus) {
 			$scope.authStatus = authStatus;
 			getQuote();
+		}, function(err) {
+			console.log('error getting auth:', err);
 		});
 	}
 
@@ -31,8 +33,9 @@ function HomeCtrl($scope, $q, authStatus, DataSvc, AuthSvc) {
 	function getQuote() {
 		DataSvc.getQuote($scope.authStatus.uid).then(function(quote) {
 			if (quote === 0) {
+				
 				// prompt to resubscribe or reset current
-				vm.quote = 'out of quotes';
+				vm.quote.body = 'out of quotes';
 			} else {
 				vm.quote = quote;
 			}
@@ -53,10 +56,10 @@ function HomeCtrl($scope, $q, authStatus, DataSvc, AuthSvc) {
 				AuthSvc.signupAnon().then(function(authData) {
 					resolve(authData);
 				}, function(err) {
-					console.log('auth anon failed:', err);
+					reject(err);
 				});
 			}
-		})
+		});
 	}
 
 	/**

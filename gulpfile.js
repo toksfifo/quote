@@ -11,17 +11,20 @@ var uglify = require('gulp-uglify');
 var args = require('yargs').argv;
 var clean = require('gulp-clean');
 var replace  = require('gulp-replace');
+var eslint = require('gulp-eslint');
 
 
 // tasks
-gulp.task('default', ['js', 'css']);
+gulp.task('default', ['js', 'css', 'html']);
 gulp.task('watch', watch);
-gulp.task('build', ['cleanDist']);
+gulp.task('build', ['cleanDist', 'html']);
 
+gulp.task('html', html);
 gulp.task('templates', templates);
 
 gulp.task('env', env);
-gulp.task('js', ['env', 'templates'], js);
+gulp.task('lint', lint);
+gulp.task('js', ['env', 'templates', 'lint'], js);
 gulp.task('jsMinify', ['js'], jsMinify);
 
 gulp.task('sassTask', sassTask);
@@ -35,13 +38,20 @@ gulp.task('cleanDist', ['jsMinify', 'cssMinify'], cleanDist);
 function watch() {
 	gulp.watch('src/**/*.js', ['js']);
 	gulp.watch('src/**/*.scss', ['css']);
-	gulp.watch('src/**/*.html', ['templates']);
+	gulp.watch('src/**/*.html', ['templates', 'html']);
 }
 
 function templates() {
-	return gulp.src('src/**/*.html')
-		.pipe(templateCache({ standalone: true }))
-		.pipe(gulp.dest('src/'));
+	return gulp.src([
+		'src/**/*.html',
+		'!src/index.html'
+	]).pipe(templateCache({ standalone: true }))
+	.pipe(gulp.dest('src/'));
+}
+
+function html() {
+	return gulp.src('src/index.html')
+		.pipe(gulp.dest('dist/'));
 }
 
 function env() {
@@ -51,6 +61,15 @@ function env() {
 		.pipe(replace(/\/\*gulp-replace-db\*\/(.*?)\/\*end\*\//g, '/*gulp-replace-db*/' + env + '/*end*/'))
 		.pipe(replace(/\/\*gulp-replace-ref\*\/(.*?)\/\*end\*\//g, '/*gulp-replace-ref*/' + 'new Firebase(' + env + ')/*end*/'))
 		.pipe(gulp.dest('src/'));
+}
+
+function lint() {
+	return gulp.src([
+		'src/**/*.js',
+		'!src/templates.js'
+	]).pipe(eslint())
+	.pipe(eslint.format())
+	.pipe(eslint.failAfterError());
 }
 
 function js() {
@@ -84,7 +103,11 @@ function css() {
 
 function jsMinify() {
 	return gulp.src('dist/all.js')
-		.pipe(uglify())
+		.pipe(uglify({
+			compress: {
+				drop_console: true
+			}
+		}))
 		.pipe(rename({ extname: '.min.js' }))
 		.pipe(gulp.dest('dist/'));
 }
