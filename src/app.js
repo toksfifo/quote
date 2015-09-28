@@ -12,8 +12,8 @@ angular.module('quote', [
 			url: '/home',
 			templateUrl: 'components/home/home.html',
 			controller: 'HomeCtrl as home',
-			resolve: HomeCtrl.resolve
-		})
+			resolve: HomeCtrl.resolve // eslint-disable-line no-undef
+		});
 
 	$urlRouterProvider.otherwise('/home');
 })

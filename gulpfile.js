@@ -11,6 +11,7 @@ var uglify = require('gulp-uglify');
 var args = require('yargs').argv;
 var clean = require('gulp-clean');
 var replace  = require('gulp-replace');
+var eslint = require('gulp-eslint');
 
 
 // tasks
@@ -22,7 +23,8 @@ gulp.task('html', html);
 gulp.task('templates', templates);
 
 gulp.task('env', env);
-gulp.task('js', ['env', 'templates'], js);
+gulp.task('lint', lint);
+gulp.task('js', ['env', 'templates', 'lint'], js);
 gulp.task('jsMinify', ['js'], jsMinify);
 
 gulp.task('sassTask', sassTask);
@@ -59,6 +61,15 @@ function env() {
 		.pipe(replace(/\/\*gulp-replace-db\*\/(.*?)\/\*end\*\//g, '/*gulp-replace-db*/' + env + '/*end*/'))
 		.pipe(replace(/\/\*gulp-replace-ref\*\/(.*?)\/\*end\*\//g, '/*gulp-replace-ref*/' + 'new Firebase(' + env + ')/*end*/'))
 		.pipe(gulp.dest('src/'));
+}
+
+function lint() {
+	return gulp.src([
+		'src/**/*.js',
+		'!src/templates.js'
+	]).pipe(eslint())
+	.pipe(eslint.format())
+	.pipe(eslint.failAfterError());
 }
 
 function js() {

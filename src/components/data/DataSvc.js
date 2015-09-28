@@ -43,7 +43,7 @@ function DataSvc($q, $timeout, $firebaseArray, $firebaseObject, Const) {
 					resolve(quote);
 				}
 			}, function(err) {
-				reject(err)
+				reject(err);
 			});
 		});
 	}
@@ -176,6 +176,8 @@ function DataSvc($q, $timeout, $firebaseArray, $firebaseObject, Const) {
 								$timeout(function() {
 									packagesSubscribed.push(package);
 								});
+							}, function(err) {
+								reject(err);
 							});
 					});
 				});
@@ -219,7 +221,7 @@ function DataSvc($q, $timeout, $firebaseArray, $firebaseObject, Const) {
 				.remove(function(err) {
 					err ? reject(err) : resolve();
 				});
-			});
+		});
 	}
 
 	/**
@@ -249,7 +251,7 @@ function DataSvc($q, $timeout, $firebaseArray, $firebaseObject, Const) {
 						.push({
 							body: quotes[i].body,
 							author: quotes[i].author,
-							link: quotes[i].link,
+							link: quotes[i].link
 						}, function(err) {
 							if (err) {
 								reject(err);

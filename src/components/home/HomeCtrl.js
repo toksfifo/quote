@@ -5,7 +5,7 @@ HomeCtrl.resolve = /*@ngInject*/ {
 	authStatus: function(AuthSvc) {
 		return AuthSvc.checkAuth();
 	}
-}
+};
 
 function HomeCtrl($scope, $q, authStatus, DataSvc, AuthSvc) {
 
@@ -22,6 +22,8 @@ function HomeCtrl($scope, $q, authStatus, DataSvc, AuthSvc) {
 		getAuth().then(function(authStatus) {
 			$scope.authStatus = authStatus;
 			getQuote();
+		}, function(err) {
+			console.log('error getting auth:', err);
 		});
 	}
 
@@ -54,10 +56,10 @@ function HomeCtrl($scope, $q, authStatus, DataSvc, AuthSvc) {
 				AuthSvc.signupAnon().then(function(authData) {
 					resolve(authData);
 				}, function(err) {
-					console.log('auth anon failed:', err);
+					reject(err);
 				});
 			}
-		})
+		});
 	}
 
 	/**
