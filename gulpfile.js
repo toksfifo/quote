@@ -92,7 +92,11 @@ function css() {
 
 function jsMinify() {
 	return gulp.src('dist/all.js')
-		.pipe(uglify())
+		.pipe(uglify({
+			compress: {
+				drop_console: true
+			}
+		}))
 		.pipe(rename({ extname: '.min.js' }))
 		.pipe(gulp.dest('dist/'));
 }
