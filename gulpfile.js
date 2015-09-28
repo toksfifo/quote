@@ -80,6 +80,7 @@ function js() {
 		'bower_components/ui-router/release/angular-ui-router.js',
 		'bower_components/firebase/firebase.js',
 		'bower_components/angularfire/dist/angularfire.js',
+		'bower_components/firebase-util/dist/firebase-util.js',
 		'src/**/*.js'
 	]).pipe(concat('all.js'))
 	.pipe(ngAnnotate())
