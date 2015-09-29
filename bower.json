@@ -24,6 +24,7 @@
     "ui-router": "~0.2.15",
     "firebase": "~2.2.9",
     "angularfire": "~1.1.2",
-    "firebase-util": "~0.2.5"
+    "firebase-util": "~0.2.5",
+    "underscore": "~1.8.3"
   }
 }

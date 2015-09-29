@@ -23,7 +23,8 @@
     },
     "globals": {
         "angular": false,
-        "Firebase": false
+        "Firebase": false,
+        "_": false
     },
     "extends": "eslint:recommended"
 }

@@ -81,6 +81,7 @@ function js() {
 		'bower_components/firebase/firebase.js',
 		'bower_components/angularfire/dist/angularfire.js',
 		'bower_components/firebase-util/dist/firebase-util.js',
+		'bower_components/underscore/underscore.js',
 		'src/**/*.js'
 	]).pipe(concat('all.js'))
 	.pipe(ngAnnotate())
