@@ -1,7 +1,8 @@
 <div ng-controller="PackagesCtrl as packages">
+
 	<br>
 	all packages
-	<div ng-repeat="package in packages.packagesAll">
+	<div ng-repeat="package in packages.packagesAll | packagesAllFltr: packages.packagesOwn: packages.packagesSubscribed">
 		{{ package.name }}
 		<button ng-click="packages.addPackage(package.$id)">Add</button>
 	</div>
