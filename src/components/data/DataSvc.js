@@ -118,64 +118,38 @@ function DataSvc($q, $firebaseArray, $firebaseObject, Const) {
 
 	/**
 	 * Get all packages in the db
-	 * @return {Promise} Resolves with $firebaseArray of packages
+	 * @return {$firebaseArray} all packages
 	 */
 	function getPackagesAll() {
-		return $q(function(resolve, reject) {
-			var packagesAll = $firebaseArray(Const.ref.child('packages'));
-
-			packagesAll.$loaded().then(function() {
-				resolve(packagesAll);
-			}, function(err) {
-				reject(err);
-			});
-		});
+		return $firebaseArray(Const.ref.child('packages'));
 	}
 
 	/**
 	 * Get packages that a user created
 	 * @param  {String} uid user ID
-	 * @return {Promise}     Resolves with $firebaseArray of packages
+	 * @return {$firebaseArray}     packages user owns
 	 */
 	function getPackagesOwn(uid) {
-		return $q(function(resolve, reject) {
-			var packagesOwn = $firebaseArray(Const.ref.child('packages')
-				.orderByChild('creator')
-				.equalTo(uid));
-
-			packagesOwn.$loaded().then(function() {
-				resolve(packagesOwn);
-			}, function(err) {
-				reject(err);
-			});
-		});
+		return $firebaseArray(Const.ref.child('packages')
+			.orderByChild('creator')
+			.equalTo(uid));
 	}
 
 	/**
 	 * Get packages that a user is subscribed to
 	 * @param  {String} uid user ID
-	 * @return {Promise}     Resolves with $firebaseArray. Note that we're using (experimental) firebase-util here.
+	 * @return {$firebaseArray}     packages user's subscribed to. Note that we're using (experimental) firebase-util here.
 	 */
 	function getPackagesSubscribed(uid) {
-		return $q(function(resolve, reject) {
-
-			// join /subscribed with /packages
-			var packagesSubscribed = $firebaseArray(new Firebase.util.NormalizedCollection(
-				Const.ref.child('users')
-					.child(uid)
-					.child('packages/subscribed'),
-				Const.ref.child('packages')
-			).select(
-				'packages.name',
-				'packages.creator'
-			).ref());
-
-			packagesSubscribed.$loaded().then(function() {
-				resolve(packagesSubscribed);
-			}, function(err) {
-				reject(err);
-			});
-		});
+		return $firebaseArray(new Firebase.util.NormalizedCollection(
+			Const.ref.child('users')
+				.child(uid)
+				.child('packages/subscribed'),
+			Const.ref.child('packages')
+		).select(
+			'packages.name',
+			'packages.creator'
+		).ref());
 	}
 
 	/**
