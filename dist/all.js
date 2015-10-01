@@ -46005,64 +46005,38 @@ function DataSvc($q, $firebaseArray, $firebaseObject, Const) {
 
 	/**
 	 * Get all packages in the db
-	 * @return {Promise} Resolves with $firebaseArray of packages
+	 * @return {$firebaseArray} all packages
 	 */
 	function getPackagesAll() {
-		return $q(function(resolve, reject) {
-			var packagesAll = $firebaseArray(Const.ref.child('packages'));
-
-			packagesAll.$loaded().then(function() {
-				resolve(packagesAll);
-			}, function(err) {
-				reject(err);
-			});
-		});
+		return $firebaseArray(Const.ref.child('packages'));
 	}
 
 	/**
 	 * Get packages that a user created
 	 * @param  {String} uid user ID
-	 * @return {Promise}     Resolves with $firebaseArray of packages
+	 * @return {$firebaseArray}     packages user owns
 	 */
 	function getPackagesOwn(uid) {
-		return $q(function(resolve, reject) {
-			var packagesOwn = $firebaseArray(Const.ref.child('packages')
-				.orderByChild('creator')
-				.equalTo(uid));
-
-			packagesOwn.$loaded().then(function() {
-				resolve(packagesOwn);
-			}, function(err) {
-				reject(err);
-			});
-		});
+		return $firebaseArray(Const.ref.child('packages')
+			.orderByChild('creator')
+			.equalTo(uid));
 	}
 
 	/**
 	 * Get packages that a user is subscribed to
 	 * @param  {String} uid user ID
-	 * @return {Promise}     Resolves with $firebaseArray. Note that we're using (experimental) firebase-util here.
+	 * @return {$firebaseArray}     packages user's subscribed to. Note that we're using (experimental) firebase-util here.
 	 */
 	function getPackagesSubscribed(uid) {
-		return $q(function(resolve, reject) {
-
-			// join /subscribed with /packages
-			var packagesSubscribed = $firebaseArray(new Firebase.util.NormalizedCollection(
-				Const.ref.child('users')
-					.child(uid)
-					.child('packages/subscribed'),
-				Const.ref.child('packages')
-			).select(
-				'packages.name',
-				'packages.creator'
-			).ref());
-
-			packagesSubscribed.$loaded().then(function() {
-				resolve(packagesSubscribed);
-			}, function(err) {
-				reject(err);
-			});
-		});
+		return $firebaseArray(new Firebase.util.NormalizedCollection(
+			Const.ref.child('users')
+				.child(uid)
+				.child('packages/subscribed'),
+			Const.ref.child('packages')
+		).select(
+			'packages.name',
+			'packages.creator'
+		).ref());
 	}
 
 	/**
@@ -46159,41 +46133,6 @@ function DataSvc($q, $firebaseArray, $firebaseObject, Const) {
 }
 DataSvc.$inject = ["$q", "$firebaseArray", "$firebaseObject", "Const"];
 angular.module('quote')
-	.filter('packagesAllFltr', packagesAllFltr);
-
-function packagesAllFltr() {
-
-	return filter;
-
-	/**
-	 * Don't show packages that a user ownes or is subscribed to, in all packages
-	 * @param  {$firebaseArray} packagesAll        All packages
-	 * @param  {$firebaseArray} packagesOwn        packages user owns
-	 * @param  {$firebaseArray} packagesSubscribed packages user is subscribed to
-	 * @return {Array}                    filtered array of all packages
-	 */
-	function filter(packagesAll, packagesOwn, packagesSubscribed) {
-		var removeFromPackages = [];
-
-		// don't show anything if we don't have all the data
-		if (!packagesAll || !packagesOwn || !packagesSubscribed) {
-			return [];
-		}
-		
-		for (var i = 0; i < packagesOwn.length; i++) {
-			removeFromPackages.push(packagesOwn[i].$id);
-		}
-		for (var j = 0; j < packagesSubscribed.length; j++) {
-			removeFromPackages.push(packagesSubscribed[j].$id);
-		}
-
-		return _.filter(packagesAll, function(package) {
-			return removeFromPackages.indexOf(package.$id) === -1;
-		});
-
-	}
-}
-angular.module('quote')
 	.controller('FormCtrl', FormCtrl);
 
 function FormCtrl($scope, DataSvc) {
@@ -46240,47 +46179,39 @@ function FormCtrl($scope, DataSvc) {
 }
 FormCtrl.$inject = ["$scope", "DataSvc"];
 angular.module('quote')
-	.factory('UserSvc', UserSvc);
+	.filter('packagesAllFltr', packagesAllFltr);
 
-function UserSvc($q, Const) {
+function packagesAllFltr() {
 
-	var UserSvc = {
-		createUser: createUser
-	};
-
-	return UserSvc;
+	return filter;
 
 	/**
-	 * Add user to db/users
-	 * @param  {Object} authData User's auth data
-	 * @return {Promise}     Resolves with auth data when user is saved to db
+	 * Don't show packages that a user ownes or is subscribed to, in all packages
+	 * @param  {$firebaseArray} packagesAll        All packages
+	 * @param  {$firebaseArray} packagesOwn        packages user owns
+	 * @param  {$firebaseArray} packagesSubscribed packages user is subscribed to
+	 * @return {Array}                    filtered array of all packages
 	 */
-	function createUser(authData) {
-		return $q(function(resolve, reject) {
-			Const.ref.child('users')
-				.child(authData.uid)
-				.set({ color: 'blue' }, function(err) {
-					if (err) {
-						reject(err);
-					} else {
-						resolve(authData);
-					}
-				});
+	function filter(packagesAll, packagesOwn, packagesSubscribed) {
+		var removeFromPackages = [];
+
+		// don't show anything if we don't have all the data
+		if (!packagesAll || !packagesOwn || !packagesSubscribed) {
+			return [];
+		}
+		
+		for (var i = 0; i < packagesOwn.length; i++) {
+			removeFromPackages.push(packagesOwn[i].$id);
+		}
+		for (var j = 0; j < packagesSubscribed.length; j++) {
+			removeFromPackages.push(packagesSubscribed[j].$id);
+		}
+
+		return _.filter(packagesAll, function(package) {
+			return removeFromPackages.indexOf(package.$id) === -1;
 		});
+
 	}
-}
-UserSvc.$inject = ["$q", "Const"];
-angular.module('quote')
-	.controller('SettingsCtrl', SettingsCtrl);
-
-function SettingsCtrl() {
-
-	var vm = this;
-
-	vm.showPackages = true;
-	vm.showColors = false;
-	vm.showAccount = false;
-
 }
 angular.module('quote')
 	.controller('HomeCtrl', HomeCtrl);
@@ -46359,6 +46290,49 @@ function HomeCtrl($scope, $q, authStatus, DataSvc, AuthSvc) {
 }
 HomeCtrl.$inject = ["$scope", "$q", "authStatus", "DataSvc", "AuthSvc"];
 angular.module('quote')
+	.factory('UserSvc', UserSvc);
+
+function UserSvc($q, Const) {
+
+	var UserSvc = {
+		createUser: createUser
+	};
+
+	return UserSvc;
+
+	/**
+	 * Add user to db/users
+	 * @param  {Object} authData User's auth data
+	 * @return {Promise}     Resolves with auth data when user is saved to db
+	 */
+	function createUser(authData) {
+		return $q(function(resolve, reject) {
+			Const.ref.child('users')
+				.child(authData.uid)
+				.set({ color: 'blue' }, function(err) {
+					if (err) {
+						reject(err);
+					} else {
+						resolve(authData);
+					}
+				});
+		});
+	}
+}
+UserSvc.$inject = ["$q", "Const"];
+angular.module('quote')
+	.controller('SettingsCtrl', SettingsCtrl);
+
+function SettingsCtrl() {
+
+	var vm = this;
+
+	vm.showPackages = true;
+	vm.showColors = false;
+	vm.showAccount = false;
+
+}
+angular.module('quote')
 	.controller('PackagesCtrl', PackagesCtrl);
 
 function PackagesCtrl($scope, DataSvc) {
@@ -46374,17 +46348,9 @@ function PackagesCtrl($scope, DataSvc) {
 	init();
 
 	function init() {
-		DataSvc.getPackagesAll().then(function(packages) {
-			vm.packagesAll = packages;
-			return DataSvc.getPackagesOwn($scope.authStatus.uid);
-		}).then(function(packages) {
-			vm.packagesOwn = packages;
-			return DataSvc.getPackagesSubscribed($scope.authStatus.uid);
-		}).then(function(packages) {
-			vm.packagesSubscribed = packages;
-		}).catch(function(err) {
-			console.log('error getting packages:', err);
-		});
+		vm.packagesAll = DataSvc.getPackagesAll();
+		vm.packagesOwn = DataSvc.getPackagesOwn($scope.authStatus.uid);
+		vm.packagesSubscribed = DataSvc.getPackagesSubscribed($scope.authStatus.uid);
 	}
 
 	/**

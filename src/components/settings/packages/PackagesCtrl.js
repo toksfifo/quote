@@ -14,17 +14,9 @@ function PackagesCtrl($scope, DataSvc) {
 	init();
 
 	function init() {
-		DataSvc.getPackagesAll().then(function(packages) {
-			vm.packagesAll = packages;
-			return DataSvc.getPackagesOwn($scope.authStatus.uid);
-		}).then(function(packages) {
-			vm.packagesOwn = packages;
-			return DataSvc.getPackagesSubscribed($scope.authStatus.uid);
-		}).then(function(packages) {
-			vm.packagesSubscribed = packages;
-		}).catch(function(err) {
-			console.log('error getting packages:', err);
-		});
+		vm.packagesAll = DataSvc.getPackagesAll();
+		vm.packagesOwn = DataSvc.getPackagesOwn($scope.authStatus.uid);
+		vm.packagesSubscribed = DataSvc.getPackagesSubscribed($scope.authStatus.uid);
 	}
 
 	/**
