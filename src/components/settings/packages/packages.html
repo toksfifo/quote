@@ -1,23 +1,24 @@
-<div ng-controller="PackagesCtrl as packages">
+<div ng-controller="PackagesCtrl as packages">	
 
 	<br>
-	all packages
-	<div ng-repeat="package in packages.packagesAll | packagesAllFltr: packages.packagesOwn: packages.packagesSubscribed">
+	PACKAGES YOU'RE SUBSCRIBED TO
+	<div ng-repeat="package in packages.packagesSubscribed">
 		{{ package.name }}
-		<button ng-click="packages.addPackage(package.$id)">Add</button>
+		<button ng-click="packages.removePackage(package.$id)">Remove</button>
 	</div>
 
 	<br>
-	own packages
+	PACKAGES YOU CREATED
 	<div ng-repeat="package in packages.packagesOwn">
 		{{ package.name }}
 		<button ng-click="packages.addPackage(package.$id)">Add</button>
 	</div>
 
 	<br>
-	subscribed packages
-	<div ng-repeat="package in packages.packagesSubscribed">
+	ALL OTHER PUBLIC PACKAGES
+	<div ng-repeat="package in packages.packagesAll | packagesAllFltr: packages.packagesOwn: packages.packagesSubscribed">
 		{{ package.name }}
-		<button ng-click="packages.removePackage(package.$id)">Remove</button>
+		<button ng-click="packages.addPackage(package.$id)">Add</button>
 	</div>
+
 </div>

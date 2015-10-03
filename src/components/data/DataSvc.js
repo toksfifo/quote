@@ -11,7 +11,8 @@ function DataSvc($q, $firebaseArray, $firebaseObject, Const) {
 		getPackagesSubscribed: getPackagesSubscribed,
 		subscribePackage: subscribePackage,
 		unsubscribePackage: unsubscribePackage,
-		createPackage: createPackage
+		createPackage: createPackage,
+		getColor: getColor
 	};
 
 	return DataSvc;
@@ -231,6 +232,25 @@ function DataSvc($q, $firebaseArray, $firebaseObject, Const) {
 				}
 			});
 		});
+	}
+
+	/**
+	 * Get user's background color
+	 * @param  {String} uid user ID
+	 * @return {Promise}     Resolves with color (String)
+	 */
+	function getColor(uid) {
+		return $q(function(resolve, reject) {
+			Const.ref.child('users')
+				.child(uid)
+				.child('color')
+				.once('value', function(color) {
+					resolve(color.val());
+				}, function(err) {
+					reject(err);
+				});
+		});
+		
 	}
 
 	/**

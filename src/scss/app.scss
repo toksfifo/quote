@@ -1,5 +1,3 @@
-// @import '../components/sample/sample.scss';
-
-body {
-	color: blue;
-}
+@import 'reset.scss';
+@import 'utilites.scss';
+@import '../components/home/home.scss';

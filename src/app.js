@@ -1,6 +1,7 @@
 'use strict';
 
 angular.module('quote', [
+	'ngAnimate',
 	'templates',
 	'ui.router',
 	'firebase'

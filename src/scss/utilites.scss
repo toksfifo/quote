@@ -1,0 +1,169 @@
+// DISPLAY/POSITION
+.u-centerXY {
+	position: relative;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.u-centerX {
+	position: relative;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+.u-centerY {
+	position: relative;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.u-oneLine {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.u-floatL {
+	float: left;
+}
+
+.u-floatR {
+	float: right;
+}
+
+.u-block {
+	display: block;
+}
+
+.u-100X {
+	width: 100%;
+}
+
+.u-100Y {
+	height: 100%;
+}
+
+.u-100XY {
+	width: 100%;
+	height: 100%;
+}
+
+.u-textLeft {
+	text-align: left;
+}
+
+.u-textCenter {
+	text-align: center;
+}
+
+.u-textRight {
+	text-align: right;
+}
+
+// COLOR
+// .u-colorLight {
+// 	color: $light;
+// }
+
+// .u-colorStable {
+// 	color: $stable;
+// }
+
+// .u-colorPositive {
+// 	color: $positive;
+// }
+
+// .u-colorCalm {
+// 	color: $calm;
+// }
+
+// .u-colorBalanced {
+// 	color: $balanced;
+// }
+
+// .u-colorEnergized {
+// 	color: $energized;
+// }
+
+// .u-colorAssertive {
+// 	color: $assertive;
+// }
+
+// .u-colorRoyal {
+// 	color: $royal;
+// }
+
+// .u-colorDark {
+// 	color: $dark;
+// }
+
+// .u-bgColorLight {
+// 	background-color: $light;
+// }
+
+// .u-bgColorStable {
+// 	background-color: $stable;
+// }
+
+// .u-bgColorPositive {
+// 	background-color: $positive;
+// }
+
+// .u-bgColorCalm {
+// 	background-color: $calm;
+// }
+
+// .u-bgColorBalanced {
+// 	background-color: $balanced;
+// }
+
+// .u-bgColorEnergized {
+// 	background-color: $energized;
+// }
+
+// .u-bgColorAssertive {
+// 	background-color: $assertive;
+// }
+
+// .u-bgColorRoyal {
+// 	background-color: $royal;
+// }
+
+// .u-bgColorDark {
+// 	background-color: $dark;
+// }
+
+
+// // TRANSITION
+// .u-transitionOff {
+//     transition: none;
+//     transition: unset;
+// }
+
+// .u-transitionOff.ng-hide-add, 
+// .u-transitionOff.ng-hide-remove {
+//     display: none;   
+// }
+
+
+// // FONT
+// .u-fontSmaller {
+// 	font-size: $font-size-smaller;
+// }
+
+// .u-fontSmall {
+// 	font-size: $font-size-small;
+// }
+
+// .u-fontBase {
+// 	font-size: $font-size-base;
+// }
+
+// .u-fontLarge {
+// 	font-size: $font-size-large;
+// }
+
+// .u-fontLarger {
+// 	font-size: $font-size-larger;
+// }

@@ -20,5 +20,144 @@ ng\:form {
   position:absolute;
 }
 
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline; }
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+  display: block; }
+
 body {
-  color: blue; }
+  line-height: 1; }
+
+ol, ul {
+  list-style: none; }
+
+blockquote, q {
+  quotes: none; }
+
+blockquote:before, blockquote:after {
+  content: '';
+  content: none; }
+
+q:before, q:after {
+  content: '';
+  content: none; }
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0; }
+
+.u-centerXY {
+  position: relative;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%); }
+
+.u-centerX {
+  position: relative;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+      -ms-transform: translateX(-50%);
+          transform: translateX(-50%); }
+
+.u-centerY {
+  position: relative;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+          transform: translateY(-50%); }
+
+.u-oneLine {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; }
+
+.u-floatL {
+  float: left; }
+
+.u-floatR {
+  float: right; }
+
+.u-block {
+  display: block; }
+
+.u-100X {
+  width: 100%; }
+
+.u-100Y {
+  height: 100%; }
+
+.u-100XY {
+  width: 100%;
+  height: 100%; }
+
+.u-textLeft {
+  text-align: left; }
+
+.u-textCenter {
+  text-align: center; }
+
+.u-textRight {
+  text-align: right; }
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  font-family: 'Open Sans', sans-serif; }
+
+.home-wrapper {
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  -webkit-transition: background-color ease-in-out 0.5s;
+          transition: background-color ease-in-out 0.5s; }
+
+.quote-wrapper {
+  height: 200px;
+  width: 700px;
+  display: table; }
+
+.quote-wrapper.ng-enter {
+  -webkit-transition: all ease-in-out 1.5s;
+          transition: all ease-in-out 1.5s;
+  -webkit-transform: translate(-50%, -35%);
+      -ms-transform: translate(-50%, -35%);
+          transform: translate(-50%, -35%);
+  opacity: 0; }
+
+.quote-wrapper.ng-enter.ng-enter-active {
+  -webkit-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  opacity: 1; }
+
+.quote {
+  display: table-cell;
+  vertical-align: middle;
+  line-height: 1.5;
+  color: white; }
+
+.quote-body {
+  text-align: left;
+  font-size: 30px;
+  font-weight: 300;
+  font-style: italic; }
+
+.quote-author {
+  text-align: right;
+  font-size: 18px;
+  font-weight: 300;
+  letter-spacing: 2px;
+  margin-top: 10px; }
+
+.u-absolute {
+  position: absolute; }

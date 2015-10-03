@@ -37,6 +37,7 @@ function FormCtrl($scope, DataSvc) {
 	function createPackage() {
 		DataSvc.createPackage($scope.authStatus.uid, vm.packageName, vm.quotesAdded).then(function() {
 			vm.packageName = '';
+			vm.quotesAdded = [];
 		}, function(err) {
 			console.log('error creating package:', err);
 		});
