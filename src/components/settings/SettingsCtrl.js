@@ -5,8 +5,8 @@ function SettingsCtrl() {
 
 	var vm = this;
 
-	vm.showPackages = true;
-	vm.showColors = false;
+	vm.showPackages = false;
+	vm.showColors = true;
 	vm.showAccount = false;
 
 }

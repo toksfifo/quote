@@ -12,7 +12,8 @@ function DataSvc($q, $firebaseArray, $firebaseObject, Const) {
 		subscribePackage: subscribePackage,
 		unsubscribePackage: unsubscribePackage,
 		createPackage: createPackage,
-		getColor: getColor
+		getColor: getColor,
+		setColor: setColor
 	};
 
 	return DataSvc;
@@ -237,20 +238,31 @@ function DataSvc($q, $firebaseArray, $firebaseObject, Const) {
 	/**
 	 * Get user's background color
 	 * @param  {String} uid user ID
-	 * @return {Promise}     Resolves with color (String)
+	 * @return {$firebaseObject}     color with properties 'name' and 'val'
 	 */
 	function getColor(uid) {
+		return $firebaseObject(Const.ref.child('users')
+			.child(uid)
+			.child('color'));
+	}
+
+	/**
+	 * Set new background color
+	 * @param {String} uid   userID
+	 * @param {Object} color new color with properties 'name' and 'val'
+	 */
+	function setColor(uid, color) {
 		return $q(function(resolve, reject) {
 			Const.ref.child('users')
 				.child(uid)
 				.child('color')
-				.once('value', function(color) {
-					resolve(color.val());
+				.set({
+					name: color.name,
+					val: color.val
 				}, function(err) {
-					reject(err);
+					err ? reject(err) : resolve();
 				});
 		});
-		
 	}
 
 	/**
