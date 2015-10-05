@@ -1,0 +1,33 @@
+.settings-wrapper {
+	// border: 1px solid black;
+	box-shadow: 0 0 8px 2px rgba(0, 0, 0, 0.3);
+	width: 700px;
+	height: 500px;
+	background-color: white;
+}
+
+.settings-wrapper.ng-enter,
+.settings-wrapper.ng-leave {
+	transition: all cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.5s;
+}
+
+.settings-wrapper.ng-enter {
+	transform: translate(-50%, -35%);
+	opacity: 0;
+}
+
+.settings-wrapper.ng-enter-active {
+	transform: translate(-50%, -50%);
+	opacity: 1;
+}
+
+.settings-wrapper.ng-leave {
+	transform: translate(-50%, -50%);
+	opacity: 1;
+}
+
+.settings-wrapper.ng-leave-active {
+	transform: translate(-50%, -35%);
+	opacity: 0;
+}
+

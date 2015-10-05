@@ -8,7 +8,7 @@
 
 	
 
-	<div class="u-absolute">
+
 		<br>
 		<br>
 
@@ -18,13 +18,11 @@
 		<a ng-href="{{ home.quote.link }}">link</a>
 
 		<!-- settings -->
-		<div ng-if="home.showSettings" 
-			ng-include="'components/settings/settings.html'"></div>
+		<div ng-include="'components/settings/settings.html'"></div>
 
 		<!-- form -->
 		<div ng-if="home.showForm" 
 			ng-include="'components/form/form.html'"></div>
-	</div>
 
 	<div class="quote-wrapper u-centerXY" ng-if="::home.quote.body">
 		<div class="quote">

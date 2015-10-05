@@ -1,19 +1,19 @@
 // DISPLAY/POSITION
 .u-centerXY {
-	position: relative;
+	position: absolute;
 	left: 50%;
 	top: 50%;
 	transform: translate(-50%, -50%);
 }
 
 .u-centerX {
-	position: relative;
+	position: absolute;
 	left: 50%;
 	transform: translateX(-50%);
 }
 
 .u-centerY {
-	position: relative;
+	position: absolute;
 	top: 50%;
 	transform: translateY(-50%);
 }
