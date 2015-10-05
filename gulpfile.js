@@ -28,7 +28,8 @@ gulp.task('js', ['env', 'templates', 'lint'], js);
 gulp.task('jsMinify', ['js'], jsMinify);
 
 gulp.task('sassTask', sassTask);
-gulp.task('css', ['sassTask'], css);
+gulp.task('fonts', fonts);
+gulp.task('css', ['sassTask', 'fonts'], css);
 gulp.task('cssMinify', ['css'], cssMinify);
 
 gulp.task('cleanDist', ['jsMinify', 'cssMinify'], cleanDist);
@@ -95,9 +96,15 @@ function sassTask() {
 		.pipe(gulp.dest('src/scss/'));
 }
 
+function fonts() {
+	return gulp.src([
+		'bower_components/ionicons/fonts/*'
+	]).pipe(gulp.dest('dist/fonts/'));
+}
+
 function css() {
 	return gulp.src([
-		'bower_components/angular/angular-csp.css',
+		'bower_components/ionicons/css/ionicons.css',
 		'src/scss/app.css'
 	]).pipe(concat('all.css'))
 	.pipe(gulp.dest('dist/'));

@@ -1,19 +1,43 @@
 <div ng-controller="SettingsCtrl as settings" 
 	class="settings-wrapper u-centerXY"
-	ng-if="home.showSettings">
+	ng-if="home.show.settings">
 	
-	settings
+	<!-- settings:
+	<br>
+	<span ng-click="settings.toggleTab('packages')">packages</span>
+	<span ng-click="settings.toggleTab('colors')">colors</span> -->
+
+	<div class="settings-head">
+
+		<div class="settings-tab">
+			<i class="settings-tab-icon icon ion-ios-folder"></i>
+			<span class="settings-tab-text">Packages</span>
+		</div>
+		
+		<div class="settings-tab">
+			<i class="settings-tab-icon icon ion-paintbucket"></i>
+			<span class="settings-tab-text">Colors</span>
+		</div>
+		
+		<div class="settings-tab">
+			<i class="settings-tab-icon settings-tab-icon--bigger icon ion-ios-person"></i>
+			<span class="settings-tab-text">Account</span>
+		</div>
+
+	</div>
+
+	<div class="settings-body">
+		<!-- packages -->
+		<div ng-include="'components/settings/packages/packages.html'"></div>
+
+		<!-- colors -->
+		<div ng-include="'components/settings/colors/colors.html'"></div>
+
+		<!-- account -->
+		<!-- <div ng-if="settings.showAccount" 
+			ng-include="'components/settings/account/account.html'"></div> -->
+	</div>
 	
-	<!-- packages -->
-	<div ng-if="settings.showPackages" 
-		ng-include="'components/settings/packages/packages.html'"></div>
-
-	<!-- colors -->
-	<div ng-if="settings.showColors" 
-		ng-include="'components/settings/colors/colors.html'"></div>
-
-	<!-- account -->
-	<div ng-if="settings.showAccount" 
-		ng-include="'components/settings/account/account.html'"></div>
+	
 	
 </div>

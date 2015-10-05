@@ -1,4 +1,5 @@
-<div ng-controller="ColorsCtrl as colors">
+<div ng-controller="ColorsCtrl as colors"
+	ng-show="settings.show.colors">
 	<div ng-repeat="color in colors.colors" ng-click="colors.selectColor(color)">
 		{{ color.name }}
 	</div>

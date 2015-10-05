@@ -11,8 +11,10 @@ function HomeCtrl($scope, $q, authStatus, DataSvc, AuthSvc) {
 
 	var vm = this;
 
-	vm.showSettings = false;
-	vm.showForm = false;
+	vm.show = {
+		settings: true,
+		form: false
+	};
 	vm.generateQuoteList = generateQuoteList;
 	vm.quote = {};
 	vm.color = 'rgba(255, 255, 255, 1.0)';

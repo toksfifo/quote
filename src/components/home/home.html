@@ -12,8 +12,8 @@
 		<br>
 		<br>
 
-		<button ng-click="home.showSettings = !home.showSettings">Settings</button>
-		<button ng-click="home.showForm = !home.showForm">Form</button>
+		<button ng-click="home.show.settings = !home.show.settings">Settings</button>
+		<button ng-click="home.show.form = !home.show.form">Form</button>
 		<button ng-click="home.generateQuoteList()">Generate Quotes</button>
 		<a ng-href="{{ home.quote.link }}">link</a>
 
@@ -21,7 +21,7 @@
 		<div ng-include="'components/settings/settings.html'"></div>
 
 		<!-- form -->
-		<div ng-if="home.showForm" 
+		<div ng-if="home.show.form" 
 			ng-include="'components/form/form.html'"></div>
 
 	<div class="quote-wrapper u-centerXY" ng-if="::home.quote.body">
