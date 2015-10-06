@@ -1624,8 +1624,8 @@ body {
 
 .settings-wrapper {
   box-shadow: 0 0 8px 2px rgba(0, 0, 0, 0.3);
-  width: 700px;
-  height: 500px;
+  width: 750px;
+  height: 400px;
   background-color: white;
   color: gray;
   border: 4px solid #8c8c8c; }
@@ -1663,34 +1663,53 @@ body {
   position: absolute;
   top: 0;
   left: 0;
-  width: 692px;
+  width: 742px;
   height: 60px;
   background-color: #f0f0f0;
-  border-bottom: 1px solid gainsboro; }
+  border-bottom: 1px solid gainsboro;
+  font-size: 16px; }
 
 .settings-body {
   position: absolute;
   top: 60px;
   left: 0px;
-  width: 692px;
-  height: 432px; }
+  width: 742px;
+  height: 332px; }
 
 .settings-tab {
   float: left;
   width: 33.33%;
-  text-align: center; }
+  text-align: center;
+  cursor: pointer; }
+  .settings-tab.is-active {
+    color: #2889e4; }
 
-.settings-tab-icon {
+.settings-tab-icon, .settings-tab-icon--bigger {
   display: block;
   font-size: 30px;
-  height: 38px; }
-  .settings-tab-icon:before {
-    line-height: 37px; }
+  height: 40px; }
+  .settings-tab-icon:before, .settings-tab-icon--bigger:before {
+    line-height: 39px; }
 
 .settings-tab-icon--bigger {
-  font-size: 36px; }
+  font-size: 38px; }
 
 .settings-tab-text {
   display: block;
-  height: 22px;
-  line-height: 21px; }
+  height: 16px;
+  line-height: 15px; }
+
+.color-wrapper {
+  width: 100%;
+  height: 70px;
+  text-align: center; }
+
+.color {
+  position: relative;
+  display: inline-block;
+  width: 70px;
+  height: 70px;
+  cursor: pointer;
+  border: 4px solid white; }
+  .color:not(:first-of-type) {
+    margin-left: 40px; }

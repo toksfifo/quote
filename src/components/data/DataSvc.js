@@ -258,7 +258,8 @@ function DataSvc($q, $firebaseArray, $firebaseObject, Const) {
 				.child('color')
 				.set({
 					name: color.name,
-					val: color.val
+					val: color.val,
+					valDark: color.valDark
 				}, function(err) {
 					err ? reject(err) : resolve();
 				});

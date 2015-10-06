@@ -19,13 +19,16 @@ function HomeCtrl($scope, $q, authStatus, DataSvc, AuthSvc) {
 	vm.quote = {};
 	vm.color = 'rgba(255, 255, 255, 1.0)';
 
+	$scope.authStatus;
+	$scope.color;
+
 	init();
 
 	function init() {
 		getAuth().then(function(authStatus) {
 			$scope.authStatus = authStatus;
 			getQuote();
-			vm.color = DataSvc.getColor($scope.authStatus.uid);
+			$scope.color = vm.color = DataSvc.getColor($scope.authStatus.uid);
 		}, function(err) {
 			console.log('error getting auth:', err);
 		});
