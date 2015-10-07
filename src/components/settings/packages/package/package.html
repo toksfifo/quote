@@ -1,4 +1,9 @@
-<div>
+<div class="package">
 	{{ package.name }}
-	<button ng-click="packages.removePackage(package.$id)">Remove</button>
+
+	<button ng-click="removePackage(package.$id)"
+		ng-if="::type === 'subscribed'">Remove</button>
+
+	<button ng-click="addPackage(package.$id)"
+		ng-if="::type === 'own' || type === 'all'">Add</button>
 </div>

@@ -246,10 +246,17 @@ body {
 .packages-body {
   width: 100%;
   height: 292px;
-  border: 1px solid red;
-  overflow: scroll; }
+  border: 1px solid red; }
 
 .packages-col {
   float: left;
   width: 33.33%;
-  border: 1px solid green; }
+  height: 100%;
+  border: 1px solid green;
+  overflow: scroll; }
+
+.package {
+  height: 50px;
+  width: 200px;
+  border: 4px solid black;
+  font-size: 14px; }
