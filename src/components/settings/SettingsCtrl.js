@@ -8,8 +8,8 @@ function SettingsCtrl() {
 	vm.toggleTab = toggleTab;
 
 	vm.show = {
-		packages: false,
-		colors: true,
+		packages: true,
+		colors: false,
 		account: false
 	};
 

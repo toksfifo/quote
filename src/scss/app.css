@@ -232,3 +232,24 @@ body {
   border: 4px solid white; }
   .color:not(:first-of-type) {
     margin-left: 40px; }
+
+.packages-head {
+  width: 100%;
+  height: 40px;
+  border: 1px solid black; }
+
+.packages-search {
+  height: 30px;
+  width: 200px;
+  float: left; }
+
+.packages-body {
+  width: 100%;
+  height: 292px;
+  border: 1px solid red;
+  overflow: scroll; }
+
+.packages-col {
+  float: left;
+  width: 33.33%;
+  border: 1px solid green; }

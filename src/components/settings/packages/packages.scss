@@ -1,0 +1,24 @@
+.packages-head {
+	width: 100%;
+	height: 40px;
+	border: 1px solid black;
+}
+
+.packages-search {
+	height: 30px;
+	width: 200px;
+	float: left;
+}
+
+.packages-body {
+	width: 100%;
+	height: 400px - 60px - 8px - 40px;
+	border: 1px solid red;
+	overflow: scroll;
+}
+
+.packages-col {
+	float: left;
+	width: 33.33%;
+	border: 1px solid green;
+}

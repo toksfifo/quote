@@ -1,25 +1,42 @@
 <div ng-controller="PackagesCtrl as packages"
-	ng-show="settings.show.packages">	
+	ng-show="settings.show.packages">
 
-	<br>
-	PACKAGES YOU'RE SUBSCRIBED TO
-	<div ng-repeat="package in packages.packagesSubscribed">
-		{{ package.name }}
-		<button ng-click="packages.removePackage(package.$id)">Remove</button>
+	<div class="packages-head">
+		
+		<input type="text" class="packages-search">
+
+		<button class="button button--success">Create Package</button>
+
 	</div>
 
-	<br>
-	PACKAGES YOU CREATED
-	<div ng-repeat="package in packages.packagesOwn">
-		{{ package.name }}
-		<button ng-click="packages.addPackage(package.$id)">Add</button>
+	<div class="packages-body">
+
+		<div class="packages-col">
+			SUBSCRIBED
+			<div ng-repeat="package in packages.packagesSubscribed">
+				{{ package.name }}
+				<button ng-click="packages.removePackage(package.$id)">Remove</button>
+			</div>
+		</div>
+
+		<div class="packages-col">
+			CREATED
+			<div ng-repeat="package in packages.packagesOwn">
+				{{ package.name }}
+				<button ng-click="packages.addPackage(package.$id)">Add</button>
+			</div>
+		</div>
+
+		<div class="packages-col">
+			OTHER
+			<div ng-repeat="package in packages.packagesAll | packagesAllFltr: packages.packagesOwn: packages.packagesSubscribed">
+				{{ package.name }}
+				<button ng-click="packages.addPackage(package.$id)">Add</button>
+			</div>
+		</div>
+
 	</div>
 
-	<br>
-	ALL OTHER PUBLIC PACKAGES
-	<div ng-repeat="package in packages.packagesAll | packagesAllFltr: packages.packagesOwn: packages.packagesSubscribed">
-		{{ package.name }}
-		<button ng-click="packages.addPackage(package.$id)">Add</button>
-	</div>
+	
 
 </div>
