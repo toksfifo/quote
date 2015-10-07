@@ -4,11 +4,14 @@ angular.module('quote')
 function AuthSvc($q, $firebaseAuth, Const, UserSvc) {
 
 	var auth = $firebaseAuth(Const.ref);
+	var authStatus;
 
 	var AuthSvc = {
 		checkAuth: checkAuth,
 		signupAnon: signupAnon,
-		logout: logout
+		logout: logout,
+		getAuthStatus: getAuthStatus,
+		setAuthStatus: setAuthStatus
 	};
 
 	return AuthSvc;
@@ -42,5 +45,21 @@ function AuthSvc($q, $firebaseAuth, Const, UserSvc) {
 	 */
 	function logout() {
 		auth.$unauth();
+	}
+
+	/**
+	 * Get auth status
+	 * @return {Object} Auth stauts
+	 */
+	function getAuthStatus() {
+		return authStatus;
+	}
+
+	/**
+	 * Set auth status
+	 * @param {Object} newAuthStatus new auth status
+	 */
+	function setAuthStatus(newAuthStatus) {
+		authStatus = newAuthStatus;
 	}
 }

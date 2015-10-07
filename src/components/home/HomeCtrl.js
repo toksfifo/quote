@@ -19,16 +19,15 @@ function HomeCtrl($scope, $q, authStatus, DataSvc, AuthSvc) {
 	vm.quote = {};
 	vm.color = 'rgba(255, 255, 255, 1.0)';
 
-	$scope.authStatus;
 	$scope.color;
 
 	init();
 
 	function init() {
 		getAuth().then(function(authStatus) {
-			$scope.authStatus = authStatus;
+			AuthSvc.setAuthStatus(authStatus);
 			getQuote();
-			$scope.color = vm.color = DataSvc.getColor($scope.authStatus.uid);
+			$scope.color = vm.color = DataSvc.getColor(AuthSvc.getAuthStatus().uid);
 		}, function(err) {
 			console.log('error getting auth:', err);
 		});
@@ -38,7 +37,7 @@ function HomeCtrl($scope, $q, authStatus, DataSvc, AuthSvc) {
 	 * Get main quote to display on new tab
 	 */
 	function getQuote() {
-		DataSvc.getQuote($scope.authStatus.uid).then(function(quote) {
+		DataSvc.getQuote(AuthSvc.getAuthStatus().uid).then(function(quote) {
 			if (quote === 0) {
 				
 				// prompt to resubscribe or reset current
@@ -73,7 +72,7 @@ function HomeCtrl($scope, $q, authStatus, DataSvc, AuthSvc) {
 	 * Generate list of quotes to pull main quote from
 	 */
 	function generateQuoteList() {
-		DataSvc.generateQuoteList($scope.authStatus.uid).then(function() {
+		DataSvc.generateQuoteList(AuthSvc.getAuthStatus().uid).then(function() {
 		}, function(err) {
 			console.log('error generating quote list:', err);
 		});

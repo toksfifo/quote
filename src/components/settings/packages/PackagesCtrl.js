@@ -1,7 +1,7 @@
 angular.module('quote')
 	.controller('PackagesCtrl', PackagesCtrl);
 
-function PackagesCtrl($scope, DataSvc) {
+function PackagesCtrl(AuthSvc, DataSvc) {
 
 	var vm = this;
 
@@ -15,8 +15,8 @@ function PackagesCtrl($scope, DataSvc) {
 
 	function init() {
 		vm.packagesAll = DataSvc.getPackagesAll();
-		vm.packagesOwn = DataSvc.getPackagesOwn($scope.authStatus.uid);
-		vm.packagesSubscribed = DataSvc.getPackagesSubscribed($scope.authStatus.uid);
+		vm.packagesOwn = DataSvc.getPackagesOwn(AuthSvc.getAuthStatus().uid);
+		vm.packagesSubscribed = DataSvc.getPackagesSubscribed(AuthSvc.getAuthStatus().uid);
 	}
 
 	/**
@@ -24,7 +24,7 @@ function PackagesCtrl($scope, DataSvc) {
 	 * @param {String} key push key ($id) of package
 	 */
 	function addPackage(key) {
-		DataSvc.subscribePackage($scope.authStatus.uid, key).then(function() {
+		DataSvc.subscribePackage(AuthSvc.getAuthStatus().uid, key).then(function() {
 		}, function(err) {
 			console.log('error subscribing to package:', err);
 		});
@@ -35,7 +35,7 @@ function PackagesCtrl($scope, DataSvc) {
 	 * @param  {String} key push key ($id) of package
 	 */
 	function removePackage(key) {
-		DataSvc.unsubscribePackage($scope.authStatus.uid, key).then(function() {
+		DataSvc.unsubscribePackage(AuthSvc.getAuthStatus().uid, key).then(function() {
 		}, function(err) {
 			console.log('error unsubscribing to package:', err);
 		});

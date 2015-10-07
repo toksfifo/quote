@@ -13,10 +13,14 @@
 
 		<div class="packages-col">
 			SUBSCRIBED
-			<div ng-repeat="package in packages.packagesSubscribed">
+			<package-dctv 
+				ng-repeat="package in packages.packagesSubscribed"
+				package="package">
+				
+			<!-- <div ng-repeat="package in packages.packagesSubscribed">
 				{{ package.name }}
 				<button ng-click="packages.removePackage(package.$id)">Remove</button>
-			</div>
+			</div> -->
 		</div>
 
 		<div class="packages-col">
