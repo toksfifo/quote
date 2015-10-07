@@ -45888,6 +45888,41 @@ function AuthSvc($q, $firebaseAuth, Const, UserSvc) {
 }
 AuthSvc.$inject = ["$q", "$firebaseAuth", "Const", "UserSvc"];
 angular.module('quote')
+	.filter('packagesAllFltr', packagesAllFltr);
+
+function packagesAllFltr() {
+
+	return filter;
+
+	/**
+	 * Don't show packages that a user ownes or is subscribed to, in all packages
+	 * @param  {$firebaseArray} packagesAll        All packages
+	 * @param  {$firebaseArray} packagesOwn        packages user owns
+	 * @param  {$firebaseArray} packagesSubscribed packages user is subscribed to
+	 * @return {Array}                    filtered array of all packages
+	 */
+	function filter(packagesAll, packagesOwn, packagesSubscribed) {
+		var removeFromPackages = [];
+
+		// don't show anything if we don't have all the data
+		if (!packagesAll || !packagesOwn || !packagesSubscribed) {
+			return [];
+		}
+		
+		for (var i = 0; i < packagesOwn.length; i++) {
+			removeFromPackages.push(packagesOwn[i].$id);
+		}
+		for (var j = 0; j < packagesSubscribed.length; j++) {
+			removeFromPackages.push(packagesSubscribed[j].$id);
+		}
+
+		return _.filter(packagesAll, function(package) {
+			return removeFromPackages.indexOf(package.$id) === -1;
+		});
+
+	}
+}
+angular.module('quote')
 	.factory('DataSvc', DataSvc);
 
 function DataSvc($q, $firebaseArray, $firebaseObject, Const) {
@@ -46168,41 +46203,6 @@ function DataSvc($q, $firebaseArray, $firebaseObject, Const) {
 }
 DataSvc.$inject = ["$q", "$firebaseArray", "$firebaseObject", "Const"];
 angular.module('quote')
-	.filter('packagesAllFltr', packagesAllFltr);
-
-function packagesAllFltr() {
-
-	return filter;
-
-	/**
-	 * Don't show packages that a user ownes or is subscribed to, in all packages
-	 * @param  {$firebaseArray} packagesAll        All packages
-	 * @param  {$firebaseArray} packagesOwn        packages user owns
-	 * @param  {$firebaseArray} packagesSubscribed packages user is subscribed to
-	 * @return {Array}                    filtered array of all packages
-	 */
-	function filter(packagesAll, packagesOwn, packagesSubscribed) {
-		var removeFromPackages = [];
-
-		// don't show anything if we don't have all the data
-		if (!packagesAll || !packagesOwn || !packagesSubscribed) {
-			return [];
-		}
-		
-		for (var i = 0; i < packagesOwn.length; i++) {
-			removeFromPackages.push(packagesOwn[i].$id);
-		}
-		for (var j = 0; j < packagesSubscribed.length; j++) {
-			removeFromPackages.push(packagesSubscribed[j].$id);
-		}
-
-		return _.filter(packagesAll, function(package) {
-			return removeFromPackages.indexOf(package.$id) === -1;
-		});
-
-	}
-}
-angular.module('quote')
 	.controller('FormCtrl', FormCtrl);
 
 function FormCtrl($scope, DataSvc) {
@@ -46249,6 +46249,62 @@ function FormCtrl($scope, DataSvc) {
 
 }
 FormCtrl.$inject = ["$scope", "DataSvc"];
+angular.module('quote')
+	.controller('SettingsCtrl', SettingsCtrl);
+
+function SettingsCtrl() {
+
+	var vm = this;
+
+	vm.toggleTab = toggleTab;
+
+	vm.show = {
+		packages: false,
+		colors: true,
+		account: false
+	};
+
+	function toggleTab(tab) {
+		for (var key in vm.show) {
+			if (vm.show.hasOwnProperty(key)) {
+				vm.show[key] = false;
+			}
+		}
+		vm.show[tab] = true;
+	}
+
+}
+angular.module('quote')
+	.factory('UserSvc', UserSvc);
+
+function UserSvc($q, Const) {
+
+	var UserSvc = {
+		createUser: createUser
+	};
+
+	return UserSvc;
+
+	/**
+	 * Add user to db/users
+	 * @param  {Object} authData User's auth data
+	 * @return {Promise}     Resolves with auth data when user is saved to db
+	 */
+	function createUser(authData) {
+		return $q(function(resolve, reject) {
+			Const.ref.child('users')
+				.child(authData.uid)
+				.set({ color: 'blue' }, function(err) {
+					if (err) {
+						reject(err);
+					} else {
+						resolve(authData);
+					}
+				});
+		});
+	}
+}
+UserSvc.$inject = ["$q", "Const"];
 angular.module('quote')
 	.controller('HomeCtrl', HomeCtrl);
 
@@ -46332,62 +46388,6 @@ function HomeCtrl($scope, $q, authStatus, DataSvc, AuthSvc) {
 
 }
 HomeCtrl.$inject = ["$scope", "$q", "authStatus", "DataSvc", "AuthSvc"];
-angular.module('quote')
-	.controller('SettingsCtrl', SettingsCtrl);
-
-function SettingsCtrl() {
-
-	var vm = this;
-
-	vm.toggleTab = toggleTab;
-
-	vm.show = {
-		packages: false,
-		colors: true,
-		account: false
-	};
-
-	function toggleTab(tab) {
-		for (var key in vm.show) {
-			if (vm.show.hasOwnProperty(key)) {
-				vm.show[key] = false;
-			}
-		}
-		vm.show[tab] = true;
-	}
-
-}
-angular.module('quote')
-	.factory('UserSvc', UserSvc);
-
-function UserSvc($q, Const) {
-
-	var UserSvc = {
-		createUser: createUser
-	};
-
-	return UserSvc;
-
-	/**
-	 * Add user to db/users
-	 * @param  {Object} authData User's auth data
-	 * @return {Promise}     Resolves with auth data when user is saved to db
-	 */
-	function createUser(authData) {
-		return $q(function(resolve, reject) {
-			Const.ref.child('users')
-				.child(authData.uid)
-				.set({ color: 'blue' }, function(err) {
-					if (err) {
-						reject(err);
-					} else {
-						resolve(authData);
-					}
-				});
-		});
-	}
-}
-UserSvc.$inject = ["$q", "Const"];
 angular.module('quote')
 	.controller('ColorsCtrl', ColorsCtrl);
 

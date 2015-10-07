@@ -12,6 +12,7 @@
 	height: 70px;
 	cursor: pointer;
 	border: 4px solid white;
+	
 	&:not(:first-of-type) {
 		margin-left: 40px;
 	}
