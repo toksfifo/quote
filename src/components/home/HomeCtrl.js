@@ -7,7 +7,7 @@ HomeCtrl.resolve = /*@ngInject*/ {
 	}
 };
 
-function HomeCtrl($scope, $q, authStatus, DataSvc, AuthSvc) {
+function HomeCtrl($q, authStatus, DataSvc, AuthSvc) {
 
 	var vm = this;
 
@@ -17,9 +17,7 @@ function HomeCtrl($scope, $q, authStatus, DataSvc, AuthSvc) {
 	};
 	vm.generateQuoteList = generateQuoteList;
 	vm.quote = {};
-	vm.color = 'rgba(255, 255, 255, 1.0)';
-
-	$scope.color;
+	vm.currentColor = 'rgba(255, 255, 255, 1.0)';
 
 	init();
 
@@ -27,7 +25,7 @@ function HomeCtrl($scope, $q, authStatus, DataSvc, AuthSvc) {
 		getAuth().then(function(authStatus) {
 			AuthSvc.setAuthStatus(authStatus);
 			getQuote();
-			$scope.color = vm.color = DataSvc.getColor(AuthSvc.getAuthStatus().uid);
+			vm.currentColor = DataSvc.getColor(AuthSvc.getAuthStatus().uid);
 		}, function(err) {
 			console.log('error getting auth:', err);
 		});

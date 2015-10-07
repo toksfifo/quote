@@ -1,9 +1,10 @@
 angular.module('quote')
 	.controller('ColorsCtrl', ColorsCtrl);
 
-function ColorsCtrl($scope, DataSvc, AuthSvc) {
+function ColorsCtrl(DataSvc, AuthSvc) {
 
 	var vm = this;
+	var currentColor = DataSvc.getColor(AuthSvc.getAuthStatus().uid);
 
 	vm.selectColor = selectColor;
 	vm.getColorStyle = getColorStyle;
@@ -55,11 +56,11 @@ function ColorsCtrl($scope, DataSvc, AuthSvc) {
 	function getColorStyle(color) {
 		var style = {
 			'background-color': color.val,
-			'border-color': (color.name === $scope.color.name) ? color.valDark : 'rgba(255, 255, 255, 1.0)'
+			'border-color': (color.name === currentColor.name) ? color.valDark : 'rgba(255, 255, 255, 1.0)'
 		};
 
 		// add outline if color is white, so that it shows on the white background
-		if (color.name === 'white' && color.name !== $scope.color.name) {
+		if (color.name === 'white' && color.name !== currentColor.name) {
 			style['outline'] = '1px solid ' + color.valDark;
 			style['outline-offset'] = '-5px';
 		}
