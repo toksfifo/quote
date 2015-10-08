@@ -1,11 +1,10 @@
 .settings-wrapper {
 	// border: 1px solid black;
-	box-shadow: 0 0 8px 2px rgba(0, 0, 0, 0.3);
 	width: 750px;
 	height: 400px;
-	background-color: white;
-	color: gray;
-	border: 4px solid rgba(140, 140, 140, 1.0);
+	background-color: $clr-light;
+	color: $clr-gray-dark;
+	border: 4px solid $clr-gray-dark;
 }
 
 .settings-wrapper.ng-enter,
@@ -40,8 +39,8 @@
 	left: 0;
 	width: 750px - 8px;
 	height: 60px;
-	background-color: rgba(240, 240, 240, 1.0);
-	border-bottom: 1px solid rgba(220, 220, 220, 1.0);
+	background-color: $clr-gray-lighter;
+	border-bottom: 1px solid $clr-gray-light;
 	font-size: 16px;
 }
 
@@ -62,7 +61,7 @@
 	// border: 1px solid green;
 
 	&.is-active {
-		color: rgba(40, 137, 228, 1.0);
+		color: $clr-blue-active;
 	}
 }
 
@@ -86,4 +85,13 @@
 	display: block;
 	height: 16px;
 	line-height: 15px;
+}
+
+.settings-backdrop {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: transparentize($clr-black, 0.5);
 }

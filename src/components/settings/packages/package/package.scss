@@ -1,11 +1,11 @@
 .package {
 	height: 50px;
 	width: 200px;
-	border: 4px solid rgba(205, 205, 205, 1.0);
+	border: 4px solid $clr-gray-light;
 	display: inline-block;
 	text-align: left;
 	margin-top: 10px;
-	background-color: rgba(240, 240, 240, 1.0);
+	background-color: $clr-gray-lighter;
 	position: relative;
 	overflow: hidden;
 	transition: border-color 0.15s ease-in-out;
@@ -17,7 +17,7 @@
 	@extend .package;
 
 	&:hover {
-		border-color: rgba(255, 105, 97, 1.0);
+		border-color: $clr-red-pastel;
 	}
 }
 
@@ -26,7 +26,7 @@
 	@extend .package;
 
 	&:hover {
-		border-color: rgba(119, 190, 119, 1.0);
+		border-color: $clr-green-pastel;
 	}
 }
 
@@ -35,7 +35,7 @@
 	@extend .package;
 
 	&:hover {
-		border-color: rgba(119, 190, 119, 1.0);
+		border-color: $clr-green-pastel;
 	}
 }
 
@@ -89,7 +89,7 @@
 
 .package-options.ng-hide-add,
 .package-options.ng-hide-remove {
-	transition: right 0.25s ease-in-out;
+	transition: right 0.15s ease-in-out;
 }
 
 .package-options.ng-hide-remove {
@@ -112,7 +112,7 @@
 	float: left;
 	height: 100%;
 	width: (50px - 8px);
-	background-color: rgba(205, 205, 205, 1.0);
+	background-color: $clr-gray-light;
 	text-align: center;
 }
 
@@ -126,29 +126,29 @@
 .package-action--subscribed {
 
 	@extend .package-action;
-	background-color: rgba(255, 105, 97, 1.0);
+	background-color: $clr-red-pastel;
 }
 
 .package-action--own {
 
 	@extend .package-action;
-	background-color: rgba(119, 190, 119, 1.0);
+	background-color: $clr-green-pastel;
 }
 
 .package-action--all {
 
 	@extend .package-action;
-	background-color: rgba(119, 190, 119, 1.0);
+	background-color: $clr-green-pastel;
 }
 
 .package-button {
-	font-size: 30px;
+	font-size: 24px;
 	line-height: (50px - 8px) - 1px;
-	color: white;
+	color: $clr-light;
 }
 
 .package-button--view {
 
 	@extend .package-button;
-	color: rgba(128, 128, 128, 1.0);
+	color: $clr-gray-dark;
 }

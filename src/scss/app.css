@@ -92,15 +92,15 @@ table {
   height: 40px;
   width: 160px;
   font-size: 16px;
-  border: 4px solid #bfbfbf;
-  color: #bfbfbf;
+  border: 4px solid #cdcdcd;
+  color: #cdcdcd;
   background-color: transparent;
   outline: 0; }
   .button:hover {
-    border-color: #828282;
-    color: #828282; }
+    border-color: gray;
+    color: gray; }
   .button:active {
-    background-color: #bfbfbf; }
+    background-color: #cdcdcd; }
 
 html,
 body {
@@ -157,12 +157,11 @@ body {
   position: absolute; }
 
 .settings-wrapper {
-  box-shadow: 0 0 8px 2px rgba(0, 0, 0, 0.3);
   width: 750px;
   height: 400px;
   background-color: white;
   color: gray;
-  border: 4px solid #8c8c8c; }
+  border: 4px solid gray; }
 
 .settings-wrapper.ng-enter,
 .settings-wrapper.ng-leave {
@@ -200,7 +199,7 @@ body {
   width: 742px;
   height: 60px;
   background-color: #f0f0f0;
-  border-bottom: 1px solid gainsboro;
+  border-bottom: 1px solid #cdcdcd;
   font-size: 16px; }
 
 .settings-body {
@@ -233,10 +232,19 @@ body {
   height: 16px;
   line-height: 15px; }
 
+.settings-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); }
+
 .color-wrapper {
   width: 100%;
   height: 70px;
-  text-align: center; }
+  text-align: center;
+  background-color: white; }
 
 .color {
   position: relative;
@@ -342,8 +350,8 @@ body {
 
 .package-options.ng-hide-add,
 .package-options.ng-hide-remove {
-  -webkit-transition: right 0.25s ease-in-out;
-          transition: right 0.25s ease-in-out; }
+  -webkit-transition: right 0.15s ease-in-out;
+          transition: right 0.15s ease-in-out; }
 
 .package-options.ng-hide-remove {
   right: -84px; }
@@ -380,7 +388,7 @@ body {
   background-color: #77be77; }
 
 .package-button, .package-button--view {
-  font-size: 30px;
+  font-size: 24px;
   line-height: 41px;
   color: white; }
 

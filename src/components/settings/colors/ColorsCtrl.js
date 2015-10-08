@@ -55,9 +55,13 @@ function ColorsCtrl(DataSvc, AuthSvc) {
 	 */
 	function getColorStyle(color) {
 		var style = {
-			'background-color': color.val,
-			'border-color': (color.name === currentColor.name) ? color.valDark : 'rgba(255, 255, 255, 1.0)'
+			'background-color': color.val
 		};
+
+		// add darker border if selected
+		if (color.name === currentColor.name) {
+			style['border-color'] = color.valDark;
+		}
 
 		// add outline if color is white, so that it shows on the white background
 		if (color.name === 'white' && color.name !== currentColor.name) {

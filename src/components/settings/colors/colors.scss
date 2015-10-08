@@ -3,6 +3,7 @@
 	width: 100%;
 	height: 70px;
 	text-align: center;
+	background-color: $clr-light;
 }
 
 .color {
@@ -11,7 +12,7 @@
 	width: 70px;
 	height: 70px;
 	cursor: pointer;
-	border: 4px solid white;
+	border: 4px solid $clr-light;
 	
 	&:not(:first-of-type) {
 		margin-left: 40px;
