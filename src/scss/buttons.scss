@@ -1,7 +1,10 @@
+$height-button: 40px;
+$width-button: 160px;
+
 .button {
 	float: right;
-	height: 40px;
-	width: 160px;
+	height: $height-button;
+	width: $width-button;
 	font-size: $fs-base;
 	border: $bw-base solid $clr-gray-light;
 	color: $clr-gray-light;

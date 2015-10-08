@@ -1,6 +1,13 @@
+$height-package: 50px;
+$width-package: 200px;
+$height-package-pri: 60%;
+$height-package-sec: 100% - $height-package-pri;
+$size-package-view: $height-package - (2 * $bw-base);
+$size-package-action: $height-package;
+
 .package {
-	height: 50px;
-	width: 200px;
+	height: $height-package;
+	width: $width-package;
 	border: $bw-base solid $clr-gray-light;
 	display: inline-block;
 	text-align: left;
@@ -34,7 +41,7 @@
 }
 
 .package-pri {
-	height: 60%;
+	height: $height-package-pri;
 	width: 100%;
 	// border: 1px solid red;
 	font-size: $fs-package;
@@ -48,7 +55,7 @@
 }
 
 .package-sec {
-	height: 40%;
+	height: $height-package-sec;
 	width: 100%;
 	// border: 1px solid blue;
 	font-size: $fs-small;
@@ -75,7 +82,7 @@
 .package-options {
 	position: absolute;
 	height: 100%;
-	width: ((50px - (2 * $bw-base)) + 50px);
+	width: $size-package-view + $size-package-action;
 	top: 0;
 	right: -$bw-base;
 	cursor: pointer;
@@ -87,7 +94,7 @@
 }
 
 .package-options.ng-hide-remove {
-	right: -((50px - (2 * $bw-base)) + 50px);
+	right: -($size-package-view + $size-package-action);
 }
 
 .package-options.ng-hide-remove-active {
@@ -99,13 +106,13 @@
 }
 
 .package-options.ng-hide-add-active {
-	right: -((50px - (2 * $bw-base)) + 50px);
+	right: -($size-package-view + $size-package-action);
 }
 
 .package-view {
 	float: left;
 	height: 100%;
-	width: (50px - (2 * $bw-base));
+	width: $size-package-view;
 	background-color: $clr-gray-light;
 	text-align: center;
 }
@@ -113,7 +120,7 @@
 .package-action {
 	float: left;
 	height: 100%;
-	width: 50px;
+	width: $height-package;
 	text-align: center;
 }
 
@@ -134,7 +141,7 @@
 
 .package-button {
 	font-size: $fs-large;
-	line-height: (50px - (2 * $bw-base)) - 1px;
+	line-height: $size-package-view - 1px;
 	color: $clr-light;
 }
 

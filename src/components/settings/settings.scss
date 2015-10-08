@@ -1,7 +1,13 @@
+$width-settings-wrapper: 750px;
+$height-settings-wrapper: 400px;
+$height-settings-head: 60px;
+$height-settings-tab-icon: 36px;
+$height-settings-tab-text: $height-settings-head - $height-settings-tab-icon;
+
 .settings-wrapper {
 	// border: 1px solid black;
-	width: 750px;
-	height: 400px;
+	width: $width-settings-wrapper;
+	height: $height-settings-wrapper;
 	background-color: $clr-light;
 	color: $clr-gray-dark;
 	border: $bw-base solid $clr-gray-dark;
@@ -37,8 +43,8 @@
 	position: absolute;
 	top: 0;
 	left: 0;
-	width: 750px - (2 * $bw-base);
-	height: 60px;
+	width: $width-settings-wrapper - (2 * $bw-base);
+	height: $height-settings-head;
 	background-color: $clr-gray-lighter;
 	border-bottom: $bw-smaller solid $clr-gray-light;
 	font-size: $fs-base;
@@ -48,10 +54,10 @@
 .settings-body {
 	// border: 1px solid red;
 	position: absolute;
-	top: 60px;
+	top: $height-settings-head;
 	left: 0;
-	width: 750px - (2 * $bw-base);
-	height: 400px - 60px - (2 * $bw-base);
+	width: $width-settings-wrapper - (2 * $bw-base);
+	height: $height-settings-wrapper - $height-settings-head - (2 * $bw-base);
 }
 
 .settings-tab {
@@ -68,21 +74,21 @@
 .settings-tab-icon {
 	display: block;
 	font-size: $fs-larger;
-	height: 40px;
+	height: $height-settings-tab-icon;
 	&:before {
-		line-height: 39px;
+		line-height: $height-settings-tab-icon - 1px;
 	}
 }
 
 .settings-tab-icon--bigger {
 	@extend .settings-tab-icon;
-	font-size: $fs-larger + 8px; /* account icon is naturally smaller, for some reason */
+	font-size: $fs-larger + 8px; /* account icon is naturally smaller, for some reason. so make it bigger to compensate */
 }
 
 .settings-tab-text {
 	display: block;
-	height: 16px;
-	line-height: 15px;
+	height: $height-settings-tab-text;
+	line-height: $height-settings-tab-text - 1px;
 }
 
 .settings-backdrop {

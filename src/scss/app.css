@@ -173,12 +173,8 @@ body {
 .quote-author {
   text-align: right;
   font-size: 16px;
-  font-weight: 300;
   letter-spacing: 2px;
   margin-top: 10px; }
-
-.u-absolute {
-  position: absolute; }
 
 .settings-wrapper {
   width: 750px;
@@ -245,18 +241,18 @@ body {
 .settings-tab-icon, .settings-tab-icon--bigger {
   display: block;
   font-size: 30px;
-  height: 40px; }
+  height: 36px; }
   .settings-tab-icon:before, .settings-tab-icon--bigger:before {
-    line-height: 39px; }
+    line-height: 35px; }
 
 .settings-tab-icon--bigger {
   font-size: 38px;
-  /* account icon is naturally smaller, for some reason */ }
+  /* account icon is naturally smaller, for some reason. so make it bigger to compensate */ }
 
 .settings-tab-text {
   display: block;
-  height: 16px;
-  line-height: 15px; }
+  height: 24px;
+  line-height: 23px; }
 
 .settings-backdrop {
   position: absolute;
@@ -293,6 +289,7 @@ body {
 
 .packages-body {
   width: 100%;
+  height: 258px;
   height: 258px; }
 
 .packages-titles {

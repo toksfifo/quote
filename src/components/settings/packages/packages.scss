@@ -1,24 +1,32 @@
+$height-packages-head: 50px;
+$height-packages-search: 30px;
+$width-packages-search: 200px;
+$height-packages-titles: 24px;
+$height-settings-wrapper: $height-settings-wrapper;
+$height-settings-head: $height-settings-head;
+
 .packages-head {
 	width: 100%;
-	height: 50px;
+	height: $height-packages-head;
 	// border: 1px solid black;
 }
 
 .packages-search {
-	height: 30px;
-	width: 200px;
+	height: $height-packages-search;
+	width: $width-packages-search;
 	float: left;
 }
 
 .packages-body {
 	width: 100%;
 	height: 400px - 60px - (2 * $bw-base) - 50px - 24px;
+	height: $height-settings-wrapper - $height-settings-head - (2 * $bw-base) - $height-packages-head - $height-packages-titles;
 	// border: 1px solid red;
 }
 
 .packages-titles {
 	width: 100%;
-	height: 24px;
+	height: $height-packages-titles;
 	font-size: $fs-base;
 	font-weight: $fw-base;
 	// border: 1px solid blue;
@@ -28,7 +36,7 @@
 	float: left;
 	width: 33.33%;
 	height: 100%;
-	line-height: 23px;
+	line-height: $height-packages-titles - 1px;
 	text-align: center;
 }
 

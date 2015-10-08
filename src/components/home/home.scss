@@ -1,3 +1,6 @@
+$height-quote-wrapper: 200px;
+$width-quote-wrapper: 700px;
+
 html,
 body {
 	height: 100%;
@@ -15,8 +18,8 @@ body {
 
 .quote-wrapper {
 	// border: 1px solid red;
-	height: 200px;
-	width: 700px;
+	height: $height-quote-wrapper;
+	width: $width-quote-wrapper;
 	display: table;
 }
 
@@ -47,11 +50,6 @@ body {
 .quote-author {
 	text-align: right;
 	font-size: $fs-base;
-	font-weight: 300;
 	letter-spacing: $ls-looser;
 	margin-top: $mgn-large;
-}
-
-.u-absolute {
-	position: absolute;
 }

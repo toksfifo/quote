@@ -1,7 +1,9 @@
+$size-color: 70px;
+
 .color-wrapper {
 	// border: 1px solid black;
 	width: 100%;
-	height: 70px;
+	height: $size-color;
 	text-align: center;
 	background-color: $clr-light;
 }
@@ -9,8 +11,8 @@
 .color {
 	position: relative;
 	display: inline-block;
-	width: 70px;
-	height: 70px;
+	width: $size-color;
+	height: $size-color;
 	cursor: pointer;
 	border: $bw-base solid $clr-light;
 	&:not(:first-of-type) {
