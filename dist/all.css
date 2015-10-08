@@ -1568,6 +1568,21 @@ table {
 .u-textRight {
   text-align: right; }
 
+.button {
+  float: right;
+  height: 40px;
+  width: 160px;
+  font-size: 16px;
+  border: 4px solid #bfbfbf;
+  color: #bfbfbf;
+  background-color: transparent;
+  outline: 0; }
+  .button:hover {
+    border-color: #828282;
+    color: #828282; }
+  .button:active {
+    background-color: #bfbfbf; }
+
 html,
 body {
   height: 100%;
@@ -1716,8 +1731,7 @@ body {
 
 .packages-head {
   width: 100%;
-  height: 40px;
-  border: 1px solid black; }
+  height: 50px; }
 
 .packages-search {
   height: 30px;
@@ -1726,18 +1740,131 @@ body {
 
 .packages-body {
   width: 100%;
-  height: 292px;
-  border: 1px solid red; }
+  height: 258px; }
+
+.packages-titles {
+  width: 100%;
+  height: 24px; }
+
+.packages-title {
+  float: left;
+  width: 33.33%;
+  height: 100%;
+  line-height: 23px;
+  text-align: center; }
 
 .packages-col {
   float: left;
   width: 33.33%;
   height: 100%;
-  border: 1px solid green;
-  overflow: scroll; }
+  overflow: scroll;
+  text-align: center; }
 
-.package {
+.package, .package--subscribed, .package--own, .package--all {
   height: 50px;
   width: 200px;
-  border: 4px solid black;
-  font-size: 14px; }
+  border: 4px solid #cdcdcd;
+  display: inline-block;
+  text-align: left;
+  margin-top: 10px;
+  background-color: #f0f0f0;
+  position: relative;
+  overflow: hidden;
+  -webkit-transition: border-color 0.15s ease-in-out;
+          transition: border-color 0.15s ease-in-out;
+  cursor: pointer; }
+
+.package--subscribed:hover {
+  border-color: #ff6961; }
+
+.package--own:hover {
+  border-color: #77be77; }
+
+.package--all:hover {
+  border-color: #77be77; }
+
+.package-pri {
+  height: 60%;
+  width: 100%;
+  font-size: 15px;
+  display: table; }
+
+.package-name {
+  display: table-cell;
+  vertical-align: middle;
+  padding-left: 4px; }
+
+.package-sec {
+  height: 40%;
+  width: 100%;
+  font-size: 11px;
+  display: table; }
+
+.package-author {
+  width: 50%;
+  display: table-cell;
+  vertical-align: middle;
+  padding-left: 4px; }
+
+.package-length {
+  width: 50%;
+  text-align: right;
+  display: table-cell;
+  vertical-align: middle;
+  padding-right: 4px; }
+
+.package-options {
+  position: absolute;
+  height: 100%;
+  width: 92px;
+  top: 0;
+  right: 0;
+  cursor: pointer; }
+
+.package-options.ng-hide-add,
+.package-options.ng-hide-remove {
+  -webkit-transition: right 0.25s ease-in-out;
+          transition: right 0.25s ease-in-out; }
+
+.package-options.ng-hide-remove {
+  right: -92px; }
+
+.package-options.ng-hide-remove-active {
+  right: 0; }
+
+.package-options.ng-hide-add {
+  right: 0; }
+
+.package-options.ng-hide-add-active {
+  right: -92px; }
+
+.package-view, .package-view--subscribed, .package-view--own, .package-view--all {
+  float: left;
+  height: 100%;
+  width: 50px;
+  border-left: 4px solid;
+  background-color: #f0f0f0; }
+
+.package-view--subscribed {
+  border-color: #ff6961; }
+
+.package-view--own {
+  border-color: #77be77; }
+
+.package-view--all {
+  border-color: #77be77; }
+
+.package-action, .package-action--subscribed, .package-action--own, .package-action--all {
+  float: left;
+  height: 100%;
+  width: 42px;
+  background-color: yellow; }
+
+.package-action--subscribed {
+  background-color: #ff6961; }
+
+.package-action--own {
+  background-color: #77be77; }
+
+.package-action--all {
+  background-color: #77be77; }

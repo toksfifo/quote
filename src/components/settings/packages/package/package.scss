@@ -1,6 +1,160 @@
 .package {
 	height: 50px;
 	width: 200px;
-	border: 4px solid black;
-	font-size: 14px;
+	border: 4px solid rgba(205, 205, 205, 1.0);
+	display: inline-block;
+	text-align: left;
+	margin-top: 10px;
+	background-color: rgba(240, 240, 240, 1.0);
+	position: relative;
+	overflow: hidden;
+	transition: border-color 0.15s ease-in-out;
+	cursor: pointer;
+}
+
+.package--subscribed {
+
+	@extend .package;
+
+	&:hover {
+		border-color: rgba(255, 105, 97, 1.0);
+	}
+}
+
+.package--own {
+
+	@extend .package;
+
+	&:hover {
+		border-color: rgba(119, 190, 119, 1.0);
+	}
+}
+
+.package--all {
+
+	@extend .package;
+
+	&:hover {
+		border-color: rgba(119, 190, 119, 1.0);
+	}
+}
+
+.package-pri {
+	height: 60%;
+	width: 100%;
+	// border: 1px solid red;
+	font-size: 15px;
+	display: table;
+}
+
+.package-name {
+	display: table-cell;
+	vertical-align: middle;
+	padding-left: 4px;
+}
+
+.package-sec {
+	height: 40%;
+	width: 100%;
+	// border: 1px solid blue;
+	font-size: 11px;
+	display: table;
+}
+
+.package-author {
+	width: 50%;
+	// border: 1px solid green;
+	display: table-cell;
+	vertical-align: middle;
+	padding-left: 4px;
+}
+
+.package-length {
+	width: 50%;
+	// border: 1px solid black;
+	text-align: right;
+	display: table-cell;
+	vertical-align: middle;
+	padding-right: 4px;
+}
+
+.package-options {
+	position: absolute;
+	height: 100%;
+	width: ((50px - 8px) * 2) + 8px;
+	top: 0;
+	right: 0;
+	cursor: pointer;
+}
+
+.package-options.ng-hide-add,
+.package-options.ng-hide-remove {
+	transition: right 0.25s ease-in-out;
+}
+
+.package-options.ng-hide-remove {
+	right: -(((50px - 8px) * 2) + 8px);
+}
+
+.package-options.ng-hide-remove-active {
+	right: 0;
+}
+
+.package-options.ng-hide-add {
+	right: 0;
+}
+
+.package-options.ng-hide-add-active {
+	right: -(((50px - 8px) * 2) + 8px);
+}
+
+.package-view {
+	float: left;
+	height: 100%;
+	width: 50px;
+	border-left: 4px solid;
+	background-color: rgba(240, 240, 240, 1.0);
+}
+
+.package-view--subscribed {
+
+	@extend .package-view;
+	border-color: rgba(255, 105, 97, 1.0);
+}
+
+.package-view--own {
+
+	@extend .package-view;
+	border-color: rgba(119, 190, 119, 1.0);
+}
+
+.package-view--all {
+
+	@extend .package-view;
+	border-color: rgba(119, 190, 119, 1.0);
+}
+
+.package-action {
+	float: left;
+	height: 100%;
+	width: (50px - 8px);
+	background-color: yellow;
+}
+
+.package-action--subscribed {
+
+	@extend .package-action;
+	background-color: rgba(255, 105, 97, 1.0);
+}
+
+.package-action--own {
+
+	@extend .package-action;
+	background-color: rgba(119, 190, 119, 1.0);
+}
+
+.package-action--all {
+
+	@extend .package-action;
+	background-color: rgba(119, 190, 119, 1.0);
 }

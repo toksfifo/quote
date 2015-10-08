@@ -3,6 +3,9 @@ angular.module('quote')
 
 function packageDctv(DataSvc, AuthSvc) {
 
+	/**
+	 * Directive for packages.
+	 */
 	return {
 		restrict: 'E',
 		scope: {
@@ -17,6 +20,9 @@ function packageDctv(DataSvc, AuthSvc) {
 
 		scope.addPackage = addPackage;
 		scope.removePackage = removePackage;
+		scope.show = {
+			options: false
+		};
 		scope.package;
 		scope.type;
 

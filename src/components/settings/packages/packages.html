@@ -10,12 +10,18 @@
 
 	</div>
 
+	<!-- titles -->
+	<div class="packages-titles">
+		<div class="packages-title">Subscribed</div>
+		<div class="packages-title">Created</div>
+		<div class="packages-title">Other</div>
+	</div>
+
 	<!-- body -->
 	<div class="packages-body">
 
 		<!-- subscribed -->
 		<div class="packages-col">
-			SUBSCRIBED
 			<package-dctv 
 				ng-repeat="package in packages.packagesSubscribed"
 				package="package"
@@ -24,7 +30,6 @@
 
 		<!-- created -->
 		<div class="packages-col">
-			CREATED
 			<package-dctv 
 				ng-repeat="package in packages.packagesOwn"
 				package="package"
@@ -33,7 +38,6 @@
 
 		<!-- other -->
 		<div class="packages-col">
-			OTHER
 			<package-dctv 
 				ng-repeat="package in packages.packagesAll | packagesAllFltr: packages.packagesOwn: packages.packagesSubscribed"
 				package="package"

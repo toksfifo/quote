@@ -1,9 +1,27 @@
-<div class="package">
-	{{ package.name }}
+<div class="package--{{ type }}" 
+	ng-click="show.options = true" 
+	ng-mouseleave="show.options = false">
+	
+	<div class="package-pri">
+		<span class="package-name">{{ package.name }}</span>
+	</div>
 
-	<button ng-click="removePackage(package.$id)"
+	<div class="package-sec">
+		<span class="package-author">by Toks Fifo</span>
+		<span class="package-length">5</span>
+	</div>
+
+	<div class="package-options" ng-show="show.options">
+		<div class="package-view--{{ type }}"></div>
+		<div class="package-action--{{ type }}"></div>
+	</div>
+
+
+
+
+	<!-- <button ng-click="removePackage(package.$id)"
 		ng-if="::type === 'subscribed'">Remove</button>
 
 	<button ng-click="addPackage(package.$id)"
-		ng-if="::type === 'own' || type === 'all'">Add</button>
+		ng-if="::type === 'own' || type === 'all'">Add</button> -->
 </div>
