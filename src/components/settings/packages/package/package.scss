@@ -81,7 +81,7 @@
 .package-options {
 	position: absolute;
 	height: 100%;
-	width: ((50px - 8px) * 2) + 8px;
+	width: ((50px - 8px) * 2);
 	top: 0;
 	right: 0;
 	cursor: pointer;
@@ -93,7 +93,7 @@
 }
 
 .package-options.ng-hide-remove {
-	right: -(((50px - 8px) * 2) + 8px);
+	right: -((50px - 8px) * 2);
 }
 
 .package-options.ng-hide-remove-active {
@@ -105,40 +105,22 @@
 }
 
 .package-options.ng-hide-add-active {
-	right: -(((50px - 8px) * 2) + 8px);
+	right: -((50px - 8px) * 2);
 }
 
 .package-view {
 	float: left;
 	height: 100%;
-	width: 50px;
-	border-left: 4px solid;
-	background-color: rgba(240, 240, 240, 1.0);
-}
-
-.package-view--subscribed {
-
-	@extend .package-view;
-	border-color: rgba(255, 105, 97, 1.0);
-}
-
-.package-view--own {
-
-	@extend .package-view;
-	border-color: rgba(119, 190, 119, 1.0);
-}
-
-.package-view--all {
-
-	@extend .package-view;
-	border-color: rgba(119, 190, 119, 1.0);
+	width: (50px - 8px);
+	background-color: rgba(205, 205, 205, 1.0);
+	text-align: center;
 }
 
 .package-action {
 	float: left;
 	height: 100%;
 	width: (50px - 8px);
-	background-color: yellow;
+	text-align: center;
 }
 
 .package-action--subscribed {
@@ -157,4 +139,16 @@
 
 	@extend .package-action;
 	background-color: rgba(119, 190, 119, 1.0);
+}
+
+.package-button {
+	font-size: 30px;
+	line-height: (50px - 8px) - 1px;
+	color: white;
+}
+
+.package-button--view {
+
+	@extend .package-button;
+	color: rgba(128, 128, 128, 1.0);
 }

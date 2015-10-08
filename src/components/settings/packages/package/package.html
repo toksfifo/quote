@@ -2,26 +2,48 @@
 	ng-click="show.options = true" 
 	ng-mouseleave="show.options = false">
 	
+	<!-- primary -->
 	<div class="package-pri">
 		<span class="package-name">{{ package.name }}</span>
 	</div>
 
+	<!-- secondary -->
 	<div class="package-sec">
 		<span class="package-author">by Toks Fifo</span>
 		<span class="package-length">5</span>
 	</div>
 
+	<!-- options -->
 	<div class="package-options" ng-show="show.options">
-		<div class="package-view--{{ type }}"></div>
-		<div class="package-action--{{ type }}"></div>
+		
+		<!-- view option -->
+		<div class="package-view">
+			
+			<!-- view -->
+			<i class="icon ion-eye package-button--view" 
+				ng-if="::type === 'subscribed' || type === 'all'"></i>
+
+			<!-- edit -->
+			<i class="icon ion-edit package-button--view"
+				ng-if="::type === 'own'"></i>
+
+		</div>
+
+		<!-- action option -->
+		<div class="package-action--{{ type }}">
+
+			<!-- add -->
+			<i class="icon ion-plus package-button" 
+				ng-if="::type === 'own' || type === 'all'"
+				ng-click="addPackage(package.$id)"></i>
+
+			<!-- remove -->
+			<i class="icon ion-close package-button"
+				ng-if="::type === 'subscribed'"
+				ng-click="removePackage(package.$id)"></i>
+
+		</div>
+
 	</div>
 
-
-
-
-	<!-- <button ng-click="removePackage(package.$id)"
-		ng-if="::type === 'subscribed'">Remove</button>
-
-	<button ng-click="addPackage(package.$id)"
-		ng-if="::type === 'own' || type === 'all'">Add</button> -->
 </div>

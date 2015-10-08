@@ -45840,7 +45840,7 @@ $templateCache.put("components/home/home.html","<!-- HomeCtrl as home -->\n\n\n\
 $templateCache.put("components/settings/settings.html","<div ng-controller=\"SettingsCtrl as settings\" \n	class=\"settings-wrapper u-centerXY\"\n	ng-if=\"home.show.settings\">\n\n	<!-- head -->\n	<div class=\"settings-head\">\n\n		<!-- packages -->\n		<div class=\"settings-tab\" \n			ng-click=\"settings.toggleTab(\'packages\')\"\n			ng-class=\"{ \'is-active\': settings.show.packages }\">\n			<i class=\"settings-tab-icon icon ion-ios-folder\"></i>\n			<span class=\"settings-tab-text\">Packages</span>\n		</div>\n		\n		<!-- colors -->\n		<div class=\"settings-tab\" \n			ng-click=\"settings.toggleTab(\'colors\')\"\n			ng-class=\"{ \'is-active\': settings.show.colors }\">\n			<i class=\"settings-tab-icon icon ion-paintbucket\"></i>\n			<span class=\"settings-tab-text\">Colors</span>\n		</div>\n		\n		<!-- account -->\n		<div class=\"settings-tab\" \n			ng-click=\"settings.toggleTab(\'account\')\"\n			ng-class=\"{ \'is-active\': settings.show.account }\">\n			<i class=\"settings-tab-icon--bigger icon ion-ios-person\"></i>\n			<span class=\"settings-tab-text\">Account</span>\n		</div>\n\n	</div>\n\n	<div class=\"settings-body\">\n\n		<!-- packages -->\n		<div ng-include=\"\'components/settings/packages/packages.html\'\"></div>\n\n		<!-- colors -->\n		<div ng-include=\"\'components/settings/colors/colors.html\'\"></div>\n\n		<!-- account -->\n		<div ng-include=\"\'components/settings/account/account.html\'\"></div>\n\n	</div>\n	\n	\n	\n</div>");
 $templateCache.put("components/settings/colors/colors.html","<div ng-controller=\"ColorsCtrl as colors\"\n	ng-show=\"settings.show.colors\">\n	\n\n	<div class=\"color-wrapper u-centerXY\">\n		<div class=\"color u-centerY\" \n			ng-repeat=\"color in ::colors.colors track by $index\" \n			ng-click=\"colors.selectColor(color)\"\n			ng-style=\"colors.getColorStyle(color)\">\n		</div>\n	</div>\n</div>");
 $templateCache.put("components/settings/packages/packages.html","<div ng-controller=\"PackagesCtrl as packages\"\n	ng-show=\"settings.show.packages\">\n\n	<!-- head -->\n	<div class=\"packages-head\">\n		\n		<input type=\"text\" class=\"packages-search\">\n\n		<button class=\"button button--success\">Create Package</button>\n\n	</div>\n\n	<!-- titles -->\n	<div class=\"packages-titles\">\n		<div class=\"packages-title\">Subscribed</div>\n		<div class=\"packages-title\">Created</div>\n		<div class=\"packages-title\">Other</div>\n	</div>\n\n	<!-- body -->\n	<div class=\"packages-body\">\n\n		<!-- subscribed -->\n		<div class=\"packages-col\">\n			<package-dctv \n				ng-repeat=\"package in packages.packagesSubscribed\"\n				package=\"package\"\n				type=\"subscribed\">\n		</div>\n\n		<!-- created -->\n		<div class=\"packages-col\">\n			<package-dctv \n				ng-repeat=\"package in packages.packagesOwn\"\n				package=\"package\"\n				type=\"own\">\n		</div>\n\n		<!-- other -->\n		<div class=\"packages-col\">\n			<package-dctv \n				ng-repeat=\"package in packages.packagesAll | packagesAllFltr: packages.packagesOwn: packages.packagesSubscribed\"\n				package=\"package\"\n				type=\"all\">\n		</div>\n\n	</div>\n\n</div>");
-$templateCache.put("components/settings/packages/package/package.html","<div class=\"package--{{ type }}\" \n	ng-click=\"show.options = true\" \n	ng-mouseleave=\"show.options = false\">\n	\n	<div class=\"package-pri\">\n		<span class=\"package-name\">{{ package.name }}</span>\n	</div>\n\n	<div class=\"package-sec\">\n		<span class=\"package-author\">by Toks Fifo</span>\n		<span class=\"package-length\">5</span>\n	</div>\n\n	<div class=\"package-options\" ng-show=\"show.options\">\n		<div class=\"package-view--{{ type }}\"></div>\n		<div class=\"package-action--{{ type }}\"></div>\n	</div>\n\n\n\n\n	<!-- <button ng-click=\"removePackage(package.$id)\"\n		ng-if=\"::type === \'subscribed\'\">Remove</button>\n\n	<button ng-click=\"addPackage(package.$id)\"\n		ng-if=\"::type === \'own\' || type === \'all\'\">Add</button> -->\n</div>");}]);
+$templateCache.put("components/settings/packages/package/package.html","<div class=\"package--{{ type }}\" \n	ng-click=\"show.options = true\" \n	ng-mouseleave=\"show.options = false\">\n	\n	<!-- primary -->\n	<div class=\"package-pri\">\n		<span class=\"package-name\">{{ package.name }}</span>\n	</div>\n\n	<!-- secondary -->\n	<div class=\"package-sec\">\n		<span class=\"package-author\">by Toks Fifo</span>\n		<span class=\"package-length\">5</span>\n	</div>\n\n	<!-- options -->\n	<div class=\"package-options\" ng-show=\"show.options\">\n		\n		<!-- view option -->\n		<div class=\"package-view\">\n			\n			<!-- view -->\n			<i class=\"icon ion-eye package-button--view\" \n				ng-if=\"::type === \'subscribed\' || type === \'all\'\"></i>\n\n			<!-- edit -->\n			<i class=\"icon ion-edit package-button--view\"\n				ng-if=\"::type === \'own\'\"></i>\n\n		</div>\n\n		<!-- action option -->\n		<div class=\"package-action--{{ type }}\">\n\n			<!-- add -->\n			<i class=\"icon ion-plus package-button\" \n				ng-if=\"::type === \'own\' || type === \'all\'\"\n				ng-click=\"addPackage(package.$id)\"></i>\n\n			<!-- remove -->\n			<i class=\"icon ion-close package-button\"\n				ng-if=\"::type === \'subscribed\'\"\n				ng-click=\"removePackage(package.$id)\"></i>\n\n		</div>\n\n	</div>\n\n</div>");}]);
 angular.module('quote')
 	.factory('AuthSvc', AuthSvc);
 
@@ -46270,6 +46270,31 @@ function FormCtrl(DataSvc, AuthSvc) {
 }
 FormCtrl.$inject = ["DataSvc", "AuthSvc"];
 angular.module('quote')
+	.controller('SettingsCtrl', SettingsCtrl);
+
+function SettingsCtrl() {
+
+	var vm = this;
+
+	vm.toggleTab = toggleTab;
+
+	vm.show = {
+		packages: true,
+		colors: false,
+		account: false
+	};
+
+	function toggleTab(tab) {
+		for (var key in vm.show) {
+			if (vm.show.hasOwnProperty(key)) {
+				vm.show[key] = false;
+			}
+		}
+		vm.show[tab] = true;
+	}
+
+}
+angular.module('quote')
 	.controller('HomeCtrl', HomeCtrl);
 
 HomeCtrl.resolve = /*@ngInject*/ {
@@ -46350,31 +46375,6 @@ function HomeCtrl($q, authStatus, DataSvc, AuthSvc) {
 }
 HomeCtrl.$inject = ["$q", "authStatus", "DataSvc", "AuthSvc"];
 angular.module('quote')
-	.controller('SettingsCtrl', SettingsCtrl);
-
-function SettingsCtrl() {
-
-	var vm = this;
-
-	vm.toggleTab = toggleTab;
-
-	vm.show = {
-		packages: true,
-		colors: false,
-		account: false
-	};
-
-	function toggleTab(tab) {
-		for (var key in vm.show) {
-			if (vm.show.hasOwnProperty(key)) {
-				vm.show[key] = false;
-			}
-		}
-		vm.show[tab] = true;
-	}
-
-}
-angular.module('quote')
 	.factory('UserSvc', UserSvc);
 
 function UserSvc($q, Const) {
@@ -46405,36 +46405,6 @@ function UserSvc($q, Const) {
 	}
 }
 UserSvc.$inject = ["$q", "Const"];
-angular.module('quote')
-	.directive('hoverClass', hoverClass);
-
-function hoverClass() {
-
-	/**
-	 * Add class on hover, remove class on un-hover.
-	 * <div hover-class="is-active blur"></div>
-	 */
-	return {
-		restrict: 'A',
-		scope: {
-			hoverClass: '@'
-		},
-		link: link
-	};
-
-	function link(scope, elem) {
-		scope.hoverClass;
-
-		elem.on('mouseenter', function() {
-			elem.addClass(scope.hoverClass);
-		});
-
-		elem.on('mouseleave', function() {
-			elem.removeClass(scope.hoverClass);
-		});
-	}
-
-}
 angular.module('quote')
 	.controller('ColorsCtrl', ColorsCtrl);
 
