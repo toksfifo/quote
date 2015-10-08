@@ -3,6 +3,7 @@ body {
 	height: 100%;
 	width: 100%;
 	font-family: 'Open Sans', sans-serif;
+	font-weight: $fw-light;
 }
 
 .home-wrapper {
@@ -33,23 +34,22 @@ body {
 .quote {
 	display: table-cell;
 	vertical-align: middle;
-	line-height: 1.5;
+	line-height: $lh-loose;
 	color: $clr-white;
 }
 
 .quote-body {
 	text-align: left;
-	font-size: 30px;
-	font-weight: 300;
+	font-size: $fs-large;
 	font-style: italic;
 }
 
 .quote-author {
 	text-align: right;
-	font-size: 18px;
+	font-size: $fs-base;
 	font-weight: 300;
-	letter-spacing: 2px;
-	margin-top: 10px;
+	letter-spacing: $ls-looser;
+	margin-top: $mgn-large;
 }
 
 .u-absolute {

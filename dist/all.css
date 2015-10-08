@@ -1513,6 +1513,30 @@ table {
   border-collapse: collapse;
   border-spacing: 0; }
 
+/*
+colors
+ */
+/*
+font size
+ */
+/*
+font weight
+ */
+/*
+letter spacing
+ */
+/*
+line height
+ */
+/*
+margin
+ */
+/*
+padding
+ */
+/*
+border width
+ */
 .u-centerXY {
   position: absolute;
   left: 50%;
@@ -1587,7 +1611,8 @@ html,
 body {
   height: 100%;
   width: 100%;
-  font-family: 'Open Sans', sans-serif; }
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 300; }
 
 .home-wrapper {
   width: 100%;
@@ -1623,13 +1648,12 @@ body {
 
 .quote-body {
   text-align: left;
-  font-size: 30px;
-  font-weight: 300;
+  font-size: 26px;
   font-style: italic; }
 
 .quote-author {
   text-align: right;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 300;
   letter-spacing: 2px;
   margin-top: 10px; }
@@ -1681,12 +1705,13 @@ body {
   height: 60px;
   background-color: #f0f0f0;
   border-bottom: 1px solid #cdcdcd;
-  font-size: 16px; }
+  font-size: 16px;
+  font-weight: 400; }
 
 .settings-body {
   position: absolute;
   top: 60px;
-  left: 0px;
+  left: 0;
   width: 742px;
   height: 332px; }
 
@@ -1706,7 +1731,8 @@ body {
     line-height: 39px; }
 
 .settings-tab-icon--bigger {
-  font-size: 38px; }
+  font-size: 38px;
+  /* account icon is naturally smaller, for some reason */ }
 
 .settings-tab-text {
   display: block;
@@ -1752,7 +1778,9 @@ body {
 
 .packages-titles {
   width: 100%;
-  height: 24px; }
+  height: 24px;
+  font-size: 16px;
+  font-weight: 400; }
 
 .packages-title {
   float: left;
@@ -1824,9 +1852,9 @@ body {
 .package-options {
   position: absolute;
   height: 100%;
-  width: 84px;
+  width: 92px;
   top: 0;
-  right: 0;
+  right: -4px;
   cursor: pointer; }
 
 .package-options.ng-hide-add,
@@ -1835,16 +1863,16 @@ body {
           transition: right 0.15s ease-in-out; }
 
 .package-options.ng-hide-remove {
-  right: -84px; }
+  right: -92px; }
 
 .package-options.ng-hide-remove-active {
-  right: 0; }
+  right: -4px; }
 
 .package-options.ng-hide-add {
-  right: 0; }
+  right: -4px; }
 
 .package-options.ng-hide-add-active {
-  right: -84px; }
+  right: -92px; }
 
 .package-view {
   float: left;
@@ -1856,7 +1884,7 @@ body {
 .package-action, .package-action--subscribed, .package-action--own, .package-action--all {
   float: left;
   height: 100%;
-  width: 42px;
+  width: 50px;
   text-align: center; }
 
 .package-action--subscribed {
@@ -1869,7 +1897,7 @@ body {
   background-color: #77be77; }
 
 .package-button, .package-button--view {
-  font-size: 24px;
+  font-size: 26px;
   line-height: 41px;
   color: white; }
 

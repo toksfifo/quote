@@ -1,10 +1,10 @@
 .package {
 	height: 50px;
 	width: 200px;
-	border: 4px solid $clr-gray-light;
+	border: $bw-base solid $clr-gray-light;
 	display: inline-block;
 	text-align: left;
-	margin-top: 10px;
+	margin-top: $mgn-large;
 	background-color: $clr-gray-lighter;
 	position: relative;
 	overflow: hidden;
@@ -13,27 +13,21 @@
 }
 
 .package--subscribed {
-
 	@extend .package;
-
 	&:hover {
 		border-color: $clr-red-pastel;
 	}
 }
 
 .package--own {
-
 	@extend .package;
-
 	&:hover {
 		border-color: $clr-green-pastel;
 	}
 }
 
 .package--all {
-
 	@extend .package;
-
 	&:hover {
 		border-color: $clr-green-pastel;
 	}
@@ -43,21 +37,21 @@
 	height: 60%;
 	width: 100%;
 	// border: 1px solid red;
-	font-size: 15px;
+	font-size: $fs-package;
 	display: table;
 }
 
 .package-name {
 	display: table-cell;
 	vertical-align: middle;
-	padding-left: 4px;
+	padding-left: $pdg-base;
 }
 
 .package-sec {
 	height: 40%;
 	width: 100%;
 	// border: 1px solid blue;
-	font-size: 11px;
+	font-size: $fs-small;
 	display: table;
 }
 
@@ -66,7 +60,7 @@
 	// border: 1px solid green;
 	display: table-cell;
 	vertical-align: middle;
-	padding-left: 4px;
+	padding-left: $pdg-base;
 }
 
 .package-length {
@@ -75,15 +69,15 @@
 	text-align: right;
 	display: table-cell;
 	vertical-align: middle;
-	padding-right: 4px;
+	padding-right: $pdg-base;
 }
 
 .package-options {
 	position: absolute;
 	height: 100%;
-	width: ((50px - 8px) * 2);
+	width: ((50px - (2 * $bw-base)) + 50px);
 	top: 0;
-	right: 0;
+	right: -$bw-base;
 	cursor: pointer;
 }
 
@@ -93,25 +87,25 @@
 }
 
 .package-options.ng-hide-remove {
-	right: -((50px - 8px) * 2);
+	right: -((50px - (2 * $bw-base)) + 50px);
 }
 
 .package-options.ng-hide-remove-active {
-	right: 0;
+	right: -$bw-base;
 }
 
 .package-options.ng-hide-add {
-	right: 0;
+	right: -$bw-base;
 }
 
 .package-options.ng-hide-add-active {
-	right: -((50px - 8px) * 2);
+	right: -((50px - (2 * $bw-base)) + 50px);
 }
 
 .package-view {
 	float: left;
 	height: 100%;
-	width: (50px - 8px);
+	width: (50px - (2 * $bw-base));
 	background-color: $clr-gray-light;
 	text-align: center;
 }
@@ -119,36 +113,32 @@
 .package-action {
 	float: left;
 	height: 100%;
-	width: (50px - 8px);
+	width: 50px;
 	text-align: center;
 }
 
 .package-action--subscribed {
-
 	@extend .package-action;
 	background-color: $clr-red-pastel;
 }
 
 .package-action--own {
-
 	@extend .package-action;
 	background-color: $clr-green-pastel;
 }
 
 .package-action--all {
-
 	@extend .package-action;
 	background-color: $clr-green-pastel;
 }
 
 .package-button {
-	font-size: 24px;
-	line-height: (50px - 8px) - 1px;
+	font-size: $fs-large;
+	line-height: (50px - (2 * $bw-base)) - 1px;
 	color: $clr-light;
 }
 
 .package-button--view {
-
 	@extend .package-button;
 	color: $clr-gray-dark;
 }

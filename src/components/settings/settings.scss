@@ -4,7 +4,7 @@
 	height: 400px;
 	background-color: $clr-light;
 	color: $clr-gray-dark;
-	border: 4px solid $clr-gray-dark;
+	border: $bw-base solid $clr-gray-dark;
 }
 
 .settings-wrapper.ng-enter,
@@ -37,20 +37,21 @@
 	position: absolute;
 	top: 0;
 	left: 0;
-	width: 750px - 8px;
+	width: 750px - (2 * $bw-base);
 	height: 60px;
 	background-color: $clr-gray-lighter;
-	border-bottom: 1px solid $clr-gray-light;
-	font-size: 16px;
+	border-bottom: $bw-smaller solid $clr-gray-light;
+	font-size: $fs-base;
+	font-weight: $fw-base;
 }
 
 .settings-body {
 	// border: 1px solid red;
 	position: absolute;
 	top: 60px;
-	left: 0px;
-	width: 750px - 8px;
-	height: 400px - 60px - 8px;
+	left: 0;
+	width: 750px - (2 * $bw-base);
+	height: 400px - 60px - (2 * $bw-base);
 }
 
 .settings-tab {
@@ -59,7 +60,6 @@
 	text-align: center;
 	cursor: pointer;
 	// border: 1px solid green;
-
 	&.is-active {
 		color: $clr-blue-active;
 	}
@@ -67,18 +67,16 @@
 
 .settings-tab-icon {
 	display: block;
-	font-size: 30px;
+	font-size: $fs-larger;
 	height: 40px;
-
 	&:before {
 		line-height: 39px;
 	}
 }
 
 .settings-tab-icon--bigger {
-	
 	@extend .settings-tab-icon;
-	font-size: 38px;
+	font-size: $fs-larger + 8px; /* account icon is naturally smaller, for some reason */
 }
 
 .settings-tab-text {
