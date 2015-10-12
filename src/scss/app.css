@@ -111,6 +111,21 @@ border width
 .u-textRight {
   text-align: right; }
 
+.u-bgc-red-pastel {
+  background-color: #ff6961; }
+
+.u-bgc-green-pastel {
+  background-color: #77be77; }
+
+.u-bgc-blue-pastel {
+  background-color: #779ecb; }
+
+.u-bgc-gray-pastel {
+  background-color: #cfcfc4; }
+
+.u-bgc-white {
+  background-color: white; }
+
 .button {
   float: right;
   height: 40px;
@@ -136,7 +151,6 @@ body {
 .home-wrapper {
   width: 100%;
   height: 100%;
-  background-color: white;
   -webkit-transition: background-color ease-in-out 0.25s;
           transition: background-color ease-in-out 0.25s; }
 
@@ -321,21 +335,6 @@ body {
   .color--white.is-active {
     border-color: #bfbfbf;
     outline: 0; }
-
-.bgc-red-pastel {
-  background-color: #ff6961; }
-
-.bgc-green-pastel {
-  background-color: #77be77; }
-
-.bgc-blue-pastel {
-  background-color: #779ecb; }
-
-.bgc-gray-pastel {
-  background-color: #cfcfc4; }
-
-.bgc-white {
-  background-color: white; }
 
 .packages-head {
   width: 100%;

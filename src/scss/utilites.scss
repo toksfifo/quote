@@ -61,109 +61,22 @@
 	text-align: right;
 }
 
-// COLOR
-// .u-colorLight {
-// 	color: $light;
-// }
+.u-bgc-red-pastel {
+	background-color: $clr-red-pastel;
+}
 
-// .u-colorStable {
-// 	color: $stable;
-// }
+.u-bgc-green-pastel {
+	background-color: $clr-green-pastel;
+}
 
-// .u-colorPositive {
-// 	color: $positive;
-// }
+.u-bgc-blue-pastel {
+	background-color: $clr-blue-pastel;
+}
 
-// .u-colorCalm {
-// 	color: $calm;
-// }
+.u-bgc-gray-pastel {
+	background-color: $clr-gray-pastel;
+}
 
-// .u-colorBalanced {
-// 	color: $balanced;
-// }
-
-// .u-colorEnergized {
-// 	color: $energized;
-// }
-
-// .u-colorAssertive {
-// 	color: $assertive;
-// }
-
-// .u-colorRoyal {
-// 	color: $royal;
-// }
-
-// .u-colorDark {
-// 	color: $dark;
-// }
-
-// .u-bgColorLight {
-// 	background-color: $light;
-// }
-
-// .u-bgColorStable {
-// 	background-color: $stable;
-// }
-
-// .u-bgColorPositive {
-// 	background-color: $positive;
-// }
-
-// .u-bgColorCalm {
-// 	background-color: $calm;
-// }
-
-// .u-bgColorBalanced {
-// 	background-color: $balanced;
-// }
-
-// .u-bgColorEnergized {
-// 	background-color: $energized;
-// }
-
-// .u-bgColorAssertive {
-// 	background-color: $assertive;
-// }
-
-// .u-bgColorRoyal {
-// 	background-color: $royal;
-// }
-
-// .u-bgColorDark {
-// 	background-color: $dark;
-// }
-
-
-// // TRANSITION
-// .u-transitionOff {
-//     transition: none;
-//     transition: unset;
-// }
-
-// .u-transitionOff.ng-hide-add, 
-// .u-transitionOff.ng-hide-remove {
-//     display: none;   
-// }
-
-
-// // FONT
-// .u-fontSmaller {
-// 	font-size: $font-size-smaller;
-// }
-
-// .u-fontSmall {
-// 	font-size: $font-size-small;
-// }
-
-// .u-fontBase {
-// 	font-size: $font-size-base;
-// }
-
-// .u-fontLarge {
-// 	font-size: $font-size-large;
-// }
-
-// .u-fontLarger {
-// 	font-size: $font-size-larger;
-// }
+.u-bgc-white {
+	background-color: $clr-white;
+}
