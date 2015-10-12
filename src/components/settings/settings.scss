@@ -99,3 +99,24 @@ $height-settings-tab-text: $height-settings-head - $height-settings-tab-icon;
 	height: 100%;
 	background-color: transparentize($clr-black, 0.5);
 }
+
+.settings-backdrop.ng-hide-add,
+.settings-backdrop.ng-hide-remove {
+	transition: background-color 0.2s ease-out;
+}
+
+.settings-backdrop.ng-hide-add {
+	background-color: transparentize($clr-black, 0.5);
+}
+
+.settings-backdrop.ng-hide-add-active {
+	background-color: transparent;
+}
+
+.settings-backdrop.ng-hide-remove {
+	background-color: transparent;
+}
+
+.settings-backdrop.ng-hide-remove-active {
+	background-color: transparentize($clr-black, 0.5);
+}
