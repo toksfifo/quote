@@ -159,7 +159,9 @@ function DataSvc($q, $firebaseArray, $firebaseObject, Const) {
 			Const.ref.child('packages')
 		).select(
 			'packages.name',
-			'packages.creator'
+			'packages.creator',
+			'packages.creatorName',
+			'packages.length'
 		).ref());
 	}
 
@@ -210,37 +212,51 @@ function DataSvc($q, $firebaseArray, $firebaseObject, Const) {
 	 */
 	function createPackage(uid, name, quotes) {
 		return $q(function(resolve, reject) {
-			var package = Const.ref.child('packages').push({
-				name: name,
-				creator: uid
-			}, function(err) {
-				if (err) {
+
+			// 1st, get the name of the package's owner
+			Const.ref.child('users')
+				.child(uid)
+				.child('info/name').once('value', function(username) {
+
+					// now, create the package
+					var package = Const.ref.child('packages').push({
+						name: name,
+						creator: uid,
+						creatorName: username.val(),
+						length: quotes.length
+					}, function(err) {
+						if (err) {
+							reject(err);
+							return;
+						}
+
+						// counter to know when to resolve
+						var counter = 0;
+
+						// push the quotes on the newly created package
+						for (var i = 0; i < quotes.length; i++) {
+							Const.ref.child('quotes')
+								.child(package.key())
+								.push({
+									body: quotes[i].body,
+									author: quotes[i].author,
+									link: quotes[i].link
+								}, function(err) {
+									if (err) {
+										reject(err);
+										return;
+									}
+
+									// resolve on final push
+									(counter === quotes.length - 1) && resolve(package);
+									counter++;
+								});
+						}
+					});
+				}, function(err) {
 					reject(err);
-					return;
-				}
-
-				// counter to know when to resolve
-				var counter = 0;
-
-				for (var i = 0; i < quotes.length; i++) {
-					Const.ref.child('quotes')
-						.child(package.key())
-						.push({
-							body: quotes[i].body,
-							author: quotes[i].author,
-							link: quotes[i].link
-						}, function(err) {
-							if (err) {
-								reject(err);
-								return;
-							}
-
-							// resolve on final push
-							(counter === quotes.length - 1) && resolve(package);
-							counter++;
-						});
-				}
-			});
+				});
+			
 		});
 	}
 

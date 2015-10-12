@@ -45835,12 +45835,12 @@ angular.module('quote', [
 	db: /*gulp-replace-db*/'https://quoteextension.firebaseio.com/dev'/*end*/,
 	ref: /*gulp-replace-ref*/new Firebase('https://quoteextension.firebaseio.com/dev')/*end*/
 });
-angular.module("templates", []).run(["$templateCache", function($templateCache) {$templateCache.put("components/form/form.html","<div ng-controller=\"FormCtrl as form\">\n\n	<div ng-repeat=\"quote in form.quotesAdded\">{{ quote.body }} -{{ quote.author}}</div>\n	\n	<br>\n\n	<input type=\"text\" placeholder=\"Package Name\" ng-model=\"form.packageName\">\n\n	<br>\n\n	<input type=\"text\" placeholder=\"Quote\" ng-model=\"form.quoteCurrent.body\">\n\n	<br>\n\n	<input type=\"text\" placeholder=\"Author\" ng-model=\"form.quoteCurrent.author\">\n\n	<br>\n\n	<input type=\"text\" placeholder=\"Link\" ng-model=\"form.quoteCurrent.link\">\n\n	<br>\n\n	<button ng-click=\"form.addQuote()\">Add Quote</button>\n\n	<br>\n\n	<button ng-click=\"form.createPackage()\">Save Package</button>\n\n</div>");
-$templateCache.put("components/home/home.html","<!-- HomeCtrl as home -->\n\n\n\n\n<div class=\"home-wrapper u-bgc-{{ home.currentColor.name }}\">\n	\n\n	\n\n\n		<br>\n		<br>\n\n		<button ng-click=\"home.show.settings = !home.show.settings\">Settings</button>\n		<button ng-click=\"home.show.form = !home.show.form\">Form</button>\n		<button ng-click=\"home.generateQuoteList()\">Generate Quotes</button>\n		<a ng-href=\"{{ home.quote.link }}\">link</a>\n\n		\n	<!-- quote -->\n	<div class=\"quote-wrapper u-centerXY\" ng-if=\"::home.quote.body\">\n		<div class=\"quote\">\n			<p class=\"quote-body\">{{ home.quote.body }}</p>\n			<p class=\"quote-author\">&#8212; {{ home.quote.author | uppercase}}</p>\n		</div>\n	</div>\n\n	<div class=\"settings-backdrop\" ng-show=\"home.show.settings\" ng-click=\"home.show.settings = false\"></div>\n\n	<!-- settings -->\n	<div ng-include=\"\'components/settings/settings.html\'\"></div>\n\n	<!-- form -->\n	<div ng-if=\"home.show.form\" \n		ng-include=\"\'components/form/form.html\'\"></div>\n	\n</div>\n\n\n\n\n\n\n\n\n\n");
+angular.module("templates", []).run(["$templateCache", function($templateCache) {$templateCache.put("components/home/home.html","<!-- HomeCtrl as home -->\n\n\n\n\n<div class=\"home-wrapper u-bgc-{{ home.currentColor.name }}\">\n	\n\n	\n\n\n		<br>\n		<br>\n\n		<button ng-click=\"home.show.settings = !home.show.settings\">Settings</button>\n		<button ng-click=\"home.show.form = !home.show.form\">Form</button>\n		<button ng-click=\"home.generateQuoteList()\">Generate Quotes</button>\n		<a ng-href=\"{{ home.quote.link }}\">link</a>\n\n		\n	<!-- quote -->\n	<div class=\"quote-wrapper u-centerXY\" ng-if=\"::home.quote.body\">\n		<div class=\"quote\">\n			<p class=\"quote-body\">{{ home.quote.body }}</p>\n			<p class=\"quote-author\">&#8212; {{ home.quote.author | uppercase}}</p>\n		</div>\n	</div>\n\n	<div class=\"settings-backdrop\" ng-show=\"home.show.settings\" ng-click=\"home.show.settings = false\"></div>\n\n	<!-- settings -->\n	<div ng-include=\"\'components/settings/settings.html\'\"></div>\n\n	<!-- form -->\n	<div ng-if=\"home.show.form\" \n		ng-include=\"\'components/form/form.html\'\"></div>\n	\n</div>\n\n\n\n\n\n\n\n\n\n");
 $templateCache.put("components/settings/settings.html","<div ng-controller=\"SettingsCtrl as settings\" \n	class=\"settings-wrapper u-centerXY\"\n	ng-if=\"home.show.settings\">\n\n	<!-- head -->\n	<div class=\"settings-head\">\n\n		<!-- packages -->\n		<div class=\"settings-tab\" \n			ng-click=\"settings.toggleTab(\'packages\')\"\n			ng-class=\"{ \'is-active\': settings.show.packages }\">\n			<i class=\"settings-tab-icon icon ion-ios-folder\"></i>\n			<span class=\"settings-tab-text\">Packages</span>\n		</div>\n		\n		<!-- colors -->\n		<div class=\"settings-tab\" \n			ng-click=\"settings.toggleTab(\'colors\')\"\n			ng-class=\"{ \'is-active\': settings.show.colors }\">\n			<i class=\"settings-tab-icon icon ion-paintbucket\"></i>\n			<span class=\"settings-tab-text\">Colors</span>\n		</div>\n		\n		<!-- account -->\n		<div class=\"settings-tab\" \n			ng-click=\"settings.toggleTab(\'account\')\"\n			ng-class=\"{ \'is-active\': settings.show.account }\">\n			<i class=\"settings-tab-icon--bigger icon ion-ios-person\"></i>\n			<span class=\"settings-tab-text\">Account</span>\n		</div>\n\n	</div>\n\n	<div class=\"settings-body\">\n\n		<!-- packages -->\n		<div ng-include=\"\'components/settings/packages/packages.html\'\"></div>\n\n		<!-- colors -->\n		<div ng-include=\"\'components/settings/colors/colors.html\'\"></div>\n\n		<!-- account -->\n		<div ng-include=\"\'components/settings/account/account.html\'\"></div>\n\n	</div>\n	\n	\n	\n</div>");
-$templateCache.put("components/settings/packages/packages.html","<div ng-controller=\"PackagesCtrl as packages\"\n	ng-show=\"settings.show.packages\">\n\n	<!-- head -->\n	<div class=\"packages-head\">\n		\n		<input type=\"text\" class=\"packages-search\">\n\n		<button class=\"button button--success\">Create Package</button>\n\n	</div>\n\n	<!-- titles -->\n	<div class=\"packages-titles\">\n		<div class=\"packages-title\">Subscribed</div>\n		<div class=\"packages-title\">Created</div>\n		<div class=\"packages-title\">Other</div>\n	</div>\n\n	<!-- body -->\n	<div class=\"packages-body\">\n\n		<!-- subscribed -->\n		<div class=\"packages-col\">\n			<package-dctv \n				ng-repeat=\"package in packages.packagesSubscribed\"\n				package=\"package\"\n				type=\"subscribed\">\n		</div>\n\n		<!-- created -->\n		<div class=\"packages-col\">\n			<package-dctv \n				ng-repeat=\"package in packages.packagesOwn\"\n				package=\"package\"\n				type=\"own\">\n		</div>\n\n		<!-- other -->\n		<div class=\"packages-col\">\n			<package-dctv \n				ng-repeat=\"package in packages.packagesAll | packagesAllFltr: packages.packagesOwn: packages.packagesSubscribed\"\n				package=\"package\"\n				type=\"all\">\n		</div>\n\n	</div>\n\n</div>");
+$templateCache.put("components/form/form.html","<div ng-controller=\"FormCtrl as form\">\n\n	<div ng-repeat=\"quote in form.quotesAdded\">{{ quote.body }} -{{ quote.author}}</div>\n	\n	<br>\n\n	<input type=\"text\" placeholder=\"Package Name\" ng-model=\"form.packageName\">\n\n	<br>\n\n	<input type=\"text\" placeholder=\"Quote\" ng-model=\"form.quoteCurrent.body\">\n\n	<br>\n\n	<input type=\"text\" placeholder=\"Author\" ng-model=\"form.quoteCurrent.author\">\n\n	<br>\n\n	<input type=\"text\" placeholder=\"Link\" ng-model=\"form.quoteCurrent.link\">\n\n	<br>\n\n	<button ng-click=\"form.addQuote()\">Add Quote</button>\n\n	<br>\n\n	<button ng-click=\"form.createPackage()\">Save Package</button>\n\n</div>");
 $templateCache.put("components/settings/colors/colors.html","<div ng-controller=\"ColorsCtrl as colors\"\n	ng-show=\"settings.show.colors\">\n\n	<div class=\"color-wrapper u-centerXY\">\n		<div class=\"color--{{ color.name }} u-centerY\" \n			ng-repeat=\"color in ::colors.colors track by $index\" \n			ng-click=\"colors.selectColor(color)\"\n			ng-class=\"{ \'is-active\': color.name === colors.currentColor.name }\">\n		</div>\n	</div>\n\n</div>");
-$templateCache.put("components/settings/packages/package/package.html","<div class=\"package--{{ type }}\" \n	ng-click=\"show.options = true\" \n	ng-mouseleave=\"show.options = false\">\n	\n	<!-- primary -->\n	<div class=\"package-pri\">\n		<span class=\"package-name\">{{ package.name }}</span>\n	</div>\n\n	<!-- secondary -->\n	<div class=\"package-sec\">\n		<span class=\"package-author\">by Toks Fifo</span>\n		<span class=\"package-length\">5</span>\n	</div>\n\n	<!-- options -->\n	<div class=\"package-options\" ng-show=\"show.options\">\n		\n		<!-- view option -->\n		<div class=\"package-view\">\n			\n			<!-- view -->\n			<i class=\"icon ion-eye package-button--view\" \n				ng-if=\"::type === \'subscribed\' || type === \'all\'\"></i>\n\n			<!-- edit -->\n			<i class=\"icon ion-edit package-button--view\"\n				ng-if=\"::type === \'own\'\"></i>\n\n		</div>\n\n		<!-- action option -->\n		<div class=\"package-action--{{ type }}\">\n\n			<!-- add -->\n			<i class=\"icon ion-plus package-button\" \n				ng-if=\"::type === \'own\' || type === \'all\'\"\n				ng-click=\"addPackage(package.$id)\"></i>\n\n			<!-- remove -->\n			<i class=\"icon ion-close package-button\"\n				ng-if=\"::type === \'subscribed\'\"\n				ng-click=\"removePackage(package.$id)\"></i>\n\n		</div>\n\n	</div>\n\n</div>");}]);
+$templateCache.put("components/settings/packages/packages.html","<div ng-controller=\"PackagesCtrl as packages\"\n	ng-show=\"settings.show.packages\">\n\n	<!-- head -->\n	<div class=\"packages-head\">\n		\n		<input type=\"text\" class=\"packages-search\">\n\n		<button class=\"button button--success\">Create Package</button>\n\n	</div>\n\n	<!-- titles -->\n	<div class=\"packages-titles\">\n		<div class=\"packages-title\">Subscribed</div>\n		<div class=\"packages-title\">Created</div>\n		<div class=\"packages-title\">Other</div>\n	</div>\n\n	<!-- body -->\n	<div class=\"packages-body\">\n\n		<!-- subscribed -->\n		<div class=\"packages-col\">\n			<package-dctv \n				ng-repeat=\"package in packages.packagesSubscribed\"\n				package=\"package\"\n				type=\"subscribed\">\n		</div>\n\n		<!-- created -->\n		<div class=\"packages-col\">\n			<package-dctv \n				ng-repeat=\"package in packages.packagesOwn\"\n				package=\"package\"\n				type=\"own\">\n		</div>\n\n		<!-- other -->\n		<div class=\"packages-col\">\n			<package-dctv \n				ng-repeat=\"package in packages.packagesAll | packagesAllFltr: packages.packagesOwn: packages.packagesSubscribed\"\n				package=\"package\"\n				type=\"all\">\n		</div>\n\n	</div>\n\n</div>");
+$templateCache.put("components/settings/packages/package/package.html","<div class=\"package--{{ type }}\" \n	ng-click=\"show.options = true\" \n	ng-mouseleave=\"show.options = false\">\n	\n	<!-- primary -->\n	<div class=\"package-pri\">\n		<span class=\"package-name\">{{ package.name }}</span>\n	</div>\n\n	<!-- secondary -->\n	<div class=\"package-sec\">\n		<span class=\"package-author\">by {{ package.creatorName || \'Toks Fifo\' }}</span>\n		<span class=\"package-length\">{{ package.length || 5 }}</span>\n	</div>\n\n	<!-- options -->\n	<div class=\"package-options\" ng-show=\"show.options\">\n		\n		<!-- view option -->\n		<div class=\"package-view\">\n			\n			<!-- view -->\n			<i class=\"icon ion-eye package-button--view\" \n				ng-if=\"::type === \'subscribed\' || type === \'all\'\"></i>\n\n			<!-- edit -->\n			<i class=\"icon ion-edit package-button--view\"\n				ng-if=\"::type === \'own\'\"></i>\n\n		</div>\n\n		<!-- action option -->\n		<div class=\"package-action--{{ type }}\">\n\n			<!-- add -->\n			<i class=\"icon ion-plus package-button\" \n				ng-if=\"::type === \'own\' || type === \'all\'\"\n				ng-click=\"addPackage(package.$id)\"></i>\n\n			<!-- remove -->\n			<i class=\"icon ion-close package-button\"\n				ng-if=\"::type === \'subscribed\'\"\n				ng-click=\"removePackage(package.$id)\"></i>\n\n		</div>\n\n	</div>\n\n</div>");}]);
 angular.module('quote')
 	.factory('AuthSvc', AuthSvc);
 
@@ -45907,41 +45907,6 @@ function AuthSvc($q, $firebaseAuth, Const, UserSvc) {
 	}
 }
 AuthSvc.$inject = ["$q", "$firebaseAuth", "Const", "UserSvc"];
-angular.module('quote')
-	.filter('packagesAllFltr', packagesAllFltr);
-
-function packagesAllFltr() {
-
-	return filter;
-
-	/**
-	 * Don't show packages that a user ownes or is subscribed to, in all packages
-	 * @param  {$firebaseArray} packagesAll        All packages
-	 * @param  {$firebaseArray} packagesOwn        packages user owns
-	 * @param  {$firebaseArray} packagesSubscribed packages user is subscribed to
-	 * @return {Array}                    filtered array of all packages
-	 */
-	function filter(packagesAll, packagesOwn, packagesSubscribed) {
-		var removeFromPackages = [];
-
-		// don't show anything if we don't have all the data
-		if (!packagesAll || !packagesOwn || !packagesSubscribed) {
-			return [];
-		}
-		
-		for (var i = 0; i < packagesOwn.length; i++) {
-			removeFromPackages.push(packagesOwn[i].$id);
-		}
-		for (var j = 0; j < packagesSubscribed.length; j++) {
-			removeFromPackages.push(packagesSubscribed[j].$id);
-		}
-
-		return _.filter(packagesAll, function(package) {
-			return removeFromPackages.indexOf(package.$id) === -1;
-		});
-
-	}
-}
 angular.module('quote')
 	.factory('DataSvc', DataSvc);
 
@@ -46103,7 +46068,9 @@ function DataSvc($q, $firebaseArray, $firebaseObject, Const) {
 			Const.ref.child('packages')
 		).select(
 			'packages.name',
-			'packages.creator'
+			'packages.creator',
+			'packages.creatorName',
+			'packages.length'
 		).ref());
 	}
 
@@ -46154,37 +46121,51 @@ function DataSvc($q, $firebaseArray, $firebaseObject, Const) {
 	 */
 	function createPackage(uid, name, quotes) {
 		return $q(function(resolve, reject) {
-			var package = Const.ref.child('packages').push({
-				name: name,
-				creator: uid
-			}, function(err) {
-				if (err) {
+
+			// 1st, get the name of the package's owner
+			Const.ref.child('users')
+				.child(uid)
+				.child('info/name').once('value', function(username) {
+
+					// now, create the package
+					var package = Const.ref.child('packages').push({
+						name: name,
+						creator: uid,
+						creatorName: username.val(),
+						length: quotes.length
+					}, function(err) {
+						if (err) {
+							reject(err);
+							return;
+						}
+
+						// counter to know when to resolve
+						var counter = 0;
+
+						// push the quotes on the newly created package
+						for (var i = 0; i < quotes.length; i++) {
+							Const.ref.child('quotes')
+								.child(package.key())
+								.push({
+									body: quotes[i].body,
+									author: quotes[i].author,
+									link: quotes[i].link
+								}, function(err) {
+									if (err) {
+										reject(err);
+										return;
+									}
+
+									// resolve on final push
+									(counter === quotes.length - 1) && resolve(package);
+									counter++;
+								});
+						}
+					});
+				}, function(err) {
 					reject(err);
-					return;
-				}
-
-				// counter to know when to resolve
-				var counter = 0;
-
-				for (var i = 0; i < quotes.length; i++) {
-					Const.ref.child('quotes')
-						.child(package.key())
-						.push({
-							body: quotes[i].body,
-							author: quotes[i].author,
-							link: quotes[i].link
-						}, function(err) {
-							if (err) {
-								reject(err);
-								return;
-							}
-
-							// resolve on final push
-							(counter === quotes.length - 1) && resolve(package);
-							counter++;
-						});
-				}
-			});
+				});
+			
 		});
 	}
 
@@ -46237,6 +46218,41 @@ function DataSvc($q, $firebaseArray, $firebaseObject, Const) {
 
 }
 DataSvc.$inject = ["$q", "$firebaseArray", "$firebaseObject", "Const"];
+angular.module('quote')
+	.filter('packagesAllFltr', packagesAllFltr);
+
+function packagesAllFltr() {
+
+	return filter;
+
+	/**
+	 * Don't show packages that a user ownes or is subscribed to, in all packages
+	 * @param  {$firebaseArray} packagesAll        All packages
+	 * @param  {$firebaseArray} packagesOwn        packages user owns
+	 * @param  {$firebaseArray} packagesSubscribed packages user is subscribed to
+	 * @return {Array}                    filtered array of all packages
+	 */
+	function filter(packagesAll, packagesOwn, packagesSubscribed) {
+		var removeFromPackages = [];
+
+		// don't show anything if we don't have all the data
+		if (!packagesAll || !packagesOwn || !packagesSubscribed) {
+			return [];
+		}
+		
+		for (var i = 0; i < packagesOwn.length; i++) {
+			removeFromPackages.push(packagesOwn[i].$id);
+		}
+		for (var j = 0; j < packagesSubscribed.length; j++) {
+			removeFromPackages.push(packagesSubscribed[j].$id);
+		}
+
+		return _.filter(packagesAll, function(package) {
+			return removeFromPackages.indexOf(package.$id) === -1;
+		});
+
+	}
+}
 angular.module('quote')
 	.controller('FormCtrl', FormCtrl);
 
@@ -46298,7 +46314,7 @@ function HomeCtrl($q, authStatus, DataSvc, AuthSvc) {
 	var vm = this;
 
 	vm.show = {
-		settings: true,
+		settings: false,
 		form: false
 	};
 	vm.generateQuoteList = generateQuoteList;
@@ -46384,8 +46400,10 @@ function UserSvc($q, Const) {
 		return $q(function(resolve, reject) {
 			Const.ref.child('users')
 				.child(authData.uid)
-				.child('color')
-				.set({ name: 'blue-pastel' }, function(err) {
+				.set({
+					info: { name: 'anon frog' },
+					color: { name: 'blue-pastel' }
+				}, function(err) {
 					if (err) {
 						reject(err);
 					} else {
