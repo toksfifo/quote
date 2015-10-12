@@ -1,12 +1,12 @@
 <div ng-controller="ColorsCtrl as colors"
 	ng-show="settings.show.colors">
-	
 
 	<div class="color-wrapper u-centerXY">
-		<div class="color u-centerY" 
+		<div class="color--{{ color.name }} u-centerY" 
 			ng-repeat="color in ::colors.colors track by $index" 
 			ng-click="colors.selectColor(color)"
-			ng-style="colors.getColorStyle(color)">
+			ng-class="{ 'is-active': color.name === colors.currentColor.name }">
 		</div>
 	</div>
+
 </div>

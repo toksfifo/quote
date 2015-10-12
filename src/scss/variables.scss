@@ -19,6 +19,15 @@ $clr-green-pastel: rgba(119, 190, 119, 1.0);
 $clr-blue-pastel: rgba(119, 158, 203, 1.0);
 $clr-gray-pastel: rgba(207, 207, 196, 1.0);
 
+// color functions
+@function tint($color, $pctg) {
+	@return mix(white, $color, $pctg);
+}
+
+@function shade($color, $pctg) {
+	@return mix(black, $color, $pctg);
+}
+
 /*
 font size
  */

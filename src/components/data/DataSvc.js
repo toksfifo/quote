@@ -3,6 +3,14 @@ angular.module('quote')
 
 function DataSvc($q, $firebaseArray, $firebaseObject, Const) {
 
+	var colorOptions = [
+		{ name: 'red-pastel' },
+		{ name: 'green-pastel' },
+		{ name: 'blue-pastel' },
+		{ name: 'gray-pastel' },
+		{ name: 'white' }
+	];
+
 	var DataSvc = {
 		getQuote: getQuote,
 		generateQuoteList: generateQuoteList,
@@ -12,6 +20,7 @@ function DataSvc($q, $firebaseArray, $firebaseObject, Const) {
 		subscribePackage: subscribePackage,
 		unsubscribePackage: unsubscribePackage,
 		createPackage: createPackage,
+		getColorOptions: getColorOptions,
 		getColor: getColor,
 		setColor: setColor
 	};
@@ -236,6 +245,14 @@ function DataSvc($q, $firebaseArray, $firebaseObject, Const) {
 	}
 
 	/**
+	 * Get background color options
+	 * @return {Array} Array of color objects
+	 */
+	function getColorOptions() {
+		return colorOptions;
+	}
+
+	/**
 	 * Get user's background color
 	 * @param  {String} uid user ID
 	 * @return {$firebaseObject}     color with properties 'name' and 'val'
@@ -257,9 +274,7 @@ function DataSvc($q, $firebaseArray, $firebaseObject, Const) {
 				.child(uid)
 				.child('color')
 				.set({
-					name: color.name,
-					val: color.val,
-					valDark: color.valDark
+					name: color.name
 				}, function(err) {
 					err ? reject(err) : resolve();
 				});

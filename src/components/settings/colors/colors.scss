@@ -1,4 +1,5 @@
 $size-color: 70px;
+$pctg-shade: 25%;
 
 .color-wrapper {
 	// border: 1px solid black;
@@ -20,3 +21,65 @@ $size-color: 70px;
 	}
 }
 
+.color--red-pastel {
+	@extend .color;
+	background-color: $clr-red-pastel;
+	&.is-active {
+		border-color: shade($clr-red-pastel, $pctg-shade);
+	}
+}
+
+.color--green-pastel {
+	@extend .color;
+	background-color: $clr-green-pastel;
+	&.is-active {
+		border-color: shade($clr-green-pastel, $pctg-shade);
+	}
+}
+
+.color--blue-pastel {
+	@extend .color;
+	background-color: $clr-blue-pastel;
+	&.is-active {
+		border-color: shade($clr-blue-pastel, $pctg-shade);
+	}
+}
+
+.color--gray-pastel {
+	@extend .color;
+	background-color: $clr-gray-pastel;
+	&.is-active {
+		border-color: shade($clr-gray-pastel, $pctg-shade);
+	}
+}
+
+.color--white {
+	@extend .color;
+	background-color: $clr-white;
+	outline: 1px solid shade($clr-white, $pctg-shade);
+	outline-offset: -($bw-base + 1px);
+	&.is-active {
+		border-color: shade($clr-white, $pctg-shade);
+		outline: 0;
+	}
+}
+
+.bgc-red-pastel {
+	background-color: $clr-red-pastel;
+}
+
+.bgc-green-pastel {
+	background-color: $clr-green-pastel;
+}
+
+.bgc-blue-pastel {
+	background-color: $clr-blue-pastel;
+}
+
+.bgc-gray-pastel {
+	background-color: $clr-gray-pastel;
+}
+
+.bgc-white {
+	background-color: $clr-white;
+}

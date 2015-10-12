@@ -17,7 +17,7 @@ function HomeCtrl($q, authStatus, DataSvc, AuthSvc) {
 	};
 	vm.generateQuoteList = generateQuoteList;
 	vm.quote = {};
-	vm.currentColor = 'rgba(255, 255, 255, 1.0)';
+	vm.currentColor;
 
 	init();
 
