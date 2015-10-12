@@ -1,7 +1,7 @@
 angular.module('quote')
 	.controller('FormCtrl', FormCtrl);
 
-function FormCtrl($scope, DataSvc) {
+function FormCtrl(DataSvc, AuthSvc) {
 
 	var vm = this;
 
@@ -35,8 +35,9 @@ function FormCtrl($scope, DataSvc) {
 	 * Create package on db
 	 */
 	function createPackage() {
-		DataSvc.createPackage($scope.authStatus.uid, vm.packageName, vm.quotesAdded).then(function() {
+		DataSvc.createPackage(AuthSvc.getAuthStatus().uid, vm.packageName, vm.quotesAdded).then(function() {
 			vm.packageName = '';
+			vm.quotesAdded = [];
 		}, function(err) {
 			console.log('error creating package:', err);
 		});

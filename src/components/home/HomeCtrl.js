@@ -7,21 +7,25 @@ HomeCtrl.resolve = /*@ngInject*/ {
 	}
 };
 
-function HomeCtrl($scope, $q, authStatus, DataSvc, AuthSvc) {
+function HomeCtrl($q, authStatus, DataSvc, AuthSvc) {
 
 	var vm = this;
 
-	vm.showSettings = false;
-	vm.showForm = false;
+	vm.show = {
+		settings: true,
+		form: false
+	};
 	vm.generateQuoteList = generateQuoteList;
 	vm.quote = {};
+	vm.currentColor;
 
 	init();
 
 	function init() {
 		getAuth().then(function(authStatus) {
-			$scope.authStatus = authStatus;
+			AuthSvc.setAuthStatus(authStatus);
 			getQuote();
+			vm.currentColor = DataSvc.getColor(AuthSvc.getAuthStatus().uid);
 		}, function(err) {
 			console.log('error getting auth:', err);
 		});
@@ -31,7 +35,7 @@ function HomeCtrl($scope, $q, authStatus, DataSvc, AuthSvc) {
 	 * Get main quote to display on new tab
 	 */
 	function getQuote() {
-		DataSvc.getQuote($scope.authStatus.uid).then(function(quote) {
+		DataSvc.getQuote(AuthSvc.getAuthStatus().uid).then(function(quote) {
 			if (quote === 0) {
 				
 				// prompt to resubscribe or reset current
@@ -66,7 +70,7 @@ function HomeCtrl($scope, $q, authStatus, DataSvc, AuthSvc) {
 	 * Generate list of quotes to pull main quote from
 	 */
 	function generateQuoteList() {
-		DataSvc.generateQuoteList($scope.authStatus.uid).then(function() {
+		DataSvc.generateQuoteList(AuthSvc.getAuthStatus().uid).then(function() {
 		}, function(err) {
 			console.log('error generating quote list:', err);
 		});

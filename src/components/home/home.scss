@@ -1,0 +1,54 @@
+$height-quote-wrapper: 200px;
+$width-quote-wrapper: 700px;
+
+html,
+body {
+	height: 100%;
+	width: 100%;
+	font-family: 'Open Sans', sans-serif;
+	font-weight: $fw-light;
+}
+
+.home-wrapper {
+	width: 100%;
+	height: 100%;
+	transition: background-color ease-in-out 0.25s;
+}
+
+.quote-wrapper {
+	// border: 1px solid red;
+	height: $height-quote-wrapper;
+	width: $width-quote-wrapper;
+	display: table;
+}
+
+.quote-wrapper.ng-enter {
+	transition: all ease-in-out 1.5s;
+	transform: translate(-50%, -35%);
+	opacity: 0;
+}
+
+.quote-wrapper.ng-enter.ng-enter-active {
+	transform: translate(-50%, -50%);
+	opacity: 1;
+}
+
+.quote {
+	display: table-cell;
+	vertical-align: middle;
+	line-height: $lh-loose;
+	color: $clr-white;
+}
+
+.quote-body {
+	text-align: left;
+	font-size: $fs-large;
+	font-style: italic;
+}
+
+.quote-author {
+	text-align: right;
+	font-size: $fs-base;
+	letter-spacing: $ls-looser;
+	margin-top: $mgn-large;
+}

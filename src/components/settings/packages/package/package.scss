@@ -1,0 +1,151 @@
+$height-package: 50px;
+$width-package: 200px;
+$height-package-pri: 60%;
+$height-package-sec: 100% - $height-package-pri;
+$size-package-view: $height-package - (2 * $bw-base);
+$size-package-action: $height-package;
+
+.package {
+	height: $height-package;
+	width: $width-package;
+	border: $bw-base solid $clr-gray-light;
+	display: inline-block;
+	text-align: left;
+	margin-top: $mgn-large;
+	background-color: $clr-gray-lighter;
+	position: relative;
+	overflow: hidden;
+	transition: border-color 0.15s ease-in-out;
+	cursor: pointer;
+}
+
+.package--subscribed {
+	@extend .package;
+	&:hover {
+		border-color: $clr-red-pastel;
+	}
+}
+
+.package--own {
+	@extend .package;
+	&:hover {
+		border-color: $clr-green-pastel;
+	}
+}
+
+.package--all {
+	@extend .package;
+	&:hover {
+		border-color: $clr-green-pastel;
+	}
+}
+
+.package-pri {
+	height: $height-package-pri;
+	width: 100%;
+	// border: 1px solid red;
+	font-size: $fs-package;
+	display: table;
+}
+
+.package-name {
+	display: table-cell;
+	vertical-align: middle;
+	padding-left: $pdg-base;
+}
+
+.package-sec {
+	height: $height-package-sec;
+	width: 100%;
+	// border: 1px solid blue;
+	font-size: $fs-small;
+	display: table;
+}
+
+.package-author {
+	width: 50%;
+	// border: 1px solid green;
+	display: table-cell;
+	vertical-align: middle;
+	padding-left: $pdg-base;
+}
+
+.package-length {
+	width: 50%;
+	// border: 1px solid black;
+	text-align: right;
+	display: table-cell;
+	vertical-align: middle;
+	padding-right: $pdg-base;
+}
+
+.package-options {
+	position: absolute;
+	height: 100%;
+	width: $size-package-view + $size-package-action;
+	top: 0;
+	right: -$bw-base;
+	cursor: pointer;
+}
+
+.package-options.ng-hide-add,
+.package-options.ng-hide-remove {
+	transition: right 0.15s ease-in-out;
+}
+
+.package-options.ng-hide-remove {
+	right: -($size-package-view + $size-package-action);
+}
+
+.package-options.ng-hide-remove.ng-hide-remove-active {
+	right: -$bw-base;
+}
+
+.package-options.ng-hide-add {
+	right: -$bw-base;
+}
+
+.package-options.ng-hide-add.ng-hide-add-active {
+	right: -($size-package-view + $size-package-action);
+}
+
+.package-view {
+	float: left;
+	height: 100%;
+	width: $size-package-view;
+	background-color: $clr-gray-light;
+	text-align: center;
+}
+
+.package-action {
+	float: left;
+	height: 100%;
+	width: $height-package;
+	text-align: center;
+}
+
+.package-action--subscribed {
+	@extend .package-action;
+	background-color: $clr-red-pastel;
+}
+
+.package-action--own {
+	@extend .package-action;
+	background-color: $clr-green-pastel;
+}
+
+.package-action--all {
+	@extend .package-action;
+	background-color: $clr-green-pastel;
+}
+
+.package-button {
+	font-size: $fs-large;
+	line-height: $size-package-view - 1px;
+	color: $clr-light;
+}
+
+.package-button--view {
+	@extend .package-button;
+	color: $clr-gray-dark;
+}

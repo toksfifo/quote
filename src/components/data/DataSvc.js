@@ -3,6 +3,14 @@ angular.module('quote')
 
 function DataSvc($q, $firebaseArray, $firebaseObject, Const) {
 
+	var colorOptions = [
+		{ name: 'red-pastel' },
+		{ name: 'green-pastel' },
+		{ name: 'blue-pastel' },
+		{ name: 'gray-pastel' },
+		{ name: 'white' }
+	];
+
 	var DataSvc = {
 		getQuote: getQuote,
 		generateQuoteList: generateQuoteList,
@@ -11,7 +19,10 @@ function DataSvc($q, $firebaseArray, $firebaseObject, Const) {
 		getPackagesSubscribed: getPackagesSubscribed,
 		subscribePackage: subscribePackage,
 		unsubscribePackage: unsubscribePackage,
-		createPackage: createPackage
+		createPackage: createPackage,
+		getColorOptions: getColorOptions,
+		getColor: getColor,
+		setColor: setColor
 	};
 
 	return DataSvc;
@@ -230,6 +241,43 @@ function DataSvc($q, $firebaseArray, $firebaseObject, Const) {
 						});
 				}
 			});
+		});
+	}
+
+	/**
+	 * Get background color options
+	 * @return {Array} Array of color objects
+	 */
+	function getColorOptions() {
+		return colorOptions;
+	}
+
+	/**
+	 * Get user's background color
+	 * @param  {String} uid user ID
+	 * @return {$firebaseObject}     color with properties 'name' and 'val'
+	 */
+	function getColor(uid) {
+		return $firebaseObject(Const.ref.child('users')
+			.child(uid)
+			.child('color'));
+	}
+
+	/**
+	 * Set new background color
+	 * @param {String} uid   userID
+	 * @param {Object} color new color with properties 'name' and 'val'
+	 */
+	function setColor(uid, color) {
+		return $q(function(resolve, reject) {
+			Const.ref.child('users')
+				.child(uid)
+				.child('color')
+				.set({
+					name: color.name
+				}, function(err) {
+					err ? reject(err) : resolve();
+				});
 		});
 	}
 

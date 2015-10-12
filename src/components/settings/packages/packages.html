@@ -1,23 +1,49 @@
-<div ng-controller="PackagesCtrl as packages">
+<div ng-controller="PackagesCtrl as packages"
+	ng-show="settings.show.packages">
 
-	<br>
-	all packages
-	<div ng-repeat="package in packages.packagesAll | packagesAllFltr: packages.packagesOwn: packages.packagesSubscribed">
-		{{ package.name }}
-		<button ng-click="packages.addPackage(package.$id)">Add</button>
+	<!-- head -->
+	<div class="packages-head">
+		
+		<input type="text" class="packages-search">
+
+		<button class="button button--success">Create Package</button>
+
 	</div>
 
-	<br>
-	own packages
-	<div ng-repeat="package in packages.packagesOwn">
-		{{ package.name }}
-		<button ng-click="packages.addPackage(package.$id)">Add</button>
+	<!-- titles -->
+	<div class="packages-titles">
+		<div class="packages-title">Subscribed</div>
+		<div class="packages-title">Created</div>
+		<div class="packages-title">Other</div>
 	</div>
 
-	<br>
-	subscribed packages
-	<div ng-repeat="package in packages.packagesSubscribed">
-		{{ package.name }}
-		<button ng-click="packages.removePackage(package.$id)">Remove</button>
+	<!-- body -->
+	<div class="packages-body">
+
+		<!-- subscribed -->
+		<div class="packages-col">
+			<package-dctv 
+				ng-repeat="package in packages.packagesSubscribed"
+				package="package"
+				type="subscribed">
+		</div>
+
+		<!-- created -->
+		<div class="packages-col">
+			<package-dctv 
+				ng-repeat="package in packages.packagesOwn"
+				package="package"
+				type="own">
+		</div>
+
+		<!-- other -->
+		<div class="packages-col">
+			<package-dctv 
+				ng-repeat="package in packages.packagesAll | packagesAllFltr: packages.packagesOwn: packages.packagesSubscribed"
+				package="package"
+				type="all">
+		</div>
+
 	</div>
+
 </div>

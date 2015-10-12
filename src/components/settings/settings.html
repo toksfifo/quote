@@ -1,17 +1,49 @@
-<div ng-controller="SettingsCtrl as settings">
+<div ng-controller="SettingsCtrl as settings" 
+	class="settings-wrapper u-centerXY"
+	ng-if="home.show.settings">
 
-	hi
+	<!-- head -->
+	<div class="settings-head">
 
-	<!-- packages -->
-	<div ng-if="settings.showPackages" 
-		ng-include="'components/settings/packages/packages.html'"></div>
+		<!-- packages -->
+		<div class="settings-tab" 
+			ng-click="settings.toggleTab('packages')"
+			ng-class="{ 'is-active': settings.show.packages }">
+			<i class="settings-tab-icon icon ion-ios-folder"></i>
+			<span class="settings-tab-text">Packages</span>
+		</div>
+		
+		<!-- colors -->
+		<div class="settings-tab" 
+			ng-click="settings.toggleTab('colors')"
+			ng-class="{ 'is-active': settings.show.colors }">
+			<i class="settings-tab-icon icon ion-paintbucket"></i>
+			<span class="settings-tab-text">Colors</span>
+		</div>
+		
+		<!-- account -->
+		<div class="settings-tab" 
+			ng-click="settings.toggleTab('account')"
+			ng-class="{ 'is-active': settings.show.account }">
+			<i class="settings-tab-icon--bigger icon ion-ios-person"></i>
+			<span class="settings-tab-text">Account</span>
+		</div>
 
-	<!-- colors -->
-	<div ng-if="settings.showColors" 
-		ng-include="'components/settings/colors/colors.html'"></div>
+	</div>
 
-	<!-- account -->
-	<div ng-if="settings.showAccount" 
-		ng-include="'components/settings/account/account.html'"></div>
+	<div class="settings-body">
+
+		<!-- packages -->
+		<div ng-include="'components/settings/packages/packages.html'"></div>
+
+		<!-- colors -->
+		<div ng-include="'components/settings/colors/colors.html'"></div>
+
+		<!-- account -->
+		<div ng-include="'components/settings/account/account.html'"></div>
+
+	</div>
+	
+	
 	
 </div>

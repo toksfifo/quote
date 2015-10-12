@@ -1,0 +1,82 @@
+// DISPLAY/POSITION
+.u-centerXY {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.u-centerX {
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+.u-centerY {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.u-oneLine {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.u-floatL {
+	float: left;
+}
+
+.u-floatR {
+	float: right;
+}
+
+.u-block {
+	display: block;
+}
+
+.u-100X {
+	width: 100%;
+}
+
+.u-100Y {
+	height: 100%;
+}
+
+.u-100XY {
+	width: 100%;
+	height: 100%;
+}
+
+.u-textLeft {
+	text-align: left;
+}
+
+.u-textCenter {
+	text-align: center;
+}
+
+.u-textRight {
+	text-align: right;
+}
+
+.u-bgc-red-pastel {
+	background-color: $clr-red-pastel;
+}
+
+.u-bgc-green-pastel {
+	background-color: $clr-green-pastel;
+}
+
+.u-bgc-blue-pastel {
+	background-color: $clr-blue-pastel;
+}
+
+.u-bgc-gray-pastel {
+	background-color: $clr-gray-pastel;
+}
+
+.u-bgc-white {
+	background-color: $clr-white;
+}

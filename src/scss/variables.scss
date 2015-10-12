@@ -1,0 +1,84 @@
+/*
+colors
+ */
+$clr-white: rgba(255, 255, 255, 1.0);
+$clr-black: rgba(0, 0, 0, 1.0);
+
+$clr-light: $clr-white;
+
+// $clr-gray-darker: 
+$clr-gray-dark: rgba(128, 128, 128, 1.0);
+// $clr-gray-base: 
+$clr-gray-light: rgba(205, 205, 205, 1.0);
+$clr-gray-lighter: rgba(240, 240, 240, 1.0);
+
+$clr-blue-active: rgba(40, 137, 228, 1.0);
+
+$clr-red-pastel: rgba(255, 105, 97, 1.0);
+$clr-green-pastel: rgba(119, 190, 119, 1.0);
+$clr-blue-pastel: rgba(119, 158, 203, 1.0);
+$clr-gray-pastel: rgba(207, 207, 196, 1.0);
+
+// color functions
+@function tint($color, $pctg) {
+	@return mix(white, $color, $pctg);
+}
+
+@function shade($color, $pctg) {
+	@return mix(black, $color, $pctg);
+}
+
+/*
+font size
+ */
+// $fs-smaller:
+$fs-small: 11px;
+$fs-base: 16px;
+$fs-large: 26px;
+$fs-larger: 30px;
+
+$fs-package: 15px;
+
+/*
+font weight
+ */
+$fw-light: 300;
+$fw-base: 400;
+
+/*
+letter spacing
+ */
+$ls-base: 0;
+$ls-loose: 1px;
+$ls-looser: 2px;
+
+/*
+line height
+ */
+$lh-base: 1;
+$lh-loose: 1.5;
+
+/*
+margin
+ */
+$mgn-smaller: 1px;
+$mgn-small: 2px;
+$mgn-base: 4px;
+$mgn-large: 10px;
+$mgn-larger: 20px;
+
+/*
+padding
+ */
+$pdg-smaller: 1px;
+$pdg-small: 2px;
+$pdg-base: 4px;
+$pdg-large: 10px;
+$pdg-larger: 20px;
+
+/*
+border width
+ */
+$bw-smaller: 1px;
+$bw-small: 2px;
+$bw-base: 4px;

@@ -1,0 +1,20 @@
+$height-button: 40px;
+$width-button: 160px;
+
+.button {
+	float: right;
+	height: $height-button;
+	width: $width-button;
+	font-size: $fs-base;
+	border: $bw-base solid $clr-gray-light;
+	color: $clr-gray-light;
+	background-color: transparent;
+	outline: 0;
+	&:hover {
+		border-color: $clr-gray-dark;
+		color: $clr-gray-dark;
+	}
+	&:active {
+		background-color: $clr-gray-light;
+	}
+}

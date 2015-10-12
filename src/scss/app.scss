@@ -1,5 +1,11 @@
-// @import '../components/sample/sample.scss';
+@import 'reset.scss';
+@import 'variables.scss';
+@import 'utilites.scss';
+@import 'buttons.scss';
 
-body {
-	color: blue;
-}
+@import '../components/home/home.scss';
+
+@import '../components/settings/settings.scss';
+@import '../components/settings/colors/colors.scss';
+@import '../components/settings/packages/packages.scss';
+@import '../components/settings/packages/package/package.scss';

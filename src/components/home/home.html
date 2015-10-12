@@ -1,18 +1,47 @@
 <!-- HomeCtrl as home -->
 
-{{ home.quote.body }} -{{ home.quote.author }}
 
-<br>
-<br>
 
-<button ng-click="home.showSettings = !home.showSettings">Settings</button>
-<button ng-click="home.showForm = !home.showForm">Form</button>
-<button ng-click="home.generateQuoteList()">Generate Quotes</button>
 
-<!-- settings -->
-<div ng-if="home.showSettings" 
-	ng-include="'components/settings/settings.html'"></div>
+<div class="home-wrapper u-bgc-{{ home.currentColor.name }}">
+	
 
-<!-- form -->
-<div ng-if="home.showForm" 
-	ng-include="'components/form/form.html'"></div>
+	
+
+
+		<br>
+		<br>
+
+		<button ng-click="home.show.settings = !home.show.settings">Settings</button>
+		<button ng-click="home.show.form = !home.show.form">Form</button>
+		<button ng-click="home.generateQuoteList()">Generate Quotes</button>
+		<a ng-href="{{ home.quote.link }}">link</a>
+
+		
+	<!-- quote -->
+	<div class="quote-wrapper u-centerXY" ng-if="::home.quote.body">
+		<div class="quote">
+			<p class="quote-body">{{ home.quote.body }}</p>
+			<p class="quote-author">&#8212; {{ home.quote.author | uppercase}}</p>
+		</div>
+	</div>
+
+	<div class="settings-backdrop" ng-show="home.show.settings" ng-click="home.show.settings = false"></div>
+
+	<!-- settings -->
+	<div ng-include="'components/settings/settings.html'"></div>
+
+	<!-- form -->
+	<div ng-if="home.show.form" 
+		ng-include="'components/form/form.html'"></div>
+	
+</div>
+
+
+
+
+
+
+
+
+

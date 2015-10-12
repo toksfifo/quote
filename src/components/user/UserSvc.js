@@ -18,7 +18,8 @@ function UserSvc($q, Const) {
 		return $q(function(resolve, reject) {
 			Const.ref.child('users')
 				.child(authData.uid)
-				.set({ color: 'blue' }, function(err) {
+				.child('color')
+				.set({ name: 'blue-pastel' }, function(err) {
 					if (err) {
 						reject(err);
 					} else {

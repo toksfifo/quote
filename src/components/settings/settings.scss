@@ -1,0 +1,119 @@
+$width-settings-wrapper: 750px;
+$height-settings-wrapper: 400px;
+$height-settings-head: 60px;
+$height-settings-tab-icon: 36px;
+$height-settings-tab-text: $height-settings-head - $height-settings-tab-icon;
+
+.settings-wrapper {
+	// border: 1px solid black;
+	width: $width-settings-wrapper;
+	height: $height-settings-wrapper;
+	background-color: $clr-light;
+	color: $clr-gray-dark;
+	border: $bw-base solid $clr-gray-dark;
+}
+
+.settings-wrapper.ng-enter,
+.settings-wrapper.ng-leave {
+	transition: all cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.6s;
+}
+
+.settings-wrapper.ng-enter {
+	transform: translate(-50%, -35%);
+	opacity: 0;
+}
+
+.settings-wrapper.ng-enter.ng-enter-active {
+	transform: translate(-50%, -50%);
+	opacity: 1;
+}
+
+.settings-wrapper.ng-leave {
+	transform: translate(-50%, -50%);
+	opacity: 1;
+}
+
+.settings-wrapper.ng-leave.ng-leave-active {
+	transform: translate(-50%, -35%);
+	opacity: 0;
+}
+
+.settings-head {
+	// border: 1px solid black;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: $width-settings-wrapper - (2 * $bw-base);
+	height: $height-settings-head;
+	background-color: $clr-gray-lighter;
+	border-bottom: $bw-smaller solid $clr-gray-light;
+	font-size: $fs-base;
+	font-weight: $fw-base;
+}
+
+.settings-body {
+	// border: 1px solid red;
+	position: absolute;
+	top: $height-settings-head;
+	left: 0;
+	width: $width-settings-wrapper - (2 * $bw-base);
+	height: $height-settings-wrapper - $height-settings-head - (2 * $bw-base);
+}
+
+.settings-tab {
+	float: left;
+	width: 33.33%;
+	text-align: center;
+	cursor: pointer;
+	// border: 1px solid green;
+	&.is-active {
+		color: $clr-blue-active;
+	}
+}
+
+.settings-tab-icon {
+	display: block;
+	font-size: $fs-larger;
+	height: $height-settings-tab-icon;
+	&:before {
+		line-height: $height-settings-tab-icon - 1px;
+	}
+}
+
+.settings-tab-icon--bigger {
+	@extend .settings-tab-icon;
+	font-size: $fs-larger + 8px; /* account icon is naturally smaller, for some reason. so make it bigger to compensate */
+}
+
+.settings-tab-text {
+	display: block;
+	height: $height-settings-tab-text;
+	line-height: $height-settings-tab-text - 1px;
+}
+
+.settings-backdrop {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: transparentize($clr-black, 0.5);
+}
+
+.settings-backdrop.ng-hide-remove {
+	transition: background-color 0.2s ease-out;
+	background-color: transparent;
+}
+
+.settings-backdrop.ng-hide-remove.ng-hide-remove-active {
+	background-color: transparentize($clr-black, 0.5);
+}
+
+.settings-backdrop.ng-hide-add {
+	transition: background-color 0.2s ease-out 0.4s;
+	background-color: transparentize($clr-black, 0.5);
+}
+
+.settings-backdrop.ng-hide-add.ng-hide-add-active {
+	background-color: transparent;
+}
