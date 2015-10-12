@@ -97,7 +97,7 @@ $size-package-action: $height-package;
 	right: -($size-package-view + $size-package-action);
 }
 
-.package-options.ng-hide-remove-active {
+.package-options.ng-hide-remove.ng-hide-remove-active {
 	right: -$bw-base;
 }
 
@@ -105,7 +105,7 @@ $size-package-action: $height-package;
 	right: -$bw-base;
 }
 
-.package-options.ng-hide-add-active {
+.package-options.ng-hide-add.ng-hide-add-active {
 	right: -($size-package-view + $size-package-action);
 }
 

@@ -23,7 +23,7 @@ $height-settings-tab-text: $height-settings-head - $height-settings-tab-icon;
 	opacity: 0;
 }
 
-.settings-wrapper.ng-enter-active {
+.settings-wrapper.ng-enter.ng-enter-active {
 	transform: translate(-50%, -50%);
 	opacity: 1;
 }
@@ -33,7 +33,7 @@ $height-settings-tab-text: $height-settings-head - $height-settings-tab-icon;
 	opacity: 1;
 }
 
-.settings-wrapper.ng-leave-active {
+.settings-wrapper.ng-leave.ng-leave-active {
 	transform: translate(-50%, -35%);
 	opacity: 0;
 }
@@ -100,23 +100,20 @@ $height-settings-tab-text: $height-settings-head - $height-settings-tab-icon;
 	background-color: transparentize($clr-black, 0.5);
 }
 
-.settings-backdrop.ng-hide-add,
 .settings-backdrop.ng-hide-remove {
 	transition: background-color 0.2s ease-out;
+	background-color: transparent;
+}
+
+.settings-backdrop.ng-hide-remove.ng-hide-remove-active {
+	background-color: transparentize($clr-black, 0.5);
 }
 
 .settings-backdrop.ng-hide-add {
+	transition: background-color 0.2s ease-out 0.4s;
 	background-color: transparentize($clr-black, 0.5);
 }
 
-.settings-backdrop.ng-hide-add-active {
+.settings-backdrop.ng-hide-add.ng-hide-add-active {
 	background-color: transparent;
-}
-
-.settings-backdrop.ng-hide-remove {
-	background-color: transparent;
-}
-
-.settings-backdrop.ng-hide-remove-active {
-	background-color: transparentize($clr-black, 0.5);
 }
