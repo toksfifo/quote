@@ -19,7 +19,6 @@ $height-settings-head: $height-settings-head;
 
 .packages-body {
 	width: 100%;
-	height: 400px - 60px - (2 * $bw-base) - 50px - 24px;
 	height: $height-settings-wrapper - $height-settings-head - (2 * $bw-base) - $height-packages-head - $height-packages-titles;
 	// border: 1px solid red;
 }
@@ -34,7 +33,7 @@ $height-settings-head: $height-settings-head;
 
 .packages-title {
 	float: left;
-	width: 33.33%;
+	width: 50%;
 	height: 100%;
 	line-height: $height-packages-titles - 1px;
 	text-align: center;
@@ -42,7 +41,7 @@ $height-settings-head: $height-settings-head;
 
 .packages-col {
 	float: left;
-	width: 33.33%;
+	width: 50%;
 	height: 100%;
 	// border: 1px solid green;
 	overflow: scroll;

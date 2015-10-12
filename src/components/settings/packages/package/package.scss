@@ -15,7 +15,7 @@ $size-package-action: $height-package;
 	background-color: $clr-gray-lighter;
 	position: relative;
 	overflow: hidden;
-	transition: border-color 0.15s ease-in-out;
+	transition: border-color 0.15s ease-out;
 	cursor: pointer;
 }
 
@@ -23,13 +23,6 @@ $size-package-action: $height-package;
 	@extend .package;
 	&:hover {
 		border-color: $clr-red-pastel;
-	}
-}
-
-.package--own {
-	@extend .package;
-	&:hover {
-		border-color: $clr-green-pastel;
 	}
 }
 
@@ -127,11 +120,6 @@ $size-package-action: $height-package;
 .package-action--subscribed {
 	@extend .package-action;
 	background-color: $clr-red-pastel;
-}
-
-.package-action--own {
-	@extend .package-action;
-	background-color: $clr-green-pastel;
 }
 
 .package-action--all {

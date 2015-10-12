@@ -13,7 +13,6 @@
 	<!-- titles -->
 	<div class="packages-titles">
 		<div class="packages-title">Subscribed</div>
-		<div class="packages-title">Created</div>
 		<div class="packages-title">Other</div>
 	</div>
 
@@ -28,18 +27,10 @@
 				type="subscribed">
 		</div>
 
-		<!-- created -->
-		<div class="packages-col">
-			<package-dctv 
-				ng-repeat="package in packages.packagesOwn"
-				package="package"
-				type="own">
-		</div>
-
 		<!-- other -->
 		<div class="packages-col">
 			<package-dctv 
-				ng-repeat="package in packages.packagesAll | packagesAllFltr: packages.packagesOwn: packages.packagesSubscribed"
+				ng-repeat="package in packages.packagesAll | packagesNotSubscribedFltr: packages.packagesSubscribed"
 				package="package"
 				type="all">
 		</div>

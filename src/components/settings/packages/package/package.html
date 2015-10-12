@@ -20,27 +20,20 @@
 		<div class="package-view">
 			
 			<!-- view -->
-			<i class="icon ion-eye package-button--view" 
-				ng-if="::type === 'subscribed' || type === 'all'"></i>
-
-			<!-- edit -->
-			<i class="icon ion-edit package-button--view"
-				ng-if="::type === 'own'"></i>
-
+			<i class="icon ion-eye package-button--view"></i>
 		</div>
 
 		<!-- action option -->
-		<div class="package-action--{{ type }}">
+		<div class="package-action--{{ type }}"
+			ng-click="(type === 'all' && addPackage(package.$id)) || (type === 'subscribed' && removePackage(package.$id))">
 
 			<!-- add -->
 			<i class="icon ion-plus package-button" 
-				ng-if="::type === 'own' || type === 'all'"
-				ng-click="addPackage(package.$id)"></i>
+				ng-if="::type === 'all'"></i>
 
 			<!-- remove -->
 			<i class="icon ion-close package-button"
-				ng-if="::type === 'subscribed'"
-				ng-click="removePackage(package.$id)"></i>
+				ng-if="::type === 'subscribed'"></i>
 
 		</div>
 

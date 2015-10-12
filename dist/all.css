@@ -1672,8 +1672,8 @@ body {
   margin-top: 10px; }
 
 .settings-wrapper {
-  width: 750px;
-  height: 400px;
+  width: 550px;
+  height: 450px;
   background-color: white;
   color: gray;
   border: 4px solid gray; }
@@ -1711,7 +1711,7 @@ body {
   position: absolute;
   top: 0;
   left: 0;
-  width: 742px;
+  width: 542px;
   height: 60px;
   background-color: #f0f0f0;
   border-bottom: 1px solid #cdcdcd;
@@ -1722,8 +1722,8 @@ body {
   position: absolute;
   top: 60px;
   left: 0;
-  width: 742px;
-  height: 332px; }
+  width: 542px;
+  height: 382px; }
 
 .settings-tab {
   float: left;
@@ -1828,8 +1828,7 @@ body {
 
 .packages-body {
   width: 100%;
-  height: 258px;
-  height: 258px; }
+  height: 308px; }
 
 .packages-titles {
   width: 100%;
@@ -1839,19 +1838,19 @@ body {
 
 .packages-title {
   float: left;
-  width: 33.33%;
+  width: 50%;
   height: 100%;
   line-height: 23px;
   text-align: center; }
 
 .packages-col {
   float: left;
-  width: 33.33%;
+  width: 50%;
   height: 100%;
   overflow: scroll;
   text-align: center; }
 
-.package, .package--subscribed, .package--own, .package--all {
+.package, .package--subscribed, .package--all {
   height: 50px;
   width: 200px;
   border: 4px solid #cdcdcd;
@@ -1861,15 +1860,12 @@ body {
   background-color: #f0f0f0;
   position: relative;
   overflow: hidden;
-  -webkit-transition: border-color 0.15s ease-in-out;
-          transition: border-color 0.15s ease-in-out;
+  -webkit-transition: border-color 0.15s ease-out;
+          transition: border-color 0.15s ease-out;
   cursor: pointer; }
 
 .package--subscribed:hover {
   border-color: #ff6961; }
-
-.package--own:hover {
-  border-color: #77be77; }
 
 .package--all:hover {
   border-color: #77be77; }
@@ -1936,7 +1932,7 @@ body {
   background-color: #cdcdcd;
   text-align: center; }
 
-.package-action, .package-action--subscribed, .package-action--own, .package-action--all {
+.package-action, .package-action--subscribed, .package-action--all {
   float: left;
   height: 100%;
   width: 50px;
@@ -1944,9 +1940,6 @@ body {
 
 .package-action--subscribed {
   background-color: #ff6961; }
-
-.package-action--own {
-  background-color: #77be77; }
 
 .package-action--all {
   background-color: #77be77; }
