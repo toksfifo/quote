@@ -29,7 +29,8 @@
 			<!-- show subscribed packages. only show packages owned by user on packages.filter.created -->
 			<package-dctv
 				ng-repeat="package in packages.packagesSubscribed | 
-				packagesFltr: (packages.filter.created ? packages.packagesOwn : 'all'): 'include'"
+				packagesFltr: (packages.filter.created ? packages.packagesOwn : 'all'): 'include'
+				track by package.$id"
 				package="package"
 				type="subscribed">
 		</div>
@@ -40,7 +41,8 @@
 			<package-dctv 
 				ng-repeat="package in packages.packagesAll |
 				packagesFltr: packages.packagesSubscribed: 'exclude' |
-				packagesFltr: (packages.filter.created ? packages.packagesOwn : 'all'): 'include'"
+				packagesFltr: (packages.filter.created ? packages.packagesOwn : 'all'): 'include'
+				track by package.$id"
 				package="package"
 				type="all">
 		</div>

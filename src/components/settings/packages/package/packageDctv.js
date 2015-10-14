@@ -8,6 +8,7 @@ function packageDctv(DataSvc) {
 	 */
 	return {
 		restrict: 'E',
+		replace: true, /* for transition */
 		scope: {
 			package: '=',
 			type: '@'

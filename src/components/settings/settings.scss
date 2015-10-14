@@ -15,7 +15,7 @@ $height-settings-tab-text: $height-settings-head - $height-settings-tab-icon;
 
 .settings-wrapper.ng-enter,
 .settings-wrapper.ng-leave {
-	transition: all cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.6s;
+	transition: all 0.6s $ef-ease-in-out-back;
 }
 
 .settings-wrapper.ng-enter {

@@ -82,3 +82,8 @@ border width
 $bw-smaller: 1px;
 $bw-small: 2px;
 $bw-base: 4px;
+
+/*
+easing functions
+ */
+$ef-ease-in-out-back: cubic-bezier(0.68, -0.55, 0.265, 1.55);
