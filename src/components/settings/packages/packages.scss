@@ -1,6 +1,6 @@
 $height-packages-head: 50px;
 $height-packages-search: 30px;
-$width-packages-search: 200px;
+$width-packages-search: 150px;
 $height-packages-titles: 24px;
 $height-settings-wrapper: $height-settings-wrapper;
 $height-settings-head: $height-settings-head;
@@ -8,7 +8,7 @@ $height-settings-head: $height-settings-head;
 .packages-head {
 	width: 100%;
 	height: $height-packages-head;
-	// border: 1px solid black;
+	border: 1px solid black;
 }
 
 .packages-search {

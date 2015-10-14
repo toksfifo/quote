@@ -4,9 +4,14 @@
 	<!-- head -->
 	<div class="packages-head">
 		
+		<!-- search -->
 		<input type="text" class="packages-search">
 
-		<button class="button button--success">Create Package</button>
+		<!-- filter packages -->
+		<button class="button--info" ng-click="packages.filter.created = !packages.filter.created">Show Created</button>
+
+		<!-- create package -->
+		<button class="button--success">Create Package</button>
 
 	</div>
 
@@ -21,16 +26,21 @@
 
 		<!-- subscribed -->
 		<div class="packages-col">
-			<package-dctv 
-				ng-repeat="package in packages.packagesSubscribed"
+			<!-- show subscribed packages. only show packages owned by user on packages.filter.created -->
+			<package-dctv
+				ng-repeat="package in packages.packagesSubscribed | 
+				packagesFltr: (packages.filter.created ? packages.packagesOwn : 'all'): 'include'"
 				package="package"
 				type="subscribed">
 		</div>
 
 		<!-- other -->
 		<div class="packages-col">
+			<!-- show other packages that user is not subscribed to (by excluding subscribed from all), then filter by owned packages on packages.filter.created -->
 			<package-dctv 
-				ng-repeat="package in packages.packagesAll | packagesNotSubscribedFltr: packages.packagesSubscribed"
+				ng-repeat="package in packages.packagesAll |
+				packagesFltr: packages.packagesSubscribed: 'exclude' |
+				packagesFltr: (packages.filter.created ? packages.packagesOwn : 'all'): 'include'"
 				package="package"
 				type="all">
 		</div>

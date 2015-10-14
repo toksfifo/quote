@@ -5,6 +5,9 @@ function PackagesCtrl(AuthSvc, DataSvc) {
 
 	var vm = this;
 
+	vm.filter = {
+		created: false
+	};
 	vm.packagesAll;
 	vm.packagesOwn;
 	vm.packagesSubscribed;

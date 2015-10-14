@@ -12,7 +12,7 @@ function HomeCtrl($q, authStatus, DataSvc, AuthSvc) {
 	var vm = this;
 
 	vm.show = {
-		settings: true,
+		settings: false,
 		form: false
 	};
 	vm.generateQuoteList = generateQuoteList;
