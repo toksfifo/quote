@@ -394,8 +394,17 @@ body {
 .ng-leave.package--subscribed,
 .ng-leave.package--all,
 .package.ng-move, .ng-move.package--subscribed, .ng-move.package--all {
-  -webkit-transition: all 0.35s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-          transition: all 0.35s cubic-bezier(0.68, -0.55, 0.265, 1.55); }
+  -webkit-transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+          transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); }
+
+.package.ng-enter-stagger,
+.ng-enter-stagger.package--subscribed,
+.ng-enter-stagger.package--all,
+.package.ng-leave-stagger, .ng-leave-stagger.package--subscribed, .ng-leave-stagger.package--all {
+  -webkit-transition-delay: 0.01s;
+          transition-delay: 0.01s;
+  -webkit-transition-duration: 0s;
+          transition-duration: 0s; }
 
 .package.ng-enter,
 .ng-enter.package--subscribed,

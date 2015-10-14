@@ -5,7 +5,7 @@
 	<div class="packages-head">
 		
 		<!-- search -->
-		<input type="text" class="packages-search">
+		<input type="text" class="packages-search" ng-model="packages.filter.search">
 
 		<!-- filter packages -->
 		<button class="button--info" ng-click="packages.filter.created = !packages.filter.created">Show Created</button>
@@ -29,7 +29,8 @@
 			<!-- show subscribed packages. only show packages owned by user on packages.filter.created -->
 			<package-dctv
 				ng-repeat="package in packages.packagesSubscribed | 
-				packagesFltr: (packages.filter.created ? packages.packagesOwn : 'all'): 'include'
+				packagesFltr: (packages.filter.created ? packages.packagesOwn : 'all'): 'include' |
+				filter: packages.filter.search
 				track by package.$id"
 				package="package"
 				type="subscribed">
@@ -41,7 +42,8 @@
 			<package-dctv 
 				ng-repeat="package in packages.packagesAll |
 				packagesFltr: packages.packagesSubscribed: 'exclude' |
-				packagesFltr: (packages.filter.created ? packages.packagesOwn : 'all'): 'include'
+				packagesFltr: (packages.filter.created ? packages.packagesOwn : 'all'): 'include' |
+				filter: packages.filter.search
 				track by package.$id"
 				package="package"
 				type="all">

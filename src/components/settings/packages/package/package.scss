@@ -22,7 +22,13 @@ $size-package-action: $height-package;
 .package.ng-enter,
 .package.ng-leave,
 .package.ng-move, {
-	transition: all 0.35s $ef-ease-in-out-back;
+	transition: all 0.5s $ef-ease-in-out-back;
+}
+
+.package.ng-enter-stagger,
+.package.ng-leave-stagger {
+	transition-delay: 0.01s;
+	transition-duration: 0s;
 }
 
 .package.ng-enter,

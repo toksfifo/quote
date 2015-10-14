@@ -6,7 +6,8 @@ function PackagesCtrl(DataSvc) {
 	var vm = this;
 
 	vm.filter = {
-		created: false
+		created: false,
+		search: ''
 	};
 	vm.packagesAll;
 	vm.packagesOwn;
