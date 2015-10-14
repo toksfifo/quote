@@ -1,7 +1,7 @@
 angular.module('quote')
 	.factory('DataSvc', DataSvc);
 
-function DataSvc($q, $firebaseArray, $firebaseObject, Const) {
+function DataSvc($q, $firebaseArray, $firebaseObject, Const, AuthSvc) {
 
 	var colorOptions = [
 		{ name: 'red-pastel' },
@@ -29,13 +29,12 @@ function DataSvc($q, $firebaseArray, $firebaseObject, Const) {
 
 	/**
 	 * Get aster quote to display on new tab.
-	 * @param  {String} uid user ID
 	 * @return {Promise}     Resolves with quote, or 0 if there are no quotes to display (user is out of quotes, or hasn't subscribed to any packages)
 	 */
-	function getQuote(uid) {
+	function getQuote() {
 		return $q(function(resolve, reject) {
 			var quoteList = $firebaseArray(Const.ref.child('users')
-				.child(uid)
+				.child(AuthSvc.getAuthStatus().uid)
 				.child('quotes'));
 
 			quoteList.$loaded().then(function() {
@@ -61,18 +60,17 @@ function DataSvc($q, $firebaseArray, $firebaseObject, Const) {
 
 	/**
 	 * Generates list of quotes to select master quote from, based on the packages a user is subscribed to. Only happens every now and then, if the user subscribes to a new package, for example.
-	 * @param  {String} uid user ID
 	 * @return {Promise}     Resolves after quotes are generated. This is tricky, and note that rn it won't work if there is a package with no quotes.
 	 */
-	function generateQuoteList(uid) {
+	function generateQuoteList() {
 		return $q(function(resolve, reject) {
 			var subscribed = Const.ref.child('users')
-				.child(uid)
+				.child(AuthSvc.getAuthStatus().uid)
 				.child('packages')
 				.child('subscribed');
 
 			var quoteList = Const.ref.child('users')
-				.child(uid)
+				.child(AuthSvc.getAuthStatus().uid)
 				.child('quotes');
 
 			// 1st, empty quote list
@@ -137,24 +135,22 @@ function DataSvc($q, $firebaseArray, $firebaseObject, Const) {
 
 	/**
 	 * Get packages that a user created
-	 * @param  {String} uid user ID
 	 * @return {$firebaseArray}     packages user owns
 	 */
-	function getPackagesOwn(uid) {
+	function getPackagesOwn() {
 		return $firebaseArray(Const.ref.child('packages')
 			.orderByChild('creator')
-			.equalTo(uid));
+			.equalTo(AuthSvc.getAuthStatus().uid));
 	}
 
 	/**
 	 * Get packages that a user is subscribed to
-	 * @param  {String} uid user ID
 	 * @return {$firebaseArray}     packages user's subscribed to. Note that we're using (experimental) firebase-util here.
 	 */
-	function getPackagesSubscribed(uid) {
+	function getPackagesSubscribed() {
 		return $firebaseArray(new Firebase.util.NormalizedCollection(
 			Const.ref.child('users')
-				.child(uid)
+				.child(AuthSvc.getAuthStatus().uid)
 				.child('packages/subscribed'),
 			Const.ref.child('packages')
 		).select(
@@ -167,14 +163,13 @@ function DataSvc($q, $firebaseArray, $firebaseObject, Const) {
 
 	/**
 	 * Subscribe to a package
-	 * @param  {String} uid user ID
 	 * @param  {String} key push key of package
 	 * @return {Promise}     Resolves when user subscribes to package
 	 */
-	function subscribePackage(uid, key) {
+	function subscribePackage(key) {
 		return $q(function(resolve, reject) {
 			Const.ref.child('users')
-				.child(uid)
+				.child(AuthSvc.getAuthStatus().uid)
 				.child('packages')
 				.child('subscribed')
 				.child(key)
@@ -186,14 +181,13 @@ function DataSvc($q, $firebaseArray, $firebaseObject, Const) {
 
 	/**
 	 * Unsubscribe from a package
-	 * @param  {String} uid user ID
 	 * @param  {String} key push key of package
 	 * @return {Promise}     Resolves when user unsubscribes to package
 	 */
-	function unsubscribePackage(uid, key) {
+	function unsubscribePackage(key) {
 		return $q(function(resolve, reject) {
 			Const.ref.child('users')
-				.child(uid)
+				.child(AuthSvc.getAuthStatus().uid)
 				.child('packages')
 				.child('subscribed')
 				.child(key)
@@ -205,23 +199,22 @@ function DataSvc($q, $firebaseArray, $firebaseObject, Const) {
 
 	/**
 	 * Create new package
-	 * @param  {String} uid    user ID who creates package
 	 * @param  {String} name   name/title of package
 	 * @param  {Array} quotes array of quote objects
 	 * @return {Promise}        Resolves when package has been created and quotes are added to db. Note that it won't resolve rn if there are no quotes added to package
 	 */
-	function createPackage(uid, name, quotes) {
+	function createPackage(name, quotes) {
 		return $q(function(resolve, reject) {
 
 			// 1st, get the name of the package's owner
 			Const.ref.child('users')
-				.child(uid)
+				.child(AuthSvc.getAuthStatus().uid)
 				.child('info/name').once('value', function(username) {
 
 					// now, create the package
 					var package = Const.ref.child('packages').push({
 						name: name,
-						creator: uid,
+						creator: AuthSvc.getAuthStatus().uid,
 						creatorName: username.val(),
 						length: quotes.length
 					}, function(err) {
@@ -270,24 +263,22 @@ function DataSvc($q, $firebaseArray, $firebaseObject, Const) {
 
 	/**
 	 * Get user's background color
-	 * @param  {String} uid user ID
 	 * @return {$firebaseObject}     color with properties 'name' and 'val'
 	 */
-	function getColor(uid) {
+	function getColor() {
 		return $firebaseObject(Const.ref.child('users')
-			.child(uid)
+			.child(AuthSvc.getAuthStatus().uid)
 			.child('color'));
 	}
 
 	/**
 	 * Set new background color
-	 * @param {String} uid   userID
 	 * @param {Object} color new color with properties 'name' and 'val'
 	 */
-	function setColor(uid, color) {
+	function setColor(color) {
 		return $q(function(resolve, reject) {
 			Const.ref.child('users')
-				.child(uid)
+				.child(AuthSvc.getAuthStatus().uid)
 				.child('color')
 				.set({
 					name: color.name

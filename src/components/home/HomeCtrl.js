@@ -25,7 +25,7 @@ function HomeCtrl($q, authStatus, DataSvc, AuthSvc) {
 		getAuth().then(function(authStatus) {
 			AuthSvc.setAuthStatus(authStatus);
 			getQuote();
-			vm.currentColor = DataSvc.getColor(AuthSvc.getAuthStatus().uid);
+			vm.currentColor = DataSvc.getColor();
 		}, function(err) {
 			console.log('error getting auth:', err);
 		});
@@ -35,7 +35,7 @@ function HomeCtrl($q, authStatus, DataSvc, AuthSvc) {
 	 * Get main quote to display on new tab
 	 */
 	function getQuote() {
-		DataSvc.getQuote(AuthSvc.getAuthStatus().uid).then(function(quote) {
+		DataSvc.getQuote().then(function(quote) {
 			if (quote === 0) {
 				
 				// prompt to resubscribe or reset current
@@ -70,7 +70,7 @@ function HomeCtrl($q, authStatus, DataSvc, AuthSvc) {
 	 * Generate list of quotes to pull main quote from
 	 */
 	function generateQuoteList() {
-		DataSvc.generateQuoteList(AuthSvc.getAuthStatus().uid).then(function() {
+		DataSvc.generateQuoteList().then(function() {
 		}, function(err) {
 			console.log('error generating quote list:', err);
 		});

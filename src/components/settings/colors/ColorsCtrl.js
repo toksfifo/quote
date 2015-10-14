@@ -1,12 +1,12 @@
 angular.module('quote')
 	.controller('ColorsCtrl', ColorsCtrl);
 
-function ColorsCtrl(DataSvc, AuthSvc) {
+function ColorsCtrl(DataSvc) {
 
 	var vm = this;
 
 	vm.colors = DataSvc.getColorOptions();
-	vm.currentColor = DataSvc.getColor(AuthSvc.getAuthStatus().uid);
+	vm.currentColor = DataSvc.getColor();
 	vm.selectColor = selectColor;
 
 	/**
@@ -14,7 +14,7 @@ function ColorsCtrl(DataSvc, AuthSvc) {
 	 * @param  {Object} color new color
 	 */
 	function selectColor(color) {
-		DataSvc.setColor(AuthSvc.getAuthStatus().uid, color).then(function() {
+		DataSvc.setColor(color).then(function() {
 
 		}, function(err) {
 			console.log('error setting color', err);

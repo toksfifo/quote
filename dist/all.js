@@ -45908,49 +45908,9 @@ function AuthSvc($q, $firebaseAuth, Const, UserSvc) {
 }
 AuthSvc.$inject = ["$q", "$firebaseAuth", "Const", "UserSvc"];
 angular.module('quote')
-	.filter('packagesFltr', packagesFltr);
-
-function packagesFltr() {
-
-	return filter;
-
-	/**
-	 * Filter packagesBase either by excluding packagesToFilterBy from packagesBase, or by only including packagesToFilterBy in packagesBase
-	 * @param  {$firebaseArray} packagesBase       packages to filter
-	 * @param  {$firebaseArray} packagesToFilterBy packages to filter by, or 'all'
-	 * @param  {String} direction          filter mechanism. either 'include' or 'exclude'
-	 * @return {Array}                    filtered $firebaseArray as Array
-	 */
-	function filter(packagesBase, packagesToFilterBy, direction) {
-		
-		// don't show anything if we don't have all the data
-		if (!packagesBase || !packagesToFilterBy) {
-			return [];
-		}
-
-		// inluding all doesn't filter at all. excluding all filters out all elements
-		if (packagesToFilterBy === 'all') {
-			if (direction === 'include') return packagesBase;
-			else if (direction === 'exclude') return [];
-		}
-
-		var packagesToFilterById = _.map(packagesToFilterBy, function(package) {
-			return package.$id;
-		});
-
-		return _.filter(packagesBase, function(package) {
-			if (direction === 'include') return packagesToFilterById.indexOf(package.$id) > -1;
-			else if (direction === 'exclude') return packagesToFilterById.indexOf(package.$id) === -1;
-			else return [];
-		});
-
-	}
-
-}
-angular.module('quote')
 	.factory('DataSvc', DataSvc);
 
-function DataSvc($q, $firebaseArray, $firebaseObject, Const) {
+function DataSvc($q, $firebaseArray, $firebaseObject, Const, AuthSvc) {
 
 	var colorOptions = [
 		{ name: 'red-pastel' },
@@ -45978,13 +45938,12 @@ function DataSvc($q, $firebaseArray, $firebaseObject, Const) {
 
 	/**
 	 * Get aster quote to display on new tab.
-	 * @param  {String} uid user ID
 	 * @return {Promise}     Resolves with quote, or 0 if there are no quotes to display (user is out of quotes, or hasn't subscribed to any packages)
 	 */
-	function getQuote(uid) {
+	function getQuote() {
 		return $q(function(resolve, reject) {
 			var quoteList = $firebaseArray(Const.ref.child('users')
-				.child(uid)
+				.child(AuthSvc.getAuthStatus().uid)
 				.child('quotes'));
 
 			quoteList.$loaded().then(function() {
@@ -46010,18 +45969,17 @@ function DataSvc($q, $firebaseArray, $firebaseObject, Const) {
 
 	/**
 	 * Generates list of quotes to select master quote from, based on the packages a user is subscribed to. Only happens every now and then, if the user subscribes to a new package, for example.
-	 * @param  {String} uid user ID
 	 * @return {Promise}     Resolves after quotes are generated. This is tricky, and note that rn it won't work if there is a package with no quotes.
 	 */
-	function generateQuoteList(uid) {
+	function generateQuoteList() {
 		return $q(function(resolve, reject) {
 			var subscribed = Const.ref.child('users')
-				.child(uid)
+				.child(AuthSvc.getAuthStatus().uid)
 				.child('packages')
 				.child('subscribed');
 
 			var quoteList = Const.ref.child('users')
-				.child(uid)
+				.child(AuthSvc.getAuthStatus().uid)
 				.child('quotes');
 
 			// 1st, empty quote list
@@ -46086,24 +46044,22 @@ function DataSvc($q, $firebaseArray, $firebaseObject, Const) {
 
 	/**
 	 * Get packages that a user created
-	 * @param  {String} uid user ID
 	 * @return {$firebaseArray}     packages user owns
 	 */
-	function getPackagesOwn(uid) {
+	function getPackagesOwn() {
 		return $firebaseArray(Const.ref.child('packages')
 			.orderByChild('creator')
-			.equalTo(uid));
+			.equalTo(AuthSvc.getAuthStatus().uid));
 	}
 
 	/**
 	 * Get packages that a user is subscribed to
-	 * @param  {String} uid user ID
 	 * @return {$firebaseArray}     packages user's subscribed to. Note that we're using (experimental) firebase-util here.
 	 */
-	function getPackagesSubscribed(uid) {
+	function getPackagesSubscribed() {
 		return $firebaseArray(new Firebase.util.NormalizedCollection(
 			Const.ref.child('users')
-				.child(uid)
+				.child(AuthSvc.getAuthStatus().uid)
 				.child('packages/subscribed'),
 			Const.ref.child('packages')
 		).select(
@@ -46116,14 +46072,13 @@ function DataSvc($q, $firebaseArray, $firebaseObject, Const) {
 
 	/**
 	 * Subscribe to a package
-	 * @param  {String} uid user ID
 	 * @param  {String} key push key of package
 	 * @return {Promise}     Resolves when user subscribes to package
 	 */
-	function subscribePackage(uid, key) {
+	function subscribePackage(key) {
 		return $q(function(resolve, reject) {
 			Const.ref.child('users')
-				.child(uid)
+				.child(AuthSvc.getAuthStatus().uid)
 				.child('packages')
 				.child('subscribed')
 				.child(key)
@@ -46135,14 +46090,13 @@ function DataSvc($q, $firebaseArray, $firebaseObject, Const) {
 
 	/**
 	 * Unsubscribe from a package
-	 * @param  {String} uid user ID
 	 * @param  {String} key push key of package
 	 * @return {Promise}     Resolves when user unsubscribes to package
 	 */
-	function unsubscribePackage(uid, key) {
+	function unsubscribePackage(key) {
 		return $q(function(resolve, reject) {
 			Const.ref.child('users')
-				.child(uid)
+				.child(AuthSvc.getAuthStatus().uid)
 				.child('packages')
 				.child('subscribed')
 				.child(key)
@@ -46154,23 +46108,22 @@ function DataSvc($q, $firebaseArray, $firebaseObject, Const) {
 
 	/**
 	 * Create new package
-	 * @param  {String} uid    user ID who creates package
 	 * @param  {String} name   name/title of package
 	 * @param  {Array} quotes array of quote objects
 	 * @return {Promise}        Resolves when package has been created and quotes are added to db. Note that it won't resolve rn if there are no quotes added to package
 	 */
-	function createPackage(uid, name, quotes) {
+	function createPackage(name, quotes) {
 		return $q(function(resolve, reject) {
 
 			// 1st, get the name of the package's owner
 			Const.ref.child('users')
-				.child(uid)
+				.child(AuthSvc.getAuthStatus().uid)
 				.child('info/name').once('value', function(username) {
 
 					// now, create the package
 					var package = Const.ref.child('packages').push({
 						name: name,
-						creator: uid,
+						creator: AuthSvc.getAuthStatus().uid,
 						creatorName: username.val(),
 						length: quotes.length
 					}, function(err) {
@@ -46219,24 +46172,22 @@ function DataSvc($q, $firebaseArray, $firebaseObject, Const) {
 
 	/**
 	 * Get user's background color
-	 * @param  {String} uid user ID
 	 * @return {$firebaseObject}     color with properties 'name' and 'val'
 	 */
-	function getColor(uid) {
+	function getColor() {
 		return $firebaseObject(Const.ref.child('users')
-			.child(uid)
+			.child(AuthSvc.getAuthStatus().uid)
 			.child('color'));
 	}
 
 	/**
 	 * Set new background color
-	 * @param {String} uid   userID
 	 * @param {Object} color new color with properties 'name' and 'val'
 	 */
-	function setColor(uid, color) {
+	function setColor(color) {
 		return $q(function(resolve, reject) {
 			Const.ref.child('users')
-				.child(uid)
+				.child(AuthSvc.getAuthStatus().uid)
 				.child('color')
 				.set({
 					name: color.name
@@ -46257,11 +46208,11 @@ function DataSvc($q, $firebaseArray, $firebaseObject, Const) {
 	}
 
 }
-DataSvc.$inject = ["$q", "$firebaseArray", "$firebaseObject", "Const"];
+DataSvc.$inject = ["$q", "$firebaseArray", "$firebaseObject", "Const", "AuthSvc"];
 angular.module('quote')
 	.controller('FormCtrl', FormCtrl);
 
-function FormCtrl(DataSvc, AuthSvc) {
+function FormCtrl(DataSvc) {
 
 	var vm = this;
 
@@ -46295,7 +46246,7 @@ function FormCtrl(DataSvc, AuthSvc) {
 	 * Create package on db
 	 */
 	function createPackage() {
-		DataSvc.createPackage(AuthSvc.getAuthStatus().uid, vm.packageName, vm.quotesAdded).then(function() {
+		DataSvc.createPackage(vm.packageName, vm.quotesAdded).then(function() {
 			vm.packageName = '';
 			vm.quotesAdded = [];
 		}, function(err) {
@@ -46304,7 +46255,47 @@ function FormCtrl(DataSvc, AuthSvc) {
 	}
 
 }
-FormCtrl.$inject = ["DataSvc", "AuthSvc"];
+FormCtrl.$inject = ["DataSvc"];
+angular.module('quote')
+	.filter('packagesFltr', packagesFltr);
+
+function packagesFltr() {
+
+	return filter;
+
+	/**
+	 * Filter packagesBase either by excluding packagesToFilterBy from packagesBase, or by only including packagesToFilterBy in packagesBase
+	 * @param  {$firebaseArray} packagesBase       packages to filter
+	 * @param  {$firebaseArray} packagesToFilterBy packages to filter by, or 'all'
+	 * @param  {String} direction          filter mechanism. either 'include' or 'exclude'
+	 * @return {Array}                    filtered $firebaseArray as Array
+	 */
+	function filter(packagesBase, packagesToFilterBy, direction) {
+		
+		// don't show anything if we don't have all the data
+		if (!packagesBase || !packagesToFilterBy) {
+			return [];
+		}
+
+		// inluding all doesn't filter at all. excluding all filters out all elements
+		if (packagesToFilterBy === 'all') {
+			if (direction === 'include') return packagesBase;
+			else if (direction === 'exclude') return [];
+		}
+
+		var packagesToFilterById = _.map(packagesToFilterBy, function(package) {
+			return package.$id;
+		});
+
+		return _.filter(packagesBase, function(package) {
+			if (direction === 'include') return packagesToFilterById.indexOf(package.$id) > -1;
+			else if (direction === 'exclude') return packagesToFilterById.indexOf(package.$id) === -1;
+			else return [];
+		});
+
+	}
+
+}
 angular.module('quote')
 	.controller('HomeCtrl', HomeCtrl);
 
@@ -46332,7 +46323,7 @@ function HomeCtrl($q, authStatus, DataSvc, AuthSvc) {
 		getAuth().then(function(authStatus) {
 			AuthSvc.setAuthStatus(authStatus);
 			getQuote();
-			vm.currentColor = DataSvc.getColor(AuthSvc.getAuthStatus().uid);
+			vm.currentColor = DataSvc.getColor();
 		}, function(err) {
 			console.log('error getting auth:', err);
 		});
@@ -46342,7 +46333,7 @@ function HomeCtrl($q, authStatus, DataSvc, AuthSvc) {
 	 * Get main quote to display on new tab
 	 */
 	function getQuote() {
-		DataSvc.getQuote(AuthSvc.getAuthStatus().uid).then(function(quote) {
+		DataSvc.getQuote().then(function(quote) {
 			if (quote === 0) {
 				
 				// prompt to resubscribe or reset current
@@ -46377,7 +46368,7 @@ function HomeCtrl($q, authStatus, DataSvc, AuthSvc) {
 	 * Generate list of quotes to pull main quote from
 	 */
 	function generateQuoteList() {
-		DataSvc.generateQuoteList(AuthSvc.getAuthStatus().uid).then(function() {
+		DataSvc.generateQuoteList().then(function() {
 		}, function(err) {
 			console.log('error generating quote list:', err);
 		});
@@ -46447,12 +46438,12 @@ UserSvc.$inject = ["$q", "Const"];
 angular.module('quote')
 	.controller('ColorsCtrl', ColorsCtrl);
 
-function ColorsCtrl(DataSvc, AuthSvc) {
+function ColorsCtrl(DataSvc) {
 
 	var vm = this;
 
 	vm.colors = DataSvc.getColorOptions();
-	vm.currentColor = DataSvc.getColor(AuthSvc.getAuthStatus().uid);
+	vm.currentColor = DataSvc.getColor();
 	vm.selectColor = selectColor;
 
 	/**
@@ -46460,7 +46451,7 @@ function ColorsCtrl(DataSvc, AuthSvc) {
 	 * @param  {Object} color new color
 	 */
 	function selectColor(color) {
-		DataSvc.setColor(AuthSvc.getAuthStatus().uid, color).then(function() {
+		DataSvc.setColor(color).then(function() {
 
 		}, function(err) {
 			console.log('error setting color', err);
@@ -46468,11 +46459,11 @@ function ColorsCtrl(DataSvc, AuthSvc) {
 	}
 	
 }
-ColorsCtrl.$inject = ["DataSvc", "AuthSvc"];
+ColorsCtrl.$inject = ["DataSvc"];
 angular.module('quote')
 	.controller('PackagesCtrl', PackagesCtrl);
 
-function PackagesCtrl(AuthSvc, DataSvc) {
+function PackagesCtrl(DataSvc) {
 
 	var vm = this;
 
@@ -46487,16 +46478,16 @@ function PackagesCtrl(AuthSvc, DataSvc) {
 
 	function init() {
 		vm.packagesAll = DataSvc.getPackagesAll();
-		vm.packagesOwn = DataSvc.getPackagesOwn(AuthSvc.getAuthStatus().uid);
-		vm.packagesSubscribed = DataSvc.getPackagesSubscribed(AuthSvc.getAuthStatus().uid);
+		vm.packagesOwn = DataSvc.getPackagesOwn();
+		vm.packagesSubscribed = DataSvc.getPackagesSubscribed();
 	}
 
 }
-PackagesCtrl.$inject = ["AuthSvc", "DataSvc"];
+PackagesCtrl.$inject = ["DataSvc"];
 angular.module('quote')
 	.directive('packageDctv', packageDctv);
 
-function packageDctv(DataSvc, AuthSvc) {
+function packageDctv(DataSvc) {
 
 	/**
 	 * Directive for packages.
@@ -46526,7 +46517,7 @@ function packageDctv(DataSvc, AuthSvc) {
 		 * @param {String} key push key ($id) of package
 		 */
 		function addPackage(key) {
-			DataSvc.subscribePackage(AuthSvc.getAuthStatus().uid, key).then(function() {
+			DataSvc.subscribePackage(key).then(function() {
 			}, function(err) {
 				console.log('error subscribing to package:', err);
 			});
@@ -46537,7 +46528,7 @@ function packageDctv(DataSvc, AuthSvc) {
 		 * @param  {String} key push key ($id) of package
 		 */
 		function removePackage(key) {
-			DataSvc.unsubscribePackage(AuthSvc.getAuthStatus().uid, key).then(function() {
+			DataSvc.unsubscribePackage(key).then(function() {
 			}, function(err) {
 				console.log('error unsubscribing to package:', err);
 			});
@@ -46546,4 +46537,4 @@ function packageDctv(DataSvc, AuthSvc) {
 	}
 
 }
-packageDctv.$inject = ["DataSvc", "AuthSvc"];
+packageDctv.$inject = ["DataSvc"];
