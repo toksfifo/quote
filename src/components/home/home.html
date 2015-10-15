@@ -19,21 +19,25 @@
 
 		
 	<!-- quote -->
-	<div class="quote-wrapper u-centerXY" ng-if="::home.quote.body">
+	<div class="quote-wrapper u-centerXY" 
+		ng-if="::home.quote.body" 
+		ng-class="{ 'is-blurred': home.show.settings }">
 		<div class="quote">
 			<p class="quote-body">{{ home.quote.body }}</p>
 			<p class="quote-author">&#8212; {{ home.quote.author | uppercase}}</p>
 		</div>
 	</div>
 
-	<div class="settings-backdrop" ng-show="home.show.settings" ng-click="home.show.settings = false"></div>
+	<!-- click to close settings -->
+	<div class="settings-close" 
+		ng-show="home.show.settings" 
+		ng-click="home.show.settings = false"></div>
 
 	<!-- settings -->
 	<div ng-include="'components/settings/settings.html'"></div>
 
 	<!-- form -->
-	<div ng-if="home.show.form" 
-		ng-include="'components/form/form.html'"></div>
+	<div ng-include="'components/form/form.html'"></div>
 	
 </div>
 

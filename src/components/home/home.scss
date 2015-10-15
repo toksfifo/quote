@@ -20,6 +20,11 @@ body {
 	height: $height-quote-wrapper;
 	width: $width-quote-wrapper;
 	display: table;
+	transition: filter 0.2s ease-in-out 0.4s;
+	&.is-blurred {
+		filter: blur(4px);
+		transition: filter 0.2s ease-in-out;
+	}
 }
 
 .quote-wrapper.ng-enter {

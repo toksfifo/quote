@@ -1,4 +1,5 @@
-<div ng-controller="FormCtrl as form">
+<div ng-controller="FormCtrl as form"
+	ng-if="home.show.form">
 
 	<div ng-repeat="quote in form.quotesAdded">{{ quote.body }} -{{ quote.author}}</div>
 	
