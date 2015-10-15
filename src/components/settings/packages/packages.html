@@ -4,16 +4,25 @@
 	<!-- head -->
 	<div class="packages-head">
 		
-		<input type="text" class="packages-search">
+		<!-- search -->
+		<input type="text" class="packages-search packages-head-item"  
+			ng-model="packages.filter.search"
+			ng-class="{ 'is-active': packages.filter.search }"
+			placeholder="Search Packages">
 
-		<button class="button button--success">Create Package</button>
+		<!-- filter packages -->
+		<button class="button packages-head-item u-inlineBlock" 
+			ng-click="packages.filter.created = !packages.filter.created"
+			ng-class="{ 'button--active': packages.filter.created }">{{ packages.filter.created ? 'Show All' : 'Show Only Yours' }}</button>
+
+		<!-- create package -->
+		<button class="button button--success packages-head-item u-inlineBlock">Create Package</button>
 
 	</div>
 
 	<!-- titles -->
 	<div class="packages-titles">
 		<div class="packages-title">Subscribed</div>
-		<div class="packages-title">Created</div>
 		<div class="packages-title">Other</div>
 	</div>
 
@@ -22,24 +31,25 @@
 
 		<!-- subscribed -->
 		<div class="packages-col">
-			<package-dctv 
-				ng-repeat="package in packages.packagesSubscribed"
+			<!-- show subscribed packages. only show packages owned by user on packages.filter.created -->
+			<package-dctv
+				ng-repeat="package in packages.packagesSubscribed | 
+				packagesFltr: (packages.filter.created ? packages.packagesOwn : 'all'): 'include' |
+				filter: packages.filter.search
+				track by package.$id"
 				package="package"
 				type="subscribed">
 		</div>
 
-		<!-- created -->
-		<div class="packages-col">
-			<package-dctv 
-				ng-repeat="package in packages.packagesOwn"
-				package="package"
-				type="own">
-		</div>
-
 		<!-- other -->
 		<div class="packages-col">
+			<!-- show other packages that user is not subscribed to (by excluding subscribed from all), then filter by owned packages on packages.filter.created -->
 			<package-dctv 
-				ng-repeat="package in packages.packagesAll | packagesAllFltr: packages.packagesOwn: packages.packagesSubscribed"
+				ng-repeat="package in packages.packagesAll |
+				packagesFltr: packages.packagesSubscribed: 'exclude' |
+				packagesFltr: (packages.filter.created ? packages.packagesOwn : 'all'): 'include' |
+				filter: packages.filter.search
+				track by package.$id"
 				package="package"
 				type="all">
 		</div>

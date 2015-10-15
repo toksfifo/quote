@@ -1,20 +1,45 @@
-$height-button: 40px;
-$width-button: 160px;
+$height-button: 36px;
+$width-button: 150px;
+$clr-button-dark: transparentize($clr-black, 0.5);
+$clr-button-base: transparentize($clr-black, 0.6);
+$clr-button-light: transparentize($clr-black, 0.8);
 
 .button {
-	float: right;
 	height: $height-button;
 	width: $width-button;
-	font-size: $fs-base;
-	border: $bw-base solid $clr-gray-light;
-	color: $clr-gray-light;
+	font-size: $fs-small;
+	font-weight: $fw-base;
+	border: $bw-base solid $clr-button-base;
+	color: $clr-button-base;
 	background-color: transparent;
 	outline: 0;
+	cursor: pointer;
+	transition: border-color 0.15s ease-in-out, color 0.15s ease-in-out;
 	&:hover {
-		border-color: $clr-gray-dark;
-		color: $clr-gray-dark;
+		border-color: $clr-button-dark;
+		color: $clr-button-dark;
 	}
 	&:active {
-		background-color: $clr-gray-light;
+		background-color: $clr-button-light;
+	}
+}
+
+.button--success {
+	background-color: $clr-green-pastel;
+	border-color: shade($clr-green-pastel, 20%);
+	color: $clr-white;
+	&:hover {
+		border-color: shade($clr-green-pastel, 35%);
+		color: $clr-white;
+	}
+	&:active {
+		background-color: shade($clr-green-pastel, 10%);
+	}
+}
+
+.button--active {
+	background-color: $clr-button-light;
+	&:active {
+		background-color: $clr-white;
 	}
 }

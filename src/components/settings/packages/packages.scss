@@ -1,25 +1,43 @@
-$height-packages-head: 50px;
-$height-packages-search: 30px;
-$width-packages-search: 200px;
-$height-packages-titles: 24px;
+$height-packages-head: 60px;
+$height-packages-search: $height-button;
+$width-packages-search: $width-button;
+$height-packages-titles: 36px;
 $height-settings-wrapper: $height-settings-wrapper;
 $height-settings-head: $height-settings-head;
+$clr-button-light: $clr-button-light;
 
 .packages-head {
 	width: 100%;
 	height: $height-packages-head;
 	// border: 1px solid black;
+	text-align: center;
+}
+
+.packages-head-item {
+	margin-top: $mgn-larger;
+	&:not(:nth-child(1)) {
+		margin-left: $mgn-larger;
+	}
 }
 
 .packages-search {
 	height: $height-packages-search;
 	width: $width-packages-search;
-	float: left;
+	line-height: $height-packages-search - 1px;
+	padding: $pdg-base;
+	display: inline-block;
+	border: 1px solid $clr-button-light;
+	outline: 0;
+	transition: background-color 0.15s ease-in-out;
+	text-align: center;
+	font-size: $fs-small;
+	&.is-active {
+		background-color: $clr-button-light;
+	}
 }
 
 .packages-body {
 	width: 100%;
-	height: 400px - 60px - (2 * $bw-base) - 50px - 24px;
 	height: $height-settings-wrapper - $height-settings-head - (2 * $bw-base) - $height-packages-head - $height-packages-titles;
 	// border: 1px solid red;
 }
@@ -34,7 +52,7 @@ $height-settings-head: $height-settings-head;
 
 .packages-title {
 	float: left;
-	width: 33.33%;
+	width: 50%;
 	height: 100%;
 	line-height: $height-packages-titles - 1px;
 	text-align: center;
@@ -42,7 +60,7 @@ $height-settings-head: $height-settings-head;
 
 .packages-col {
 	float: left;
-	width: 33.33%;
+	width: 50%;
 	height: 100%;
 	// border: 1px solid green;
 	overflow: scroll;

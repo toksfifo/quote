@@ -31,8 +31,8 @@ $clr-gray-pastel: rgba(207, 207, 196, 1.0);
 /*
 font size
  */
-// $fs-smaller:
-$fs-small: 11px;
+$fs-smaller: 11px;
+$fs-small: 15px;
 $fs-base: 16px;
 $fs-large: 26px;
 $fs-larger: 30px;
@@ -82,3 +82,8 @@ border width
 $bw-smaller: 1px;
 $bw-small: 2px;
 $bw-base: 4px;
+
+/*
+easing functions
+ */
+$ef-ease-in-out-back: cubic-bezier(0.68, -0.55, 0.265, 1.55);

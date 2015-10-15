@@ -1,13 +1,14 @@
 angular.module('quote')
 	.directive('packageDctv', packageDctv);
 
-function packageDctv(DataSvc, AuthSvc) {
+function packageDctv(DataSvc) {
 
 	/**
 	 * Directive for packages.
 	 */
 	return {
 		restrict: 'E',
+		replace: true, /* for transition */
 		scope: {
 			package: '=',
 			type: '@'
@@ -31,7 +32,7 @@ function packageDctv(DataSvc, AuthSvc) {
 		 * @param {String} key push key ($id) of package
 		 */
 		function addPackage(key) {
-			DataSvc.subscribePackage(AuthSvc.getAuthStatus().uid, key).then(function() {
+			DataSvc.subscribePackage(key).then(function() {
 			}, function(err) {
 				console.log('error subscribing to package:', err);
 			});
@@ -42,7 +43,7 @@ function packageDctv(DataSvc, AuthSvc) {
 		 * @param  {String} key push key ($id) of package
 		 */
 		function removePackage(key) {
-			DataSvc.unsubscribePackage(AuthSvc.getAuthStatus().uid, key).then(function() {
+			DataSvc.unsubscribePackage(key).then(function() {
 			}, function(err) {
 				console.log('error unsubscribing to package:', err);
 			});

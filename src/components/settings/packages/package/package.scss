@@ -9,27 +9,66 @@ $size-package-action: $height-package;
 	height: $height-package;
 	width: $width-package;
 	border: $bw-base solid $clr-gray-light;
-	display: inline-block;
 	text-align: left;
-	margin-top: $mgn-large;
+	margin-bottom: $mgn-large;
 	background-color: $clr-gray-lighter;
 	position: relative;
 	overflow: hidden;
-	transition: border-color 0.15s ease-in-out;
+	transition: border-color 0.15s ease-out;
 	cursor: pointer;
+	opacity: 1;
+}
+
+.package.ng-enter,
+.package.ng-leave,
+.package.ng-move, {
+	transition: all 0.5s $ef-ease-in-out-back;
+}
+
+.package.ng-enter-stagger,
+.package.ng-leave-stagger {
+	transition-delay: 0.01s;
+	transition-duration: 0s;
+}
+
+.package.ng-enter,
+.package.ng-move, {
+	opacity: 0;
+	height: 0;
+	border-top-width: 0;
+	border-bottom-width: 0;
+	margin-bottom: 0;
+}
+
+.package.ng-enter.ng-enter-active,
+.package.ng-move.ng-move-active {
+	opacity: 1;
+	height: $height-package;
+	border-top-width: $bw-base;
+	border-bottom-width: $bw-base;
+	margin-bottom: $mgn-large;
+}
+
+.package.ng-leave {
+	opacity: 1;
+	height: $height-package;
+	border-top-width: $bw-base;
+	border-bottom-width: $bw-base;
+	margin-bottom: $mgn-large;
+}
+
+.package.ng-leave.ng-leave-active {
+	opacity: 0;
+	height: 0;
+	border-top-width: 0;
+	border-bottom-width: 0;
+	margin-bottom: 0;
 }
 
 .package--subscribed {
 	@extend .package;
 	&:hover {
 		border-color: $clr-red-pastel;
-	}
-}
-
-.package--own {
-	@extend .package;
-	&:hover {
-		border-color: $clr-green-pastel;
 	}
 }
 
@@ -58,7 +97,7 @@ $size-package-action: $height-package;
 	height: $height-package-sec;
 	width: 100%;
 	// border: 1px solid blue;
-	font-size: $fs-small;
+	font-size: $fs-smaller;
 	display: table;
 }
 
@@ -127,11 +166,6 @@ $size-package-action: $height-package;
 .package-action--subscribed {
 	@extend .package-action;
 	background-color: $clr-red-pastel;
-}
-
-.package-action--own {
-	@extend .package-action;
-	background-color: $clr-green-pastel;
 }
 
 .package-action--all {
