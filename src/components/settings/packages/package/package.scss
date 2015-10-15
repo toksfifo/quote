@@ -10,7 +10,7 @@ $size-package-action: $height-package;
 	width: $width-package;
 	border: $bw-base solid $clr-gray-light;
 	text-align: left;
-	margin-top: $mgn-large;
+	margin-bottom: $mgn-large;
 	background-color: $clr-gray-lighter;
 	position: relative;
 	overflow: hidden;
@@ -37,7 +37,7 @@ $size-package-action: $height-package;
 	height: 0;
 	border-top-width: 0;
 	border-bottom-width: 0;
-	margin-top: 0;
+	margin-bottom: 0;
 }
 
 .package.ng-enter.ng-enter-active,
@@ -46,7 +46,7 @@ $size-package-action: $height-package;
 	height: $height-package;
 	border-top-width: $bw-base;
 	border-bottom-width: $bw-base;
-	margin-top: $mgn-large;
+	margin-bottom: $mgn-large;
 }
 
 .package.ng-leave {
@@ -54,7 +54,7 @@ $size-package-action: $height-package;
 	height: $height-package;
 	border-top-width: $bw-base;
 	border-bottom-width: $bw-base;
-	margin-top: $mgn-large;
+	margin-bottom: $mgn-large;
 }
 
 .package.ng-leave.ng-leave-active {
@@ -62,7 +62,7 @@ $size-package-action: $height-package;
 	height: 0;
 	border-top-width: 0;
 	border-bottom-width: 0;
-	margin-top: 0;
+	margin-bottom: 0;
 }
 
 .package--subscribed {
@@ -97,7 +97,7 @@ $size-package-action: $height-package;
 	height: $height-package-sec;
 	width: 100%;
 	// border: 1px solid blue;
-	font-size: $fs-small;
+	font-size: $fs-smaller;
 	display: table;
 }
 

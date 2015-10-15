@@ -5,13 +5,18 @@
 	<div class="packages-head">
 		
 		<!-- search -->
-		<input type="text" class="packages-search" ng-model="packages.filter.search">
+		<input type="text" class="packages-search packages-head-item"  
+			ng-model="packages.filter.search"
+			ng-class="{ 'is-active': packages.filter.search }"
+			placeholder="Search Packages">
 
 		<!-- filter packages -->
-		<button class="button--info" ng-click="packages.filter.created = !packages.filter.created">Show Created</button>
+		<button class="button packages-head-item u-inlineBlock" 
+			ng-click="packages.filter.created = !packages.filter.created"
+			ng-class="{ 'button--active': packages.filter.created }">{{ packages.filter.created ? 'Show All' : 'Show Only Yours' }}</button>
 
 		<!-- create package -->
-		<button class="button--success">Create Package</button>
+		<button class="button button--success packages-head-item u-inlineBlock">Create Package</button>
 
 	</div>
 
