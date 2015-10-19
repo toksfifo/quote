@@ -12,10 +12,12 @@ function HomeCtrl($q, authStatus, DataSvc, AuthSvc) {
 	var vm = this;
 
 	vm.show = {
-		settings: true,
-		form: false
+		settings: false,
+		form: true
 	};
 	vm.generateQuoteList = generateQuoteList;
+	vm.openForm = openForm;
+	vm.closeForm = closeForm;
 	vm.quote = {};
 	vm.currentColor;
 
@@ -74,6 +76,16 @@ function HomeCtrl($q, authStatus, DataSvc, AuthSvc) {
 		}, function(err) {
 			console.log('error generating quote list:', err);
 		});
+	}
+
+	function openForm() {
+		vm.show.settings = false;
+		vm.show.form = true;
+	}
+
+	function closeForm() {
+		vm.show.settings = true;
+		vm.show.form = false;
 	}
 
 }

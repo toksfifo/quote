@@ -21,7 +21,7 @@
 	<!-- quote -->
 	<div class="quote-wrapper u-centerXY" 
 		ng-if="::home.quote.body" 
-		ng-class="{ 'is-blurred': home.show.settings }">
+		ng-class="{ 'is-blurred': home.show.settings || home.show.form }">
 		<div class="quote">
 			<p class="quote-body">{{ home.quote.body }}</p>
 			<p class="quote-author">&#8212; {{ home.quote.author | uppercase}}</p>

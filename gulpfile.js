@@ -12,6 +12,7 @@ var args = require('yargs').argv;
 var clean = require('gulp-clean');
 var replace  = require('gulp-replace');
 var eslint = require('gulp-eslint');
+var notify = require('gulp-notify');
 
 
 // tasks
@@ -91,7 +92,10 @@ function js() {
 
 function sassTask() {
 	return gulp.src('src/scss/app.scss')
-		.pipe(sass({ errLogToConsole: true }))
+		.pipe(sass())
+		.on('error', notify.onError(function(err) {
+			return 'error running sass task ' + err;
+		}))
 		.pipe(autoprefixer())
 		.pipe(gulp.dest('src/scss/'));
 }

@@ -1523,6 +1523,9 @@ font size
 font weight
  */
 /*
+font family
+ */
+/*
 letter spacing
  */
 /*
@@ -1641,6 +1644,16 @@ easing functions
   .button--success:active {
     background-color: #6bab6b; }
 
+.button--warning {
+  background-color: #ff6961;
+  border-color: #cc544e;
+  color: white; }
+  .button--warning:hover {
+    border-color: #a6443f;
+    color: white; }
+  .button--warning:active {
+    background-color: #e65f57; }
+
 .button--active {
   background-color: rgba(0, 0, 0, 0.2); }
   .button--active:active {
@@ -1650,7 +1663,7 @@ html,
 body {
   height: 100%;
   width: 100%;
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
   font-weight: 300; }
 
 .home-wrapper {
@@ -1666,8 +1679,8 @@ body {
   -webkit-transition: -webkit-filter 0.2s ease-in-out 0.4s, filter 0.2s ease-in-out 0.4s;
           transition: -webkit-filter 0.2s ease-in-out 0.4s, filter 0.2s ease-in-out 0.4s; }
   .quote-wrapper.is-blurred {
-    -webkit-filter: blur(4px);
-            filter: blur(4px);
+    -webkit-filter: blur(8px);
+            filter: blur(8px);
     -webkit-transition: -webkit-filter 0.2s ease-in-out, filter 0.2s ease-in-out;
             transition: -webkit-filter 0.2s ease-in-out, filter 0.2s ease-in-out; }
 
@@ -1704,7 +1717,7 @@ body {
 
 .settings-wrapper {
   width: 550px;
-  height: 450px;
+  height: 550px;
   background-color: white;
   color: gray;
   border: 4px solid gray; }
@@ -1712,9 +1725,9 @@ body {
 .settings-wrapper.ng-enter {
   -webkit-transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.2s;
           transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.2s;
-  -webkit-transform: translate(-50%, -10%);
-      -ms-transform: translate(-50%, -10%);
-          transform: translate(-50%, -10%);
+  -webkit-transform: translate(-50%, -30%);
+      -ms-transform: translate(-50%, -30%);
+          transform: translate(-50%, -30%);
   opacity: 0; }
 
 .settings-wrapper.ng-enter.ng-enter-active {
@@ -1732,9 +1745,9 @@ body {
   opacity: 1; }
 
 .settings-wrapper.ng-leave.ng-leave-active {
-  -webkit-transform: translate(-50%, -10%);
-      -ms-transform: translate(-50%, -10%);
-          transform: translate(-50%, -10%);
+  -webkit-transform: translate(-50%, -30%);
+      -ms-transform: translate(-50%, -30%);
+          transform: translate(-50%, -30%);
   opacity: 0; }
 
 .settings-head {
@@ -1753,7 +1766,7 @@ body {
   top: 60px;
   left: 0;
   width: 542px;
-  height: 382px; }
+  height: 482px; }
 
 .settings-tab {
   float: left;
@@ -1858,7 +1871,7 @@ body {
 
 .packages-body {
   width: 100%;
-  height: 286px; }
+  height: 386px; }
 
 .packages-titles {
   width: 100%;
@@ -1877,7 +1890,8 @@ body {
   float: left;
   width: 50%;
   height: 100%;
-  overflow: scroll;
+  overflow-y: scroll;
+  overflow-x: hidden;
   text-align: center; }
 
 .package, .package--subscribed, .package--all {
@@ -2034,3 +2048,119 @@ body {
 
 .package-button--view {
   color: gray; }
+
+.form-name-edit, .form-edit-text, .form-edit-author, .form-edit-link {
+  outline: 0;
+  border: 0;
+  background-color: rgba(0, 0, 0, 0.1);
+  display: block;
+  width: 100%;
+  color: white;
+  padding: 4px; }
+  .form-name-edit::-webkit-input-placeholder, .form-edit-text::-webkit-input-placeholder, .form-edit-author::-webkit-input-placeholder, .form-edit-link::-webkit-input-placeholder {
+    color: rgba(255, 255, 255, 0.5); }
+  .form-name-edit:-moz-placeholder, .form-edit-text:-moz-placeholder, .form-edit-author:-moz-placeholder, .form-edit-link:-moz-placeholder {
+    color: rgba(255, 255, 255, 0.5); }
+  .form-name-edit::-moz-placeholder, .form-edit-text::-moz-placeholder, .form-edit-author::-moz-placeholder, .form-edit-link::-moz-placeholder {
+    color: rgba(255, 255, 255, 0.5); }
+  .form-name-edit:-ms-input-placeholder, .form-edit-text:-ms-input-placeholder, .form-edit-author:-ms-input-placeholder, .form-edit-link:-ms-input-placeholder {
+    color: rgba(255, 255, 255, 0.5); }
+
+.form-wrapper {
+  width: 550px;
+  height: 550px; }
+
+.form-wrapper.ng-enter {
+  -webkit-transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.2s;
+          transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.2s;
+  -webkit-transform: translate(-50%, -30%);
+      -ms-transform: translate(-50%, -30%);
+          transform: translate(-50%, -30%);
+  opacity: 0; }
+
+.form-wrapper.ng-enter.ng-enter-active {
+  -webkit-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  opacity: 1; }
+
+.form-wrapper.ng-leave {
+  -webkit-transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+          transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  -webkit-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  opacity: 1; }
+
+.form-wrapper.ng-leave.ng-leave-active {
+  -webkit-transform: translate(-50%, -30%);
+      -ms-transform: translate(-50%, -30%);
+          transform: translate(-50%, -30%);
+  opacity: 0; }
+
+.form-options {
+  float: left;
+  width: 100%;
+  height: 9.1%;
+  text-align: center; }
+
+.form-options-button {
+  display: inline-block; }
+  .form-options-button:not(:nth-of-type(1)) {
+    margin-left: 50px; }
+
+.form-name {
+  float: left;
+  width: 100%;
+  height: 7.3%; }
+
+.form-name-edit {
+  height: 32px; }
+
+.form-quotes {
+  float: left;
+  width: 100%;
+  height: 50%;
+  color: white;
+  overflow-x: hidden;
+  overflow-y: scroll; }
+  .form-quotes::-webkit-scrollbar {
+    display: none; }
+
+.form-quote {
+  margin-bottom: 10px;
+  padding: 4px; }
+  .form-quote:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    cursor: pointer; }
+
+.form-edit {
+  float: left;
+  width: 100%;
+  height: 24.5%;
+  font-size: 15px; }
+
+.form-edit-text {
+  resize: none;
+  box-sizing: border-box;
+  font-size: 15px;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 300; }
+
+.form-edit-author {
+  height: 30px;
+  margin-top: 4px; }
+
+.form-edit-link {
+  height: 30px;
+  margin-top: 4px; }
+
+.form-editOptions {
+  float: left;
+  width: 100%;
+  height: 9.1%; }
+
+.form-editOptions-buttons {
+  position: absolute;
+  width: 100%;
+  bottom: 0; }

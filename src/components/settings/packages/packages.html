@@ -16,7 +16,8 @@
 			ng-class="{ 'button--active': packages.filter.created }">{{ packages.filter.created ? 'Show All' : 'Show Only Yours' }}</button>
 
 		<!-- create package -->
-		<button class="button button--success packages-head-item u-inlineBlock">Create Package</button>
+		<button class="button button--success packages-head-item u-inlineBlock"
+			ng-click="home.openForm()">Create Package</button>
 
 	</div>
 

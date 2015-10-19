@@ -5,7 +5,7 @@ html,
 body {
 	height: 100%;
 	width: 100%;
-	font-family: 'Open Sans', sans-serif;
+	font-family: $ff-body;
 	font-weight: $fw-light;
 }
 
@@ -22,7 +22,7 @@ body {
 	display: table;
 	transition: filter 0.2s ease-in-out 0.4s;
 	&.is-blurred {
-		filter: blur(4px);
+		filter: blur(8px);
 		transition: filter 0.2s ease-in-out;
 	}
 }

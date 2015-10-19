@@ -45835,12 +45835,78 @@ angular.module('quote', [
 	db: /*gulp-replace-db*/'https://quoteextension.firebaseio.com/dev'/*end*/,
 	ref: /*gulp-replace-ref*/new Firebase('https://quoteextension.firebaseio.com/dev')/*end*/
 });
-angular.module("templates", []).run(["$templateCache", function($templateCache) {$templateCache.put("components/home/home.html","<!-- HomeCtrl as home -->\n\n\n\n\n<div class=\"home-wrapper u-bgc-{{ home.currentColor.name }}\">\n	\n\n	\n\n\n		<br>\n		<br>\n\n		<button ng-click=\"home.show.settings = !home.show.settings\">Settings</button>\n		<button ng-click=\"home.show.form = !home.show.form\">Form</button>\n		<button ng-click=\"home.generateQuoteList()\">Generate Quotes</button>\n		<a ng-href=\"{{ home.quote.link }}\">link</a>\n\n		\n	<!-- quote -->\n	<div class=\"quote-wrapper u-centerXY\" \n		ng-if=\"::home.quote.body\" \n		ng-class=\"{ \'is-blurred\': home.show.settings }\">\n		<div class=\"quote\">\n			<p class=\"quote-body\">{{ home.quote.body }}</p>\n			<p class=\"quote-author\">&#8212; {{ home.quote.author | uppercase}}</p>\n		</div>\n	</div>\n\n	<!-- click to close settings -->\n	<div class=\"settings-close\" \n		ng-show=\"home.show.settings\" \n		ng-click=\"home.show.settings = false\"></div>\n\n	<!-- settings -->\n	<div ng-include=\"\'components/settings/settings.html\'\"></div>\n\n	<!-- form -->\n	<div ng-include=\"\'components/form/form.html\'\"></div>\n	\n</div>\n\n\n\n\n\n\n\n\n\n");
-$templateCache.put("components/form/form.html","<div ng-controller=\"FormCtrl as form\"\n	ng-if=\"home.show.form\">\n\n	<div ng-repeat=\"quote in form.quotesAdded\">{{ quote.body }} -{{ quote.author}}</div>\n	\n	<br>\n\n	<input type=\"text\" placeholder=\"Package Name\" ng-model=\"form.packageName\">\n\n	<br>\n\n	<input type=\"text\" placeholder=\"Quote\" ng-model=\"form.quoteCurrent.body\">\n\n	<br>\n\n	<input type=\"text\" placeholder=\"Author\" ng-model=\"form.quoteCurrent.author\">\n\n	<br>\n\n	<input type=\"text\" placeholder=\"Link\" ng-model=\"form.quoteCurrent.link\">\n\n	<br>\n\n	<button ng-click=\"form.addQuote()\">Add Quote</button>\n\n	<br>\n\n	<button ng-click=\"form.createPackage()\">Save Package</button>\n\n</div>");
+angular.module("templates", []).run(["$templateCache", function($templateCache) {$templateCache.put("components/form/form.html","<div ng-controller=\"FormCtrl as form\"\n	class=\"form-wrapper u-centerXY\"\n	ng-if=\"home.show.form\">\n\n	<!-- form options -->\n	<div class=\"form-options\">\n		<!-- skipping closing tags on purpose to remove default space between inline-block elements -->\n		<button class=\"form-options-button button\" ng-click=\"home.closeForm()\">Cancel\n		<button class=\"form-options-button button button--warning\">Delete Package\n		<button class=\"form-options-button button button--success\" ng-click=\"form.createPackage()\">Save Package\n	</div>\n\n	<!-- name -->\n	<div class=\"form-name\">\n		<input type=\"text\" \n			class=\"form-name-edit\" \n			placeholder=\"Package Name\"\n			ng-model=\"form.packageName\">\n	</div>\n\n	<!-- quotes -->\n	<div class=\"form-quotes\">\n		<p class=\"form-quote\" ng-repeat=\"quote in form.quotesAdded\">\n			{{ quote.body }} -{{ quote.author }}\n		</p>\n	</div>\n\n	<!-- edit quote -->\n	<div class=\"form-edit\">\n\n		<!-- body -->\n		<textarea class=\"form-edit-text\" rows=\"3\" \n			placeholder=\"Text\"\n			ng-model=\"form.quoteCurrent.body\"></textarea>\n\n		<!-- author -->\n		<input type=\"text\" class=\"form-edit-author\"\n			placeholder=\"Author (optional)\"\n			ng-model=\"form.quoteCurrent.author\">\n		\n		<!-- link -->\n		<input type=\"text\" class=\"form-edit-link\"\n			placeholder=\"Link (optional)\"\n			ng-model=\"form.quoteCurrent.link\">\n\n	</div>\n\n	<!-- quote options -->\n	<div class=\"form-editOptions\">\n		<div class=\"form-editOptions-buttons\">\n			<button class=\"button u-floatL\">Clear Quote</button>\n			<button class=\"button u-floatR\" ng-click=\"form.addQuote()\">Add Quote</button>\n		</div>\n	</div>\n\n\n\n</div>");
+$templateCache.put("components/home/home.html","<!-- HomeCtrl as home -->\n\n\n\n\n<div class=\"home-wrapper u-bgc-{{ home.currentColor.name }}\">\n	\n\n	\n\n\n		<br>\n		<br>\n\n		<button ng-click=\"home.show.settings = !home.show.settings\">Settings</button>\n		<button ng-click=\"home.show.form = !home.show.form\">Form</button>\n		<button ng-click=\"home.generateQuoteList()\">Generate Quotes</button>\n		<a ng-href=\"{{ home.quote.link }}\">link</a>\n\n		\n	<!-- quote -->\n	<div class=\"quote-wrapper u-centerXY\" \n		ng-if=\"::home.quote.body\" \n		ng-class=\"{ \'is-blurred\': home.show.settings || home.show.form }\">\n		<div class=\"quote\">\n			<p class=\"quote-body\">{{ home.quote.body }}</p>\n			<p class=\"quote-author\">&#8212; {{ home.quote.author | uppercase}}</p>\n		</div>\n	</div>\n\n	<!-- click to close settings -->\n	<div class=\"settings-close\" \n		ng-show=\"home.show.settings\" \n		ng-click=\"home.show.settings = false\"></div>\n\n	<!-- settings -->\n	<div ng-include=\"\'components/settings/settings.html\'\"></div>\n\n	<!-- form -->\n	<div ng-include=\"\'components/form/form.html\'\"></div>\n	\n</div>\n\n\n\n\n\n\n\n\n\n");
 $templateCache.put("components/settings/settings.html","<div ng-controller=\"SettingsCtrl as settings\" \n	class=\"settings-wrapper u-centerXY\"\n	ng-if=\"home.show.settings\">\n\n	<!-- head -->\n	<div class=\"settings-head\">\n\n		<!-- packages -->\n		<div class=\"settings-tab\" \n			ng-click=\"settings.toggleTab(\'packages\')\"\n			ng-class=\"{ \'is-active\': settings.show.packages }\">\n			<i class=\"settings-tab-icon icon ion-ios-folder\"></i>\n			<span class=\"settings-tab-text\">Packages</span>\n		</div>\n		\n		<!-- colors -->\n		<div class=\"settings-tab\" \n			ng-click=\"settings.toggleTab(\'colors\')\"\n			ng-class=\"{ \'is-active\': settings.show.colors }\">\n			<i class=\"settings-tab-icon icon ion-paintbucket\"></i>\n			<span class=\"settings-tab-text\">Colors</span>\n		</div>\n		\n		<!-- account -->\n		<div class=\"settings-tab\" \n			ng-click=\"settings.toggleTab(\'account\')\"\n			ng-class=\"{ \'is-active\': settings.show.account }\">\n			<i class=\"settings-tab-icon--bigger icon ion-ios-person\"></i>\n			<span class=\"settings-tab-text\">Account</span>\n		</div>\n\n	</div>\n\n	<div class=\"settings-body\">\n\n		<!-- packages -->\n		<div ng-include=\"\'components/settings/packages/packages.html\'\"></div>\n\n		<!-- colors -->\n		<div ng-include=\"\'components/settings/colors/colors.html\'\"></div>\n\n		<!-- account -->\n		<div ng-include=\"\'components/settings/account/account.html\'\"></div>\n\n	</div>\n	\n	\n	\n</div>");
+$templateCache.put("components/settings/packages/packages.html","<div ng-controller=\"PackagesCtrl as packages\"\n	ng-show=\"settings.show.packages\">\n\n	<!-- head -->\n	<div class=\"packages-head\">\n		\n		<!-- search -->\n		<input type=\"text\" class=\"packages-search packages-head-item\"  \n			ng-model=\"packages.filter.search\"\n			ng-class=\"{ \'is-active\': packages.filter.search }\"\n			placeholder=\"Search Packages\">\n\n		<!-- filter packages -->\n		<button class=\"button packages-head-item u-inlineBlock\" \n			ng-click=\"packages.filter.created = !packages.filter.created\"\n			ng-class=\"{ \'button--active\': packages.filter.created }\">{{ packages.filter.created ? \'Show All\' : \'Show Only Yours\' }}</button>\n\n		<!-- create package -->\n		<button class=\"button button--success packages-head-item u-inlineBlock\"\n			ng-click=\"home.openForm()\">Create Package</button>\n\n	</div>\n\n	<!-- titles -->\n	<div class=\"packages-titles\">\n		<div class=\"packages-title\">Subscribed</div>\n		<div class=\"packages-title\">Other</div>\n	</div>\n\n	<!-- body -->\n	<div class=\"packages-body\">\n\n		<!-- subscribed -->\n		<div class=\"packages-col\">\n			<!-- show subscribed packages. only show packages owned by user on packages.filter.created -->\n			<package-dctv\n				ng-repeat=\"package in packages.packagesSubscribed | \n				packagesFltr: (packages.filter.created ? packages.packagesOwn : \'all\'): \'include\' |\n				filter: packages.filter.search\n				track by package.$id\"\n				package=\"package\"\n				type=\"subscribed\">\n		</div>\n\n		<!-- other -->\n		<div class=\"packages-col\">\n			<!-- show other packages that user is not subscribed to (by excluding subscribed from all), then filter by owned packages on packages.filter.created -->\n			<package-dctv \n				ng-repeat=\"package in packages.packagesAll |\n				packagesFltr: packages.packagesSubscribed: \'exclude\' |\n				packagesFltr: (packages.filter.created ? packages.packagesOwn : \'all\'): \'include\' |\n				filter: packages.filter.search\n				track by package.$id\"\n				package=\"package\"\n				type=\"all\">\n		</div>\n\n	</div>\n\n</div>");
 $templateCache.put("components/settings/colors/colors.html","<div ng-controller=\"ColorsCtrl as colors\"\n	ng-show=\"settings.show.colors\">\n\n	<div class=\"color-wrapper u-centerXY\">\n		<div class=\"color--{{ color.name }} u-centerY\" \n			ng-repeat=\"color in ::colors.colors track by $index\" \n			ng-click=\"colors.selectColor(color)\"\n			ng-class=\"{ \'is-active\': color.name === colors.currentColor.name }\">\n		</div>\n	</div>\n\n</div>");
-$templateCache.put("components/settings/packages/packages.html","<div ng-controller=\"PackagesCtrl as packages\"\n	ng-show=\"settings.show.packages\">\n\n	<!-- head -->\n	<div class=\"packages-head\">\n		\n		<!-- search -->\n		<input type=\"text\" class=\"packages-search packages-head-item\"  \n			ng-model=\"packages.filter.search\"\n			ng-class=\"{ \'is-active\': packages.filter.search }\"\n			placeholder=\"Search Packages\">\n\n		<!-- filter packages -->\n		<button class=\"button packages-head-item u-inlineBlock\" \n			ng-click=\"packages.filter.created = !packages.filter.created\"\n			ng-class=\"{ \'button--active\': packages.filter.created }\">{{ packages.filter.created ? \'Show All\' : \'Show Only Yours\' }}</button>\n\n		<!-- create package -->\n		<button class=\"button button--success packages-head-item u-inlineBlock\">Create Package</button>\n\n	</div>\n\n	<!-- titles -->\n	<div class=\"packages-titles\">\n		<div class=\"packages-title\">Subscribed</div>\n		<div class=\"packages-title\">Other</div>\n	</div>\n\n	<!-- body -->\n	<div class=\"packages-body\">\n\n		<!-- subscribed -->\n		<div class=\"packages-col\">\n			<!-- show subscribed packages. only show packages owned by user on packages.filter.created -->\n			<package-dctv\n				ng-repeat=\"package in packages.packagesSubscribed | \n				packagesFltr: (packages.filter.created ? packages.packagesOwn : \'all\'): \'include\' |\n				filter: packages.filter.search\n				track by package.$id\"\n				package=\"package\"\n				type=\"subscribed\">\n		</div>\n\n		<!-- other -->\n		<div class=\"packages-col\">\n			<!-- show other packages that user is not subscribed to (by excluding subscribed from all), then filter by owned packages on packages.filter.created -->\n			<package-dctv \n				ng-repeat=\"package in packages.packagesAll |\n				packagesFltr: packages.packagesSubscribed: \'exclude\' |\n				packagesFltr: (packages.filter.created ? packages.packagesOwn : \'all\'): \'include\' |\n				filter: packages.filter.search\n				track by package.$id\"\n				package=\"package\"\n				type=\"all\">\n		</div>\n\n	</div>\n\n</div>");
 $templateCache.put("components/settings/packages/package/package.html","<div class=\"package--{{ type }} u-centerX\" \n	ng-click=\"show.options = true\" \n	ng-mouseleave=\"show.options = false\">\n	\n	<!-- primary -->\n	<div class=\"package-pri\">\n		<span class=\"package-name\">{{ package.name }}</span>\n	</div>\n\n	<!-- secondary -->\n	<div class=\"package-sec\">\n		<span class=\"package-author\">by {{ package.creatorName || \'Toks Fifo\' }}</span>\n		<span class=\"package-length\">{{ package.length || 5 }}</span>\n	</div>\n\n	<!-- options -->\n	<div class=\"package-options\" ng-show=\"show.options\">\n		\n		<!-- view option -->\n		<div class=\"package-view\">\n			\n			<!-- view -->\n			<i class=\"icon ion-eye package-button--view\"></i>\n		</div>\n\n		<!-- action option -->\n		<div class=\"package-action--{{ type }}\"\n			ng-click=\"(type === \'all\' && addPackage(package.$id)) || (type === \'subscribed\' && removePackage(package.$id))\">\n\n			<!-- add -->\n			<i class=\"icon ion-plus package-button\" \n				ng-if=\"::type === \'all\'\"></i>\n\n			<!-- remove -->\n			<i class=\"icon ion-close package-button\"\n				ng-if=\"::type === \'subscribed\'\"></i>\n\n		</div>\n\n	</div>\n\n</div>");}]);
+angular.module('quote')
+	.factory('AuthSvc', AuthSvc);
+
+function AuthSvc($q, $firebaseAuth, Const, UserSvc) {
+
+	var auth = $firebaseAuth(Const.ref);
+	var authStatus;
+
+	var AuthSvc = {
+		checkAuth: checkAuth,
+		signupAnon: signupAnon,
+		logout: logout,
+		getAuthStatus: getAuthStatus,
+		setAuthStatus: setAuthStatus
+	};
+
+	return AuthSvc;
+
+	/**
+	 * Check if user is authenticated
+	 * @return {Promise} Resolves with authentication data || null
+	 */
+	function checkAuth() {
+		return auth.$waitForAuth();
+	}
+
+	/**
+	 * Sign up anonymously
+	 * @return {Promise} Resolves after new user has been created
+	 */
+	function signupAnon() {
+		return $q(function(resolve, reject) {
+			auth.$authAnonymously().then(function(authData) {
+				return UserSvc.createUser(authData);
+			}, function(err) {
+				reject(err);
+			}).then(function(authData) {
+				resolve(authData);
+			});
+		});
+	}
+
+	/**
+	 * Logout
+	 */
+	function logout() {
+		auth.$unauth();
+	}
+
+	/**
+	 * Get auth status
+	 * @return {Object} Auth stauts
+	 */
+	function getAuthStatus() {
+		return authStatus;
+	}
+
+	/**
+	 * Set auth status
+	 * @param {Object} newAuthStatus new auth status
+	 */
+	function setAuthStatus(newAuthStatus) {
+		authStatus = newAuthStatus;
+	}
+}
+AuthSvc.$inject = ["$q", "$firebaseAuth", "Const", "UserSvc"];
 angular.module('quote')
 	.factory('DataSvc', DataSvc);
 
@@ -46144,72 +46210,6 @@ function DataSvc($q, $firebaseArray, $firebaseObject, Const, AuthSvc) {
 }
 DataSvc.$inject = ["$q", "$firebaseArray", "$firebaseObject", "Const", "AuthSvc"];
 angular.module('quote')
-	.factory('AuthSvc', AuthSvc);
-
-function AuthSvc($q, $firebaseAuth, Const, UserSvc) {
-
-	var auth = $firebaseAuth(Const.ref);
-	var authStatus;
-
-	var AuthSvc = {
-		checkAuth: checkAuth,
-		signupAnon: signupAnon,
-		logout: logout,
-		getAuthStatus: getAuthStatus,
-		setAuthStatus: setAuthStatus
-	};
-
-	return AuthSvc;
-
-	/**
-	 * Check if user is authenticated
-	 * @return {Promise} Resolves with authentication data || null
-	 */
-	function checkAuth() {
-		return auth.$waitForAuth();
-	}
-
-	/**
-	 * Sign up anonymously
-	 * @return {Promise} Resolves after new user has been created
-	 */
-	function signupAnon() {
-		return $q(function(resolve, reject) {
-			auth.$authAnonymously().then(function(authData) {
-				return UserSvc.createUser(authData);
-			}, function(err) {
-				reject(err);
-			}).then(function(authData) {
-				resolve(authData);
-			});
-		});
-	}
-
-	/**
-	 * Logout
-	 */
-	function logout() {
-		auth.$unauth();
-	}
-
-	/**
-	 * Get auth status
-	 * @return {Object} Auth stauts
-	 */
-	function getAuthStatus() {
-		return authStatus;
-	}
-
-	/**
-	 * Set auth status
-	 * @param {Object} newAuthStatus new auth status
-	 */
-	function setAuthStatus(newAuthStatus) {
-		authStatus = newAuthStatus;
-	}
-}
-AuthSvc.$inject = ["$q", "$firebaseAuth", "Const", "UserSvc"];
-angular.module('quote')
 	.filter('packagesFltr', packagesFltr);
 
 function packagesFltr() {
@@ -46249,6 +46249,132 @@ function packagesFltr() {
 	}
 
 }
+angular.module('quote')
+	.controller('HomeCtrl', HomeCtrl);
+
+HomeCtrl.resolve = /*@ngInject*/ {
+	authStatus: ["AuthSvc", function(AuthSvc) {
+		return AuthSvc.checkAuth();
+	}]
+};
+
+function HomeCtrl($q, authStatus, DataSvc, AuthSvc) {
+
+	var vm = this;
+
+	vm.show = {
+		settings: false,
+		form: true
+	};
+	vm.generateQuoteList = generateQuoteList;
+	vm.openForm = openForm;
+	vm.closeForm = closeForm;
+	vm.quote = {};
+	vm.currentColor;
+
+	init();
+
+	function init() {
+		getAuth().then(function(authStatus) {
+			AuthSvc.setAuthStatus(authStatus);
+			getQuote();
+			vm.currentColor = DataSvc.getColor();
+		}, function(err) {
+			console.log('error getting auth:', err);
+		});
+	}
+
+	/**
+	 * Get main quote to display on new tab
+	 */
+	function getQuote() {
+		DataSvc.getQuote().then(function(quote) {
+			if (quote === 0) {
+				
+				// prompt to resubscribe or reset current
+				vm.quote.body = 'out of quotes';
+			} else {
+				vm.quote = quote;
+			}
+		}, function(err) {
+			console.log('couldn\'t get quote:', err);
+		});
+	}
+
+	/**
+	 * Get auth data if it exists, or signup anonymously
+	 * @return {Promise} Resolves with auth data
+	 */
+	function getAuth() {
+		return $q(function(resolve, reject) {
+			if (authStatus) {
+				resolve(authStatus);
+			} else {
+				AuthSvc.signupAnon().then(function(authData) {
+					resolve(authData);
+				}, function(err) {
+					reject(err);
+				});
+			}
+		});
+	}
+
+	/**
+	 * Generate list of quotes to pull main quote from
+	 */
+	function generateQuoteList() {
+		DataSvc.generateQuoteList().then(function() {
+		}, function(err) {
+			console.log('error generating quote list:', err);
+		});
+	}
+
+	function openForm() {
+		vm.show.settings = false;
+		vm.show.form = true;
+	}
+
+	function closeForm() {
+		vm.show.settings = true;
+		vm.show.form = false;
+	}
+
+}
+HomeCtrl.$inject = ["$q", "authStatus", "DataSvc", "AuthSvc"];
+angular.module('quote')
+	.factory('UserSvc', UserSvc);
+
+function UserSvc($q, Const) {
+
+	var UserSvc = {
+		createUser: createUser
+	};
+
+	return UserSvc;
+
+	/**
+	 * Add user to db/users
+	 * @param  {Object} authData User's auth data
+	 * @return {Promise}     Resolves with auth data when user is saved to db
+	 */
+	function createUser(authData) {
+		return $q(function(resolve, reject) {
+			Const.ref.child('users')
+				.child(authData.uid)
+				.set({
+					info: { name: 'anon frog' },
+					color: { name: 'blue-pastel' }
+				}, function(err) {
+					if (err) {
+						reject(err);
+					} else {
+						resolve(authData);
+					}
+				});
+		});
+	}
+}
+UserSvc.$inject = ["$q", "Const"];
 angular.module('quote')
 	.controller('FormCtrl', FormCtrl);
 
@@ -46321,120 +46447,6 @@ function SettingsCtrl() {
 	}
 
 }
-angular.module('quote')
-	.controller('HomeCtrl', HomeCtrl);
-
-HomeCtrl.resolve = /*@ngInject*/ {
-	authStatus: ["AuthSvc", function(AuthSvc) {
-		return AuthSvc.checkAuth();
-	}]
-};
-
-function HomeCtrl($q, authStatus, DataSvc, AuthSvc) {
-
-	var vm = this;
-
-	vm.show = {
-		settings: true,
-		form: false
-	};
-	vm.generateQuoteList = generateQuoteList;
-	vm.quote = {};
-	vm.currentColor;
-
-	init();
-
-	function init() {
-		getAuth().then(function(authStatus) {
-			AuthSvc.setAuthStatus(authStatus);
-			getQuote();
-			vm.currentColor = DataSvc.getColor();
-		}, function(err) {
-			console.log('error getting auth:', err);
-		});
-	}
-
-	/**
-	 * Get main quote to display on new tab
-	 */
-	function getQuote() {
-		DataSvc.getQuote().then(function(quote) {
-			if (quote === 0) {
-				
-				// prompt to resubscribe or reset current
-				vm.quote.body = 'out of quotes';
-			} else {
-				vm.quote = quote;
-			}
-		}, function(err) {
-			console.log('couldn\'t get quote:', err);
-		});
-	}
-
-	/**
-	 * Get auth data if it exists, or signup anonymously
-	 * @return {Promise} Resolves with auth data
-	 */
-	function getAuth() {
-		return $q(function(resolve, reject) {
-			if (authStatus) {
-				resolve(authStatus);
-			} else {
-				AuthSvc.signupAnon().then(function(authData) {
-					resolve(authData);
-				}, function(err) {
-					reject(err);
-				});
-			}
-		});
-	}
-
-	/**
-	 * Generate list of quotes to pull main quote from
-	 */
-	function generateQuoteList() {
-		DataSvc.generateQuoteList().then(function() {
-		}, function(err) {
-			console.log('error generating quote list:', err);
-		});
-	}
-
-}
-HomeCtrl.$inject = ["$q", "authStatus", "DataSvc", "AuthSvc"];
-angular.module('quote')
-	.factory('UserSvc', UserSvc);
-
-function UserSvc($q, Const) {
-
-	var UserSvc = {
-		createUser: createUser
-	};
-
-	return UserSvc;
-
-	/**
-	 * Add user to db/users
-	 * @param  {Object} authData User's auth data
-	 * @return {Promise}     Resolves with auth data when user is saved to db
-	 */
-	function createUser(authData) {
-		return $q(function(resolve, reject) {
-			Const.ref.child('users')
-				.child(authData.uid)
-				.set({
-					info: { name: 'anon frog' },
-					color: { name: 'blue-pastel' }
-				}, function(err) {
-					if (err) {
-						reject(err);
-					} else {
-						resolve(authData);
-					}
-				});
-		});
-	}
-}
-UserSvc.$inject = ["$q", "Const"];
 angular.module('quote')
 	.controller('ColorsCtrl', ColorsCtrl);
 

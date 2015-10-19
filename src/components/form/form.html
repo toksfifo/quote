@@ -1,30 +1,58 @@
 <div ng-controller="FormCtrl as form"
+	class="form-wrapper u-centerXY"
 	ng-if="home.show.form">
 
-	<div ng-repeat="quote in form.quotesAdded">{{ quote.body }} -{{ quote.author}}</div>
-	
-	<br>
+	<!-- form options -->
+	<div class="form-options">
+		<!-- skipping closing tags on purpose to remove default space between inline-block elements -->
+		<button class="form-options-button button" ng-click="home.closeForm()">Cancel
+		<button class="form-options-button button button--warning">Delete Package
+		<button class="form-options-button button button--success" ng-click="form.createPackage()">Save Package
+	</div>
 
-	<input type="text" placeholder="Package Name" ng-model="form.packageName">
+	<!-- name -->
+	<div class="form-name">
+		<input type="text" 
+			class="form-name-edit" 
+			placeholder="Package Name"
+			ng-model="form.packageName">
+	</div>
 
-	<br>
+	<!-- quotes -->
+	<div class="form-quotes">
+		<p class="form-quote" ng-repeat="quote in form.quotesAdded">
+			{{ quote.body }} -{{ quote.author }}
+		</p>
+	</div>
 
-	<input type="text" placeholder="Quote" ng-model="form.quoteCurrent.body">
+	<!-- edit quote -->
+	<div class="form-edit">
 
-	<br>
+		<!-- body -->
+		<textarea class="form-edit-text" rows="3" 
+			placeholder="Text"
+			ng-model="form.quoteCurrent.body"></textarea>
 
-	<input type="text" placeholder="Author" ng-model="form.quoteCurrent.author">
+		<!-- author -->
+		<input type="text" class="form-edit-author"
+			placeholder="Author (optional)"
+			ng-model="form.quoteCurrent.author">
+		
+		<!-- link -->
+		<input type="text" class="form-edit-link"
+			placeholder="Link (optional)"
+			ng-model="form.quoteCurrent.link">
 
-	<br>
+	</div>
 
-	<input type="text" placeholder="Link" ng-model="form.quoteCurrent.link">
+	<!-- quote options -->
+	<div class="form-editOptions">
+		<div class="form-editOptions-buttons">
+			<button class="button u-floatL">Clear Quote</button>
+			<button class="button u-floatR" ng-click="form.addQuote()">Add Quote</button>
+		</div>
+	</div>
 
-	<br>
 
-	<button ng-click="form.addQuote()">Add Quote</button>
-
-	<br>
-
-	<button ng-click="form.createPackage()">Save Package</button>
 
 </div>

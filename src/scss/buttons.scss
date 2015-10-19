@@ -4,6 +4,19 @@ $clr-button-dark: transparentize($clr-black, 0.5);
 $clr-button-base: transparentize($clr-black, 0.6);
 $clr-button-light: transparentize($clr-black, 0.8);
 
+@mixin button-color($color) {
+	background-color: $color;
+	border-color: shade($color, 20%);
+	color: $clr-white;
+	&:hover {
+		border-color: shade($color, 35%);
+		color: $clr-white;
+	}
+	&:active {
+		background-color: shade($color, 10%);
+	}
+}
+
 .button {
 	height: $height-button;
 	width: $width-button;
@@ -25,16 +38,11 @@ $clr-button-light: transparentize($clr-black, 0.8);
 }
 
 .button--success {
-	background-color: $clr-green-pastel;
-	border-color: shade($clr-green-pastel, 20%);
-	color: $clr-white;
-	&:hover {
-		border-color: shade($clr-green-pastel, 35%);
-		color: $clr-white;
-	}
-	&:active {
-		background-color: shade($clr-green-pastel, 10%);
-	}
+	@include button-color($clr-green-pastel);
+}
+
+.button--warning {
+	@include button-color($clr-red-pastel);
 }
 
 .button--active {
