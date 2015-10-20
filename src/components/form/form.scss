@@ -1,26 +1,29 @@
 $width-form-wrapper: $width-settings-wrapper;
 $height-form-wrapper: $height-settings-wrapper;
+$width-button: $width-button;
+$clr-form-input-background: transparentize($clr-black, 0.8);
+$clr-form-placeholder: transparentize($clr-white, 0.5);
+$height-form-input: 30px;
 
 %form-input-area {
 	outline: 0;
 	border: 0;
-	background-color: transparentize($clr-black, 0.9);
+	background-color: $clr-form-input-background;
 	display: block;
 	width: 100%;
 	color: $clr-white;
 	padding: $pdg-base;
 	&::-webkit-input-placeholder {
-		color: transparentize($clr-white, 0.5);
-		// line-height: 29px;
+		color: $clr-form-placeholder;
 	}
 	&:-moz-placeholder {
-		color: transparentize($clr-white, 0.5);
+		color: $clr-form-placeholder;
 	}
 	&::-moz-placeholder {
-		color: transparentize($clr-white, 0.5);
+		color: $clr-form-placeholder;
 	}
 	&:-ms-input-placeholder {
-		color: transparentize($clr-white, 0.5);
+		color: $clr-form-placeholder;
 	}
 }
 
@@ -32,7 +35,7 @@ $height-form-wrapper: $height-settings-wrapper;
 
 .form-wrapper.ng-enter {
 	transition: all 0.6s $ef-ease-out-back 0.2s;
-	transform: translate(-50%, -30%);
+	transform: translate(-50%, $pctg-transform-slab);
 	opacity: 0;
 }
 
@@ -48,65 +51,100 @@ $height-form-wrapper: $height-settings-wrapper;
 }
 
 .form-wrapper.ng-leave.ng-leave-active {
-	transform: translate(-50%, -30%);
+	transform: translate(-50%, $pctg-transform-slab);
 	opacity: 0;
 }
 
 .form-options {
 	float: left;
 	width: 100%;
-	height: 9.1%;
+	height: 9.1%; /* 9.1 + 7.3 + 50 + 24.5 + 9.1 */
 	// border: 1px solid black;
 	text-align: center;
 }
 
-.form-options-button {
+.form-options-button2 {
 	display: inline-block;
 	&:not(:nth-of-type(1)) {
-		margin-left: 50px; //fix
+		margin-left: $width-form-wrapper - (2 * $width-button);
+	}
+}
+
+.form-options-button3 {
+	@extend .form-options-button2;
+	&:not(:nth-of-type(1)) {
+		margin-left: ($width-form-wrapper - (3 * $width-button)) / 2;
 	}
 }
 
 .form-name {
 	float: left;
 	width: 100%;
-	height: 7.3%;
+	height: 7.3%; /* 9.1 + 7.3 + 50 + 24.5 + 9.1 */
 	// border: 1px solid black;
 }
 
 .form-name-edit {
-	height: 32px; //fix
+	height: $height-form-input;
 	@extend %form-input-area;
+}
+
+.form-name-view {
+	height: $height-form-input;
+	color: $clr-white;
+	padding: $pdg-base;
 }
 
 .form-quotes {
 	float: left;
 	width: 100%;
-	height: 50%;
+	height: 50%; /* 9.1 + 7.3 + 50 + 24.5 + 9.1 */
 	color: $clr-white;
-	$font-size: $fs-small;
+	font-size: $fs-small;
 	overflow-x: hidden;
 	overflow-y: scroll;
 	// border: 1px solid black;
 	&::-webkit-scrollbar {
 		display: none;
 	}
+	&.is-disabled {
+		opacity: 0.3;
+		pointer-events: none;
+	}
+}
+
+.form-quotes-view {
+	@extend .form-quotes;
+	height: 83.6%; /* 9.1 + 7.3 + 83.6 */
+}
+
+%form-quote {
+	margin-bottom: $mgn-large;
+	padding: $pdg-base;
+	line-height: $lh-loose;
 }
 
 .form-quote {
-	margin-bottom: $mgn-large;
-	padding: $pdg-base;
+	@extend %form-quote;
 	// border: 1px solid black;
+	// both hovers are needed
 	&:hover {
-		background-color: transparentize($clr-black, 0.9);
+		background-color: $clr-form-input-background;
 		cursor: pointer;
 	}
+	&.is-hover {
+		@extend .form-quote:hover;
+	}
+}
+
+.form-quote-view {
+	@extend %form-quote;
 }
 
 .form-edit {
 	float: left;
 	width: 100%;
-	height: 24.5%;
+	height: 24.5%; /* 9.1 + 7.3 + 50 + 24.5 + 9.1 */
 	font-size: $fs-small;
 	// border: 1px solid black;
 }
@@ -115,6 +153,7 @@ $height-form-wrapper: $height-settings-wrapper;
 	@extend %form-input-area;
 	resize: none;
 	box-sizing: border-box;
+	margin-top: $mgn-base;
 	font-size: $fs-small;
 	font-family: $ff-body;
 	font-weight: $fw-light;
@@ -122,20 +161,20 @@ $height-form-wrapper: $height-settings-wrapper;
 
 .form-edit-author {
 	@extend %form-input-area;
-	height: 30px;
+	height: $height-form-input;
 	margin-top: $mgn-base;
 }
 
 .form-edit-link {
 	@extend %form-input-area;
-	height: 30px;
+	height: $height-form-input;
 	margin-top: $mgn-base;
 }
 
 .form-editOptions {
 	float: left;
 	width: 100%;
-	height: 9.1%;
+	height: 9.1%; /* 9.1 + 7.3 + 50 + 24.5 + 9.1 */
 	// border: 1px solid black;
 }
 

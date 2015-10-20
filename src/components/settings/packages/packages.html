@@ -17,7 +17,7 @@
 
 		<!-- create package -->
 		<button class="button button--success packages-head-item u-inlineBlock"
-			ng-click="home.openForm()">Create Package</button>
+			ng-click="home.openForm('create', null)">Create Package</button>
 
 	</div>
 
@@ -39,6 +39,7 @@
 				filter: packages.filter.search
 				track by package.$id"
 				package="package"
+				open-form="home.openForm(state, key)"
 				type="subscribed">
 		</div>
 
@@ -52,6 +53,7 @@
 				filter: packages.filter.search
 				track by package.$id"
 				package="package"
+				open-form="home.openForm(state, key)"
 				type="all">
 		</div>
 

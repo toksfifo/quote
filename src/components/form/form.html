@@ -2,31 +2,91 @@
 	class="form-wrapper u-centerXY"
 	ng-if="home.show.form">
 
+	<!-- skipping closing tags on certain buttons purpose to remove default space between inline-block elements -->
+
 	<!-- form options -->
-	<div class="form-options">
-		<!-- skipping closing tags on purpose to remove default space between inline-block elements -->
-		<button class="form-options-button button" ng-click="home.closeForm()">Cancel
-		<button class="form-options-button button button--warning">Delete Package
-		<button class="form-options-button button button--success" ng-click="form.createPackage()">Save Package
+	<!-- state: create -->
+	<div class="form-options" ng-if="::form.formState === 'create'">
+		
+		<!-- cancel -->
+		<button class="form-options-button2 button" 
+			ng-click="home.closeForm()">Cancel
+		
+		<!-- create package -->
+		<button class="form-options-button2 button button--success" 
+			ng-click="form.createPackage()"
+			ng-disabled="!(form.packageName && form.quotesAdded.length)">Create Package
+
 	</div>
+
+	<!-- state: edit -->
+	<div class="form-options" ng-if="::form.formState === 'edit'">
+		
+		<!-- cancel -->
+		<button class="form-options-button3 button" 
+			ng-click="home.closeForm()">Cancel
+		
+		<!-- delete package -->
+		<button class="form-options-button3 button button--warning" 
+			ng-click="form.deletePackage()">Delete Package
+		
+		<!-- save changes -->
+		<button class="form-options-button3 button button--success" 
+			ng-click="form.updatePackage()">Save Changes
+	
+	</div>
+
+	<!-- state: view -->
+	<div class="form-options" ng-if="::form.formState === 'view'">
+		
+		<!-- back -->
+		<button class="form-options-button2 button" 
+			ng-click="home.closeForm()">Back
+		
+		<!-- subscribe/unsubscribe -->
+		<button class="form-options-button2 button"
+			ng-class="form.isPackageSubscribed() ? 'button--warning' : 'button--success'"
+			ng-click="form.isPackageSubscribed() ? form.unsubscribePackage() : form.subscribePackage()">{{ form.isPackageSubscribed() ? 'Unsubscribe' : 'Subscribe' }}
+	
+	</div>
+
 
 	<!-- name -->
 	<div class="form-name">
+		
+		<!-- name input -->
 		<input type="text" 
 			class="form-name-edit" 
 			placeholder="Package Name"
-			ng-model="form.packageName">
+			ng-model="form.packageName"
+			ng-if="::form.formState !== 'view'">
+		
+		<!-- name (view mode) -->
+		<span class="form-name-view"
+			ng-if="::form.formState === 'view'">{{ form.packageName }}</span>
+
 	</div>
 
 	<!-- quotes -->
-	<div class="form-quotes">
-		<p class="form-quote" ng-repeat="quote in form.quotesAdded">
-			{{ quote.body }} -{{ quote.author }}
+	<div class="form-quotes" ng-class="{ 'is-disabled': form.stateEditing }"
+		ng-if="::form.formState !== 'view'">
+		<p class="form-quote" ng-repeat="quote in form.quotesAdded"
+			ng-click="form.editQuote(quote, $index)"
+			ng-class="{ 'is-hover': $index === form.quoteCurrentIndex }">
+			{{ quote.body }} &nbsp; &#8212; {{ quote.author }}
 		</p>
 	</div>
 
+	<!-- quotes (view mode) -->
+	<div class="form-quotes-view" ng-if="::form.formState === 'view'">
+		<p class="form-quote-view" ng-repeat="quote in form.quotesAdded">
+			{{ quote.body }} &nbsp; &#8212; {{ quote.author }}
+		</p>
+	</div>
+
+
 	<!-- edit quote -->
-	<div class="form-edit">
+	<div class="form-edit" ng-if="::form.formState !== 'view'">
 
 		<!-- body -->
 		<textarea class="form-edit-text" rows="3" 
@@ -46,13 +106,25 @@
 	</div>
 
 	<!-- quote options -->
-	<div class="form-editOptions">
+	<div class="form-editOptions" ng-if="::form.formState !== 'view'">
 		<div class="form-editOptions-buttons">
-			<button class="button u-floatL">Clear Quote</button>
-			<button class="button u-floatR" ng-click="form.addQuote()">Add Quote</button>
+
+			<!-- cancel -->
+			<button class="form-options-button3 button" 
+				ng-click="form.cancelEdit()"
+				ng-disabled="!form.stateEditing">Cancel Edit
+
+			<!-- delete -->
+			<button class="form-options-button3 button" 
+				ng-click="form.deleteQuote()"
+				ng-disabled="!form.stateEditing">Delete Quote
+
+			<!-- update/add -->
+			<button class="form-options-button3 button" 
+				ng-click="form.stateEditing ? form.updateQuote() : form.addQuote()"
+				ng-disabled="!form.quoteCurrent.body">{{ form.stateEditing ? 'Update Quote' : 'Add Quote' }}
+
 		</div>
 	</div>
-
-
 
 </div>

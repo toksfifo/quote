@@ -45835,12 +45835,12 @@ angular.module('quote', [
 	db: /*gulp-replace-db*/'https://quoteextension.firebaseio.com/dev'/*end*/,
 	ref: /*gulp-replace-ref*/new Firebase('https://quoteextension.firebaseio.com/dev')/*end*/
 });
-angular.module("templates", []).run(["$templateCache", function($templateCache) {$templateCache.put("components/form/form.html","<div ng-controller=\"FormCtrl as form\"\n	class=\"form-wrapper u-centerXY\"\n	ng-if=\"home.show.form\">\n\n	<!-- form options -->\n	<div class=\"form-options\">\n		<!-- skipping closing tags on purpose to remove default space between inline-block elements -->\n		<button class=\"form-options-button button\" ng-click=\"home.closeForm()\">Cancel\n		<button class=\"form-options-button button button--warning\">Delete Package\n		<button class=\"form-options-button button button--success\" ng-click=\"form.createPackage()\">Save Package\n	</div>\n\n	<!-- name -->\n	<div class=\"form-name\">\n		<input type=\"text\" \n			class=\"form-name-edit\" \n			placeholder=\"Package Name\"\n			ng-model=\"form.packageName\">\n	</div>\n\n	<!-- quotes -->\n	<div class=\"form-quotes\">\n		<p class=\"form-quote\" ng-repeat=\"quote in form.quotesAdded\">\n			{{ quote.body }} -{{ quote.author }}\n		</p>\n	</div>\n\n	<!-- edit quote -->\n	<div class=\"form-edit\">\n\n		<!-- body -->\n		<textarea class=\"form-edit-text\" rows=\"3\" \n			placeholder=\"Text\"\n			ng-model=\"form.quoteCurrent.body\"></textarea>\n\n		<!-- author -->\n		<input type=\"text\" class=\"form-edit-author\"\n			placeholder=\"Author (optional)\"\n			ng-model=\"form.quoteCurrent.author\">\n		\n		<!-- link -->\n		<input type=\"text\" class=\"form-edit-link\"\n			placeholder=\"Link (optional)\"\n			ng-model=\"form.quoteCurrent.link\">\n\n	</div>\n\n	<!-- quote options -->\n	<div class=\"form-editOptions\">\n		<div class=\"form-editOptions-buttons\">\n			<button class=\"button u-floatL\">Clear Quote</button>\n			<button class=\"button u-floatR\" ng-click=\"form.addQuote()\">Add Quote</button>\n		</div>\n	</div>\n\n\n\n</div>");
+angular.module("templates", []).run(["$templateCache", function($templateCache) {$templateCache.put("components/form/form.html","<div ng-controller=\"FormCtrl as form\"\n	class=\"form-wrapper u-centerXY\"\n	ng-if=\"home.show.form\">\n\n	<!-- skipping closing tags on certain buttons purpose to remove default space between inline-block elements -->\n\n	<!-- form options -->\n	<!-- state: create -->\n	<div class=\"form-options\" ng-if=\"::form.formState === \'create\'\">\n		\n		<!-- cancel -->\n		<button class=\"form-options-button2 button\" \n			ng-click=\"home.closeForm()\">Cancel\n		\n		<!-- create package -->\n		<button class=\"form-options-button2 button button--success\" \n			ng-click=\"form.createPackage()\"\n			ng-disabled=\"!(form.packageName && form.quotesAdded.length)\">Create Package\n\n	</div>\n\n	<!-- state: edit -->\n	<div class=\"form-options\" ng-if=\"::form.formState === \'edit\'\">\n		\n		<!-- cancel -->\n		<button class=\"form-options-button3 button\" \n			ng-click=\"home.closeForm()\">Cancel\n		\n		<!-- delete package -->\n		<button class=\"form-options-button3 button button--warning\" \n			ng-click=\"form.deletePackage()\">Delete Package\n		\n		<!-- save changes -->\n		<button class=\"form-options-button3 button button--success\" \n			ng-click=\"form.updatePackage()\">Save Changes\n	\n	</div>\n\n	<!-- state: view -->\n	<div class=\"form-options\" ng-if=\"::form.formState === \'view\'\">\n		\n		<!-- back -->\n		<button class=\"form-options-button2 button\" \n			ng-click=\"home.closeForm()\">Back\n		\n		<!-- subscribe/unsubscribe -->\n		<button class=\"form-options-button2 button\"\n			ng-class=\"form.isPackageSubscribed() ? \'button--warning\' : \'button--success\'\"\n			ng-click=\"form.isPackageSubscribed() ? form.unsubscribePackage() : form.subscribePackage()\">{{ form.isPackageSubscribed() ? \'Unsubscribe\' : \'Subscribe\' }}\n	\n	</div>\n\n\n	<!-- name -->\n	<div class=\"form-name\">\n		\n		<!-- name input -->\n		<input type=\"text\" \n			class=\"form-name-edit\" \n			placeholder=\"Package Name\"\n			ng-model=\"form.packageName\"\n			ng-if=\"::form.formState !== \'view\'\">\n		\n		<!-- name (view mode) -->\n		<span class=\"form-name-view\"\n			ng-if=\"::form.formState === \'view\'\">{{ form.packageName }}</span>\n\n	</div>\n\n	<!-- quotes -->\n	<div class=\"form-quotes\" ng-class=\"{ \'is-disabled\': form.stateEditing }\"\n		ng-if=\"::form.formState !== \'view\'\">\n		<p class=\"form-quote\" ng-repeat=\"quote in form.quotesAdded\"\n			ng-click=\"form.editQuote(quote, $index)\"\n			ng-class=\"{ \'is-hover\': $index === form.quoteCurrentIndex }\">\n			{{ quote.body }} &nbsp; &#8212; {{ quote.author }}\n		</p>\n	</div>\n\n	<!-- quotes (view mode) -->\n	<div class=\"form-quotes-view\" ng-if=\"::form.formState === \'view\'\">\n		<p class=\"form-quote-view\" ng-repeat=\"quote in form.quotesAdded\">\n			{{ quote.body }} &nbsp; &#8212; {{ quote.author }}\n		</p>\n	</div>\n\n\n	<!-- edit quote -->\n	<div class=\"form-edit\" ng-if=\"::form.formState !== \'view\'\">\n\n		<!-- body -->\n		<textarea class=\"form-edit-text\" rows=\"3\" \n			placeholder=\"Text\"\n			ng-model=\"form.quoteCurrent.body\"></textarea>\n\n		<!-- author -->\n		<input type=\"text\" class=\"form-edit-author\"\n			placeholder=\"Author (optional)\"\n			ng-model=\"form.quoteCurrent.author\">\n		\n		<!-- link -->\n		<input type=\"text\" class=\"form-edit-link\"\n			placeholder=\"Link (optional)\"\n			ng-model=\"form.quoteCurrent.link\">\n\n	</div>\n\n	<!-- quote options -->\n	<div class=\"form-editOptions\" ng-if=\"::form.formState !== \'view\'\">\n		<div class=\"form-editOptions-buttons\">\n\n			<!-- cancel -->\n			<button class=\"form-options-button3 button\" \n				ng-click=\"form.cancelEdit()\"\n				ng-disabled=\"!form.stateEditing\">Cancel Edit\n\n			<!-- delete -->\n			<button class=\"form-options-button3 button\" \n				ng-click=\"form.deleteQuote()\"\n				ng-disabled=\"!form.stateEditing\">Delete Quote\n\n			<!-- update/add -->\n			<button class=\"form-options-button3 button\" \n				ng-click=\"form.stateEditing ? form.updateQuote() : form.addQuote()\"\n				ng-disabled=\"!form.quoteCurrent.body\">{{ form.stateEditing ? \'Update Quote\' : \'Add Quote\' }}\n\n		</div>\n	</div>\n\n</div>");
 $templateCache.put("components/home/home.html","<!-- HomeCtrl as home -->\n\n\n\n\n<div class=\"home-wrapper u-bgc-{{ home.currentColor.name }}\">\n	\n\n	\n\n\n		<br>\n		<br>\n\n		<button ng-click=\"home.show.settings = !home.show.settings\">Settings</button>\n		<button ng-click=\"home.show.form = !home.show.form\">Form</button>\n		<button ng-click=\"home.generateQuoteList()\">Generate Quotes</button>\n		<a ng-href=\"{{ home.quote.link }}\">link</a>\n\n		\n	<!-- quote -->\n	<div class=\"quote-wrapper u-centerXY\" \n		ng-if=\"::home.quote.body\" \n		ng-class=\"{ \'is-blurred\': home.show.settings || home.show.form }\">\n		<div class=\"quote\">\n			<p class=\"quote-body\">{{ home.quote.body }}</p>\n			<p class=\"quote-author\">&#8212; {{ home.quote.author | uppercase}}</p>\n		</div>\n	</div>\n\n	<!-- click to close settings -->\n	<div class=\"settings-close\" \n		ng-show=\"home.show.settings\" \n		ng-click=\"home.show.settings = false\"></div>\n\n	<!-- settings -->\n	<div ng-include=\"\'components/settings/settings.html\'\"></div>\n\n	<!-- form -->\n	<div ng-include=\"\'components/form/form.html\'\"></div>\n	\n</div>\n\n\n\n\n\n\n\n\n\n");
-$templateCache.put("components/settings/settings.html","<div ng-controller=\"SettingsCtrl as settings\" \n	class=\"settings-wrapper u-centerXY\"\n	ng-if=\"home.show.settings\">\n\n	<!-- head -->\n	<div class=\"settings-head\">\n\n		<!-- packages -->\n		<div class=\"settings-tab\" \n			ng-click=\"settings.toggleTab(\'packages\')\"\n			ng-class=\"{ \'is-active\': settings.show.packages }\">\n			<i class=\"settings-tab-icon icon ion-ios-folder\"></i>\n			<span class=\"settings-tab-text\">Packages</span>\n		</div>\n		\n		<!-- colors -->\n		<div class=\"settings-tab\" \n			ng-click=\"settings.toggleTab(\'colors\')\"\n			ng-class=\"{ \'is-active\': settings.show.colors }\">\n			<i class=\"settings-tab-icon icon ion-paintbucket\"></i>\n			<span class=\"settings-tab-text\">Colors</span>\n		</div>\n		\n		<!-- account -->\n		<div class=\"settings-tab\" \n			ng-click=\"settings.toggleTab(\'account\')\"\n			ng-class=\"{ \'is-active\': settings.show.account }\">\n			<i class=\"settings-tab-icon--bigger icon ion-ios-person\"></i>\n			<span class=\"settings-tab-text\">Account</span>\n		</div>\n\n	</div>\n\n	<div class=\"settings-body\">\n\n		<!-- packages -->\n		<div ng-include=\"\'components/settings/packages/packages.html\'\"></div>\n\n		<!-- colors -->\n		<div ng-include=\"\'components/settings/colors/colors.html\'\"></div>\n\n		<!-- account -->\n		<div ng-include=\"\'components/settings/account/account.html\'\"></div>\n\n	</div>\n	\n	\n	\n</div>");
-$templateCache.put("components/settings/packages/packages.html","<div ng-controller=\"PackagesCtrl as packages\"\n	ng-show=\"settings.show.packages\">\n\n	<!-- head -->\n	<div class=\"packages-head\">\n		\n		<!-- search -->\n		<input type=\"text\" class=\"packages-search packages-head-item\"  \n			ng-model=\"packages.filter.search\"\n			ng-class=\"{ \'is-active\': packages.filter.search }\"\n			placeholder=\"Search Packages\">\n\n		<!-- filter packages -->\n		<button class=\"button packages-head-item u-inlineBlock\" \n			ng-click=\"packages.filter.created = !packages.filter.created\"\n			ng-class=\"{ \'button--active\': packages.filter.created }\">{{ packages.filter.created ? \'Show All\' : \'Show Only Yours\' }}</button>\n\n		<!-- create package -->\n		<button class=\"button button--success packages-head-item u-inlineBlock\"\n			ng-click=\"home.openForm()\">Create Package</button>\n\n	</div>\n\n	<!-- titles -->\n	<div class=\"packages-titles\">\n		<div class=\"packages-title\">Subscribed</div>\n		<div class=\"packages-title\">Other</div>\n	</div>\n\n	<!-- body -->\n	<div class=\"packages-body\">\n\n		<!-- subscribed -->\n		<div class=\"packages-col\">\n			<!-- show subscribed packages. only show packages owned by user on packages.filter.created -->\n			<package-dctv\n				ng-repeat=\"package in packages.packagesSubscribed | \n				packagesFltr: (packages.filter.created ? packages.packagesOwn : \'all\'): \'include\' |\n				filter: packages.filter.search\n				track by package.$id\"\n				package=\"package\"\n				type=\"subscribed\">\n		</div>\n\n		<!-- other -->\n		<div class=\"packages-col\">\n			<!-- show other packages that user is not subscribed to (by excluding subscribed from all), then filter by owned packages on packages.filter.created -->\n			<package-dctv \n				ng-repeat=\"package in packages.packagesAll |\n				packagesFltr: packages.packagesSubscribed: \'exclude\' |\n				packagesFltr: (packages.filter.created ? packages.packagesOwn : \'all\'): \'include\' |\n				filter: packages.filter.search\n				track by package.$id\"\n				package=\"package\"\n				type=\"all\">\n		</div>\n\n	</div>\n\n</div>");
+$templateCache.put("components/settings/settings.html","<div ng-controller=\"SettingsCtrl as settings\" \n	class=\"settings-wrapper u-centerXY\"\n	ng-show=\"home.show.settings\">\n\n	<!-- head -->\n	<div class=\"settings-head\">\n\n		<!-- packages -->\n		<div class=\"settings-tab\" \n			ng-click=\"settings.toggleTab(\'packages\')\"\n			ng-class=\"{ \'is-active\': settings.show.packages }\">\n			<i class=\"settings-tab-icon icon ion-ios-folder\"></i>\n			<span class=\"settings-tab-text\">Packages</span>\n		</div>\n		\n		<!-- colors -->\n		<div class=\"settings-tab\" \n			ng-click=\"settings.toggleTab(\'colors\')\"\n			ng-class=\"{ \'is-active\': settings.show.colors }\">\n			<i class=\"settings-tab-icon icon ion-paintbucket\"></i>\n			<span class=\"settings-tab-text\">Colors</span>\n		</div>\n		\n		<!-- account -->\n		<div class=\"settings-tab\" \n			ng-click=\"settings.toggleTab(\'account\')\"\n			ng-class=\"{ \'is-active\': settings.show.account }\">\n			<i class=\"settings-tab-icon--bigger icon ion-ios-person\"></i>\n			<span class=\"settings-tab-text\">Account</span>\n		</div>\n\n	</div>\n\n	<div class=\"settings-body\">\n\n		<!-- packages -->\n		<div ng-include=\"\'components/settings/packages/packages.html\'\"></div>\n\n		<!-- colors -->\n		<div ng-include=\"\'components/settings/colors/colors.html\'\"></div>\n\n		<!-- account -->\n		<div ng-include=\"\'components/settings/account/account.html\'\"></div>\n\n	</div>\n	\n	\n	\n</div>");
 $templateCache.put("components/settings/colors/colors.html","<div ng-controller=\"ColorsCtrl as colors\"\n	ng-show=\"settings.show.colors\">\n\n	<div class=\"color-wrapper u-centerXY\">\n		<div class=\"color--{{ color.name }} u-centerY\" \n			ng-repeat=\"color in ::colors.colors track by $index\" \n			ng-click=\"colors.selectColor(color)\"\n			ng-class=\"{ \'is-active\': color.name === colors.currentColor.name }\">\n		</div>\n	</div>\n\n</div>");
-$templateCache.put("components/settings/packages/package/package.html","<div class=\"package--{{ type }} u-centerX\" \n	ng-click=\"show.options = true\" \n	ng-mouseleave=\"show.options = false\">\n	\n	<!-- primary -->\n	<div class=\"package-pri\">\n		<span class=\"package-name\">{{ package.name }}</span>\n	</div>\n\n	<!-- secondary -->\n	<div class=\"package-sec\">\n		<span class=\"package-author\">by {{ package.creatorName || \'Toks Fifo\' }}</span>\n		<span class=\"package-length\">{{ package.length || 5 }}</span>\n	</div>\n\n	<!-- options -->\n	<div class=\"package-options\" ng-show=\"show.options\">\n		\n		<!-- view option -->\n		<div class=\"package-view\">\n			\n			<!-- view -->\n			<i class=\"icon ion-eye package-button--view\"></i>\n		</div>\n\n		<!-- action option -->\n		<div class=\"package-action--{{ type }}\"\n			ng-click=\"(type === \'all\' && addPackage(package.$id)) || (type === \'subscribed\' && removePackage(package.$id))\">\n\n			<!-- add -->\n			<i class=\"icon ion-plus package-button\" \n				ng-if=\"::type === \'all\'\"></i>\n\n			<!-- remove -->\n			<i class=\"icon ion-close package-button\"\n				ng-if=\"::type === \'subscribed\'\"></i>\n\n		</div>\n\n	</div>\n\n</div>");}]);
+$templateCache.put("components/settings/packages/packages.html","<div ng-controller=\"PackagesCtrl as packages\"\n	ng-show=\"settings.show.packages\">\n\n	<!-- head -->\n	<div class=\"packages-head\">\n		\n		<!-- search -->\n		<input type=\"text\" class=\"packages-search packages-head-item\"  \n			ng-model=\"packages.filter.search\"\n			ng-class=\"{ \'is-active\': packages.filter.search }\"\n			placeholder=\"Search Packages\">\n\n		<!-- filter packages -->\n		<button class=\"button packages-head-item u-inlineBlock\" \n			ng-click=\"packages.filter.created = !packages.filter.created\"\n			ng-class=\"{ \'button--active\': packages.filter.created }\">{{ packages.filter.created ? \'Show All\' : \'Show Only Yours\' }}</button>\n\n		<!-- create package -->\n		<button class=\"button button--success packages-head-item u-inlineBlock\"\n			ng-click=\"home.openForm(\'create\', null)\">Create Package</button>\n\n	</div>\n\n	<!-- titles -->\n	<div class=\"packages-titles\">\n		<div class=\"packages-title\">Subscribed</div>\n		<div class=\"packages-title\">Other</div>\n	</div>\n\n	<!-- body -->\n	<div class=\"packages-body\">\n\n		<!-- subscribed -->\n		<div class=\"packages-col\">\n			<!-- show subscribed packages. only show packages owned by user on packages.filter.created -->\n			<package-dctv\n				ng-repeat=\"package in packages.packagesSubscribed | \n				packagesFltr: (packages.filter.created ? packages.packagesOwn : \'all\'): \'include\' |\n				filter: packages.filter.search\n				track by package.$id\"\n				package=\"package\"\n				open-form=\"home.openForm(state, key)\"\n				type=\"subscribed\">\n		</div>\n\n		<!-- other -->\n		<div class=\"packages-col\">\n			<!-- show other packages that user is not subscribed to (by excluding subscribed from all), then filter by owned packages on packages.filter.created -->\n			<package-dctv \n				ng-repeat=\"package in packages.packagesAll |\n				packagesFltr: packages.packagesSubscribed: \'exclude\' |\n				packagesFltr: (packages.filter.created ? packages.packagesOwn : \'all\'): \'include\' |\n				filter: packages.filter.search\n				track by package.$id\"\n				package=\"package\"\n				open-form=\"home.openForm(state, key)\"\n				type=\"all\">\n		</div>\n\n	</div>\n\n</div>");
+$templateCache.put("components/settings/packages/package/package.html","<div class=\"package--{{ type }} u-centerX\" \n	ng-click=\"show.options = true\" \n	ng-mouseleave=\"show.options = false\">\n	\n	<!-- primary -->\n	<div class=\"package-pri\">\n		<span class=\"package-name\">{{ package.name }}</span>\n	</div>\n\n	<!-- secondary -->\n	<div class=\"package-sec\">\n		<span class=\"package-author\">by {{ package.creatorName || \'Toks Fifo\' }}</span>\n		<span class=\"package-length\">{{ package.length || 5 }}</span>\n	</div>\n\n	<!-- options -->\n	<div class=\"package-options\" ng-show=\"show.options\">\n		\n		<!-- view option -->\n		<div class=\"package-view\"\n			ng-click=\"package.creator === uid ? openForm({ state: \'edit\', key: package.$id }) : openForm({ state: \'view\', key: package.$id })\">\n			\n			<!-- view -->\n			<i class=\"icon ion-eye package-button--view\"\n				ng-if=\"::package.creator !== uid\"></i>\n\n			<!-- edit -->\n			<i class=\"icon ion-edit package-button--view\"\n				ng-if=\"::package.creator === uid\"></i>\n		\n		</div>\n\n		<!-- action option -->\n		<div class=\"package-action--{{ type }}\"\n			ng-click=\"(type === \'all\' && addPackage(package.$id)) || (type === \'subscribed\' && removePackage(package.$id))\">\n\n			<!-- add -->\n			<i class=\"icon ion-plus package-button\" \n				ng-if=\"::type === \'all\'\"></i>\n\n			<!-- remove -->\n			<i class=\"icon ion-close package-button\"\n				ng-if=\"::type === \'subscribed\'\"></i>\n\n		</div>\n\n	</div>\n\n</div>");}]);
 angular.module('quote')
 	.factory('AuthSvc', AuthSvc);
 
@@ -45908,6 +45908,46 @@ function AuthSvc($q, $firebaseAuth, Const, UserSvc) {
 }
 AuthSvc.$inject = ["$q", "$firebaseAuth", "Const", "UserSvc"];
 angular.module('quote')
+	.filter('packagesFltr', packagesFltr);
+
+function packagesFltr() {
+
+	return filter;
+
+	/**
+	 * Filter packagesBase either by excluding packagesToFilterBy from packagesBase, or by only including packagesToFilterBy in packagesBase
+	 * @param  {$firebaseArray} packagesBase       packages to filter
+	 * @param  {$firebaseArray} packagesToFilterBy packages to filter by, or 'all'
+	 * @param  {String} direction          filter mechanism. either 'include' or 'exclude'
+	 * @return {Array}                    filtered $firebaseArray as Array
+	 */
+	function filter(packagesBase, packagesToFilterBy, direction) {
+		
+		// don't show anything if we don't have all the data
+		if (!packagesBase || !packagesToFilterBy) {
+			return [];
+		}
+
+		// inluding all doesn't filter at all. excluding all filters out all elements
+		if (packagesToFilterBy === 'all') {
+			if (direction === 'include') return packagesBase;
+			else if (direction === 'exclude') return [];
+		}
+
+		var packagesToFilterById = _.map(packagesToFilterBy, function(package) {
+			return package.$id;
+		});
+
+		return _.filter(packagesBase, function(package) {
+			if (direction === 'include') return packagesToFilterById.indexOf(package.$id) > -1;
+			else if (direction === 'exclude') return packagesToFilterById.indexOf(package.$id) === -1;
+			else return [];
+		});
+
+	}
+
+}
+angular.module('quote')
 	.factory('DataSvc', DataSvc);
 
 function DataSvc($q, $firebaseArray, $firebaseObject, Const, AuthSvc) {
@@ -45919,6 +45959,7 @@ function DataSvc($q, $firebaseArray, $firebaseObject, Const, AuthSvc) {
 		{ name: 'gray-pastel' },
 		{ name: 'white' }
 	];
+	var currentFormStatus = {};
 
 	var DataSvc = {
 		getQuote: getQuote,
@@ -45926,12 +45967,17 @@ function DataSvc($q, $firebaseArray, $firebaseObject, Const, AuthSvc) {
 		getPackagesAll: getPackagesAll,
 		getPackagesOwn: getPackagesOwn,
 		getPackagesSubscribed: getPackagesSubscribed,
+		getPackage: getPackage,
+		getQuotesFromPackage: getQuotesFromPackage,
 		subscribePackage: subscribePackage,
 		unsubscribePackage: unsubscribePackage,
 		createPackage: createPackage,
+		updatePackage: updatePackage,
+		deletePackage: deletePackage,
 		getColorOptions: getColorOptions,
 		getColor: getColor,
-		setColor: setColor
+		setColor: setColor,
+		formStatus: formStatus
 	};
 
 	return DataSvc;
@@ -46071,6 +46117,40 @@ function DataSvc($q, $firebaseArray, $firebaseObject, Const, AuthSvc) {
 	}
 
 	/**
+	 * Get package from key/id
+	 * @param  {String} key $id of package
+	 * @return {Promise}     Resolves with package object
+	 */
+	function getPackage(key) {
+		return $q(function(resolve, reject) {
+			Const.ref.child('packages')
+				.child(key)
+				.once('value', function(package) {
+					resolve(package.val());
+				}, function(err) {
+					reject(err);
+				});
+		});
+	}
+
+	/**
+	 * Get quotes of package
+	 * @param  {String} key $id of package
+	 * @return {Promise}     Resolves with quotes object - keys: $id of quotes, vals: quote Objects
+	 */
+	function getQuotesFromPackage(key) {
+		return $q(function(resolve, reject) {
+			Const.ref.child('quotes')
+				.child(key)
+				.once('value', function(quotes) {
+					resolve(quotes.val());
+				}, function(err) {
+					reject(err);
+				});
+		});
+	}
+
+	/**
 	 * Subscribe to a package
 	 * @param  {String} key push key of package
 	 * @return {Promise}     Resolves when user subscribes to package
@@ -46163,6 +46243,103 @@ function DataSvc($q, $firebaseArray, $firebaseObject, Const, AuthSvc) {
 	}
 
 	/**
+	 * Update package by deleting previous quotes and adding new ones
+	 * @param  {String} name   New name of package
+	 * @param  {Array} quotes New (all) quotes to add to package
+	 * @param  {String} key    Package $id
+	 * @return {Promise}        Resolves when package has been updated and quotes are added to db. Note that it won't resolve rn if there are no quotes added to package
+	 */
+	function updatePackage(name, quotes, key) {
+		return $q(function(resolve, reject) {
+
+			// 1st, get the name of the package's owner
+			Const.ref.child('users')
+				.child(AuthSvc.getAuthStatus().uid)
+				.child('info/name').once('value', function(username) {
+
+					// now, update the package
+					Const.ref.child('packages')
+						.child(key)
+						.set({
+							name: name,
+							creator: AuthSvc.getAuthStatus().uid,
+							creatorName: username.val(),
+							length: quotes.length
+						}, function(err) {
+							if (err) {
+								reject(err);
+								return;
+							}
+
+							// counter to know when to resolve
+							var counter = 0;
+
+							// empty old package
+							Const.ref.child('quotes')
+								.child(key)
+								.remove(function(err) {
+									if (err) {
+										reject(err);
+										return;
+									}
+
+									// push the quotes on the newly created package
+									for (var i = 0; i < quotes.length; i++) {
+										Const.ref.child('quotes')
+											.child(key)
+											.push({
+												body: quotes[i].body,
+												author: quotes[i].author,
+												link: quotes[i].link
+											}, function(err) {
+												if (err) {
+													reject(err);
+													return;
+												}
+
+												// resolve on final push
+												(counter === quotes.length - 1) && resolve();
+												counter++;
+											});
+									}
+								});
+							
+						});
+				}, function(err) {
+					reject(err);
+				});
+			
+		});
+	}
+
+	/**
+	 * Delete package. remove from /quotes and /packages
+	 * @param  {String} key Package $id
+	 * @return {Promise}     Resolves when package is deleted from both /quotes and /packages
+	 */
+	function deletePackage(key) {
+		return $q(function(resolve, reject) {
+			Const.ref.child('packages')
+				.child(key)
+				.remove(function(err) {
+					if (err) {
+						reject(err);
+						return;
+					}
+					Const.ref.child('quotes')
+						.child(key)
+						.remove(function(err) {
+							if (err) {
+								reject(err);
+								return;
+							} 
+							resolve();
+						});
+				});
+		});
+	}
+
+	/**
 	 * Get background color options
 	 * @return {Array} Array of color objects
 	 */
@@ -46198,6 +46375,21 @@ function DataSvc($q, $firebaseArray, $firebaseObject, Const, AuthSvc) {
 	}
 
 	/**
+	 * Get or set form status (state and key/$id)
+	 * @param  {String} state One of 'create', 'view', 'edit'
+	 * @param  {String} key   $id of package to create, view, or edit
+	 * @return {Object}       Only return if getting. 'state' and 'key' keys
+	 */
+	function formStatus(state, key) {
+		if (state) {
+			currentFormStatus.state = state;
+			currentFormStatus.key = key;
+		} else {
+			return currentFormStatus;
+		}
+	}
+
+	/**
 	 * Generate random number from [min, max]
 	 * @param  {Number} min min, inclusive
 	 * @param  {Number} max max, inclusive
@@ -46210,45 +46402,204 @@ function DataSvc($q, $firebaseArray, $firebaseObject, Const, AuthSvc) {
 }
 DataSvc.$inject = ["$q", "$firebaseArray", "$firebaseObject", "Const", "AuthSvc"];
 angular.module('quote')
-	.filter('packagesFltr', packagesFltr);
+	.controller('FormCtrl', FormCtrl);
 
-function packagesFltr() {
+function FormCtrl($scope, DataSvc) {
 
-	return filter;
+	var vm = this;
+	var formKey = DataSvc.formStatus().key;
+	var packagesSubscribed = DataSvc.getPackagesSubscribed();
+
+	vm.quotesAdded = [];
+	vm.quoteCurrent = {
+		body: '',
+		author: '',
+		link: ''
+	};
+	vm.addQuote = addQuote;
+	vm.editQuote = editQuote;
+	vm.updateQuote = updateQuote;
+	vm.deleteQuote = deleteQuote;
+	vm.cancelEdit = cancelEdit;
+	vm.createPackage = createPackage;
+	vm.deletePackage = deletePackage;
+	vm.updatePackage = updatePackage;
+	vm.subscribePackage = subscribePackage;
+	vm.unsubscribePackage = unsubscribePackage;
+	vm.isPackageSubscribed = isPackageSubscribed;
+	vm.packageName = '';
+	vm.quoteCurrentIndex = null;
+	vm.formState = DataSvc.formStatus().state;
+	vm.stateEditing;
+
+	init();
+
+	function init() {
+		if (vm.formState === 'edit' || vm.formState === 'view') {
+			DataSvc.getPackage(formKey).then(function(package) {
+				vm.packageName = package.name;
+				return DataSvc.getQuotesFromPackage(formKey);
+			}).then(function(quotes) {
+				for (var key in quotes) {
+					if (quotes.hasOwnProperty(key)) {
+						vm.quotesAdded.push(quotes[key]);
+					}
+				}
+			}).catch(function(err) {
+				console.log('error getting quotes from package', err);
+			});
+		}
+	}
 
 	/**
-	 * Filter packagesBase either by excluding packagesToFilterBy from packagesBase, or by only including packagesToFilterBy in packagesBase
-	 * @param  {$firebaseArray} packagesBase       packages to filter
-	 * @param  {$firebaseArray} packagesToFilterBy packages to filter by, or 'all'
-	 * @param  {String} direction          filter mechanism. either 'include' or 'exclude'
-	 * @return {Array}                    filtered $firebaseArray as Array
+	 * Add quote to current package
 	 */
-	function filter(packagesBase, packagesToFilterBy, direction) {
-		
-		// don't show anything if we don't have all the data
-		if (!packagesBase || !packagesToFilterBy) {
-			return [];
-		}
+	function addQuote() {
+		vm.quotesAdded.push({
+			body: vm.quoteCurrent.body,
+			author: vm.quoteCurrent.author,
+			link: vm.quoteCurrent.link
+		});
+		vm.quoteCurrent = {
+			body: '',
+			author: '',
+			link: ''
+		};
+	}
 
-		// inluding all doesn't filter at all. excluding all filters out all elements
-		if (packagesToFilterBy === 'all') {
-			if (direction === 'include') return packagesBase;
-			else if (direction === 'exclude') return [];
-		}
+	/**
+	 * Stage quote for editing
+	 * @param  {Object} quote Quote to edit
+	 * @param  {Number} index Index of quote in vm.quotesAdded
+	 */
+	function editQuote(quote, index) {
+		vm.quoteCurrentIndex = index;
+		vm.stateEditing = true;
+		vm.quoteCurrent = {
+			body: quote.body,
+			author: quote.author,
+			link: quote.link
+		};
+	}
 
-		var packagesToFilterById = _.map(packagesToFilterBy, function(package) {
+	/**
+	 * Replace quote in vm.quotesAdded
+	 */
+	function updateQuote() {
+		vm.quotesAdded.splice(vm.quoteCurrentIndex, 1, {
+			body: vm.quoteCurrent.body,
+			author: vm.quoteCurrent.author,
+			link: vm.quoteCurrent.link
+		});
+
+		vm.quoteCurrent = {
+			body: '',
+			author: '',
+			link: ''
+		};
+
+		vm.quoteCurrentIndex = null;
+		vm.stateEditing = false;
+	}
+
+	/**
+	 * Remove quote from vm.quotesAdded
+	 */
+	function deleteQuote() {
+		vm.quotesAdded.splice(vm.quoteCurrentIndex, 1);
+
+		vm.quoteCurrent = {
+			body: '',
+			author: '',
+			link: ''
+		};
+
+		vm.quoteCurrentIndex = null;
+		vm.stateEditing = false;
+	}
+
+	/**
+	 * Leave editing mode
+	 * @return {[type]} [description]
+	 */
+	function cancelEdit() {
+		vm.quoteCurrent = {
+			body: '',
+			author: '',
+			link: ''
+		};
+		vm.quoteCurrentIndex = null;
+		vm.stateEditing = false;
+	}
+
+	/**
+	 * Create package on db
+	 */
+	function createPackage() {
+		DataSvc.createPackage(vm.packageName, vm.quotesAdded).then(function() {
+			$scope.home.closeForm();
+		}, function(err) {
+			console.log('error creating package:', err);
+		});
+	}
+
+	/**
+	 * Delete package
+	 */
+	function deletePackage() {
+		DataSvc.deletePackage(formKey).then(function() {
+			$scope.home.closeForm();
+		}, function(err) {
+			console.log('error deleting package:', err);
+		});
+	}
+
+	/**
+	 * Update package
+	 */
+	function updatePackage() {
+		DataSvc.updatePackage(vm.packageName, vm.quotesAdded, formKey).then(function() {
+			$scope.home.closeForm();
+		}, function(err) {
+			console.log('error updating package:', err);
+		});
+	}
+
+	/**
+	 * Subscribe to package
+	 */
+	function subscribePackage() {
+		DataSvc.subscribePackage(formKey).then(function() {
+			$scope.home.closeForm();
+		}, function(err) {
+			console.log('error subscribing to package:', err);
+		});
+	}
+
+	/**
+	 * Unsubscribe from package
+	 * @return {[type]} [description]
+	 */
+	function unsubscribePackage() {
+		DataSvc.unsubscribePackage(formKey).then(function() {
+			$scope.home.closeForm();
+		}, function(err) {
+			console.log('error unsubscribing to package:', err);
+		});
+	}
+
+	/**
+	 * Check if user is subscribed to current package
+	 * @return {Boolean} True if user is subscribed, false otherwise.
+	 */
+	function isPackageSubscribed() {
+		return packagesSubscribed.map(function(package) {
 			return package.$id;
-		});
-
-		return _.filter(packagesBase, function(package) {
-			if (direction === 'include') return packagesToFilterById.indexOf(package.$id) > -1;
-			else if (direction === 'exclude') return packagesToFilterById.indexOf(package.$id) === -1;
-			else return [];
-		});
-
+		}).indexOf(formKey) > -1;
 	}
 
 }
+FormCtrl.$inject = ["$scope", "DataSvc"];
 angular.module('quote')
 	.controller('HomeCtrl', HomeCtrl);
 
@@ -46263,8 +46614,8 @@ function HomeCtrl($q, authStatus, DataSvc, AuthSvc) {
 	var vm = this;
 
 	vm.show = {
-		settings: false,
-		form: true
+		settings: true,
+		form: false
 	};
 	vm.generateQuoteList = generateQuoteList;
 	vm.openForm = openForm;
@@ -46324,16 +46675,27 @@ function HomeCtrl($q, authStatus, DataSvc, AuthSvc) {
 	 */
 	function generateQuoteList() {
 		DataSvc.generateQuoteList().then(function() {
+			// console.log('done generating quotes');
 		}, function(err) {
 			console.log('error generating quote list:', err);
 		});
 	}
 
-	function openForm() {
+	/**
+	 * Show form and hide settings
+	 * @param  {String} state One of 'create', 'view', or 'edit'
+	 * @param  {String} key   $id of current package, or null if creating
+	 */
+	function openForm(state, key) {
+		DataSvc.formStatus(state, key);
 		vm.show.settings = false;
 		vm.show.form = true;
 	}
 
+	/**
+	 * Hide form and show settings
+	 * @return {[type]} [description]
+	 */
 	function closeForm() {
 		vm.show.settings = true;
 		vm.show.form = false;
@@ -46376,53 +46738,6 @@ function UserSvc($q, Const) {
 }
 UserSvc.$inject = ["$q", "Const"];
 angular.module('quote')
-	.controller('FormCtrl', FormCtrl);
-
-function FormCtrl(DataSvc) {
-
-	var vm = this;
-
-	vm.quotesAdded = [];
-	vm.quoteCurrent = {
-		body: '',
-		author: '',
-		link: ''
-	};
-	vm.addQuote = addQuote;
-	vm.createPackage = createPackage;
-	vm.packageName = '';
-
-	/**
-	 * Add quote to current package
-	 */
-	function addQuote() {
-		vm.quotesAdded.push({
-			body: vm.quoteCurrent.body,
-			author: vm.quoteCurrent.author,
-			link: vm.quoteCurrent.link
-		});
-		vm.quoteCurrent = {
-			body: '',
-			author: '',
-			link: ''
-		};
-	}
-
-	/**
-	 * Create package on db
-	 */
-	function createPackage() {
-		DataSvc.createPackage(vm.packageName, vm.quotesAdded).then(function() {
-			vm.packageName = '';
-			vm.quotesAdded = [];
-		}, function(err) {
-			console.log('error creating package:', err);
-		});
-	}
-
-}
-FormCtrl.$inject = ["DataSvc"];
-angular.module('quote')
 	.controller('SettingsCtrl', SettingsCtrl);
 
 function SettingsCtrl() {
@@ -46447,31 +46762,6 @@ function SettingsCtrl() {
 	}
 
 }
-angular.module('quote')
-	.controller('ColorsCtrl', ColorsCtrl);
-
-function ColorsCtrl(DataSvc) {
-
-	var vm = this;
-
-	vm.colors = DataSvc.getColorOptions();
-	vm.currentColor = DataSvc.getColor();
-	vm.selectColor = selectColor;
-
-	/**
-	 * Set new background color
-	 * @param  {Object} color new color
-	 */
-	function selectColor(color) {
-		DataSvc.setColor(color).then(function() {
-
-		}, function(err) {
-			console.log('error setting color', err);
-		});
-	}
-	
-}
-ColorsCtrl.$inject = ["DataSvc"];
 angular.module('quote')
 	.controller('PackagesCtrl', PackagesCtrl);
 
@@ -46498,9 +46788,60 @@ function PackagesCtrl(DataSvc) {
 }
 PackagesCtrl.$inject = ["DataSvc"];
 angular.module('quote')
+	.controller('ColorsCtrl', ColorsCtrl);
+
+function ColorsCtrl(DataSvc) {
+
+	var vm = this;
+
+	vm.colors = DataSvc.getColorOptions();
+	vm.currentColor = DataSvc.getColor();
+	vm.selectColor = selectColor;
+
+	/**
+	 * Set new background color
+	 * @param  {Object} color new color
+	 */
+	function selectColor(color) {
+		DataSvc.setColor(color).then(function() {
+
+		}, function(err) {
+			console.log('error setting color', err);
+		});
+	}
+	
+}
+ColorsCtrl.$inject = ["DataSvc"];
+angular.module('quote')
+	.directive('hoverClassDctv', hoverClassDctv);
+
+function hoverClassDctv() {
+
+	return {
+		restrict: 'A',
+		scope: {
+			hoverClassDctv: '@'
+		},
+		link: link
+	};
+
+	function link(scope, elem) {
+		scope.hoverClassDctv;
+		
+		elem.on('mouseenter', function() {
+			elem.addClass(scope.hoverClassDctv);
+		});
+
+		elem.on('mouseleave', function() {
+			elem.removeClass(scope.hoverClassDctv);
+		});
+	}
+
+}
+angular.module('quote')
 	.directive('packageDctv', packageDctv);
 
-function packageDctv(DataSvc) {
+function packageDctv(DataSvc, AuthSvc) {
 
 	/**
 	 * Directive for packages.
@@ -46510,6 +46851,7 @@ function packageDctv(DataSvc) {
 		replace: true, /* for transition */
 		scope: {
 			package: '=',
+			openForm: '&',
 			type: '@'
 		},
 		templateUrl: 'components/settings/packages/package/package.html',
@@ -46518,12 +46860,14 @@ function packageDctv(DataSvc) {
 
 	function link(scope) {
 
+		scope.uid = AuthSvc.getAuthStatus().uid;
 		scope.addPackage = addPackage;
 		scope.removePackage = removePackage;
 		scope.show = {
 			options: false
 		};
 		scope.package;
+		scope.openForm;
 		scope.type;
 
 		/**
@@ -46551,4 +46895,4 @@ function packageDctv(DataSvc) {
 	}
 
 }
-packageDctv.$inject = ["DataSvc"];
+packageDctv.$inject = ["DataSvc", "AuthSvc"];

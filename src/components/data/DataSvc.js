@@ -10,6 +10,7 @@ function DataSvc($q, $firebaseArray, $firebaseObject, Const, AuthSvc) {
 		{ name: 'gray-pastel' },
 		{ name: 'white' }
 	];
+	var currentFormStatus = {};
 
 	var DataSvc = {
 		getQuote: getQuote,
@@ -17,12 +18,17 @@ function DataSvc($q, $firebaseArray, $firebaseObject, Const, AuthSvc) {
 		getPackagesAll: getPackagesAll,
 		getPackagesOwn: getPackagesOwn,
 		getPackagesSubscribed: getPackagesSubscribed,
+		getPackage: getPackage,
+		getQuotesFromPackage: getQuotesFromPackage,
 		subscribePackage: subscribePackage,
 		unsubscribePackage: unsubscribePackage,
 		createPackage: createPackage,
+		updatePackage: updatePackage,
+		deletePackage: deletePackage,
 		getColorOptions: getColorOptions,
 		getColor: getColor,
-		setColor: setColor
+		setColor: setColor,
+		formStatus: formStatus
 	};
 
 	return DataSvc;
@@ -162,6 +168,40 @@ function DataSvc($q, $firebaseArray, $firebaseObject, Const, AuthSvc) {
 	}
 
 	/**
+	 * Get package from key/id
+	 * @param  {String} key $id of package
+	 * @return {Promise}     Resolves with package object
+	 */
+	function getPackage(key) {
+		return $q(function(resolve, reject) {
+			Const.ref.child('packages')
+				.child(key)
+				.once('value', function(package) {
+					resolve(package.val());
+				}, function(err) {
+					reject(err);
+				});
+		});
+	}
+
+	/**
+	 * Get quotes of package
+	 * @param  {String} key $id of package
+	 * @return {Promise}     Resolves with quotes object - keys: $id of quotes, vals: quote Objects
+	 */
+	function getQuotesFromPackage(key) {
+		return $q(function(resolve, reject) {
+			Const.ref.child('quotes')
+				.child(key)
+				.once('value', function(quotes) {
+					resolve(quotes.val());
+				}, function(err) {
+					reject(err);
+				});
+		});
+	}
+
+	/**
 	 * Subscribe to a package
 	 * @param  {String} key push key of package
 	 * @return {Promise}     Resolves when user subscribes to package
@@ -254,6 +294,103 @@ function DataSvc($q, $firebaseArray, $firebaseObject, Const, AuthSvc) {
 	}
 
 	/**
+	 * Update package by deleting previous quotes and adding new ones
+	 * @param  {String} name   New name of package
+	 * @param  {Array} quotes New (all) quotes to add to package
+	 * @param  {String} key    Package $id
+	 * @return {Promise}        Resolves when package has been updated and quotes are added to db. Note that it won't resolve rn if there are no quotes added to package
+	 */
+	function updatePackage(name, quotes, key) {
+		return $q(function(resolve, reject) {
+
+			// 1st, get the name of the package's owner
+			Const.ref.child('users')
+				.child(AuthSvc.getAuthStatus().uid)
+				.child('info/name').once('value', function(username) {
+
+					// now, update the package
+					Const.ref.child('packages')
+						.child(key)
+						.set({
+							name: name,
+							creator: AuthSvc.getAuthStatus().uid,
+							creatorName: username.val(),
+							length: quotes.length
+						}, function(err) {
+							if (err) {
+								reject(err);
+								return;
+							}
+
+							// counter to know when to resolve
+							var counter = 0;
+
+							// empty old package
+							Const.ref.child('quotes')
+								.child(key)
+								.remove(function(err) {
+									if (err) {
+										reject(err);
+										return;
+									}
+
+									// push the quotes on the newly created package
+									for (var i = 0; i < quotes.length; i++) {
+										Const.ref.child('quotes')
+											.child(key)
+											.push({
+												body: quotes[i].body,
+												author: quotes[i].author,
+												link: quotes[i].link
+											}, function(err) {
+												if (err) {
+													reject(err);
+													return;
+												}
+
+												// resolve on final push
+												(counter === quotes.length - 1) && resolve();
+												counter++;
+											});
+									}
+								});
+							
+						});
+				}, function(err) {
+					reject(err);
+				});
+			
+		});
+	}
+
+	/**
+	 * Delete package. remove from /quotes and /packages
+	 * @param  {String} key Package $id
+	 * @return {Promise}     Resolves when package is deleted from both /quotes and /packages
+	 */
+	function deletePackage(key) {
+		return $q(function(resolve, reject) {
+			Const.ref.child('packages')
+				.child(key)
+				.remove(function(err) {
+					if (err) {
+						reject(err);
+						return;
+					}
+					Const.ref.child('quotes')
+						.child(key)
+						.remove(function(err) {
+							if (err) {
+								reject(err);
+								return;
+							} 
+							resolve();
+						});
+				});
+		});
+	}
+
+	/**
 	 * Get background color options
 	 * @return {Array} Array of color objects
 	 */
@@ -286,6 +423,21 @@ function DataSvc($q, $firebaseArray, $firebaseObject, Const, AuthSvc) {
 					err ? reject(err) : resolve();
 				});
 		});
+	}
+
+	/**
+	 * Get or set form status (state and key/$id)
+	 * @param  {String} state One of 'create', 'view', 'edit'
+	 * @param  {String} key   $id of package to create, view, or edit
+	 * @return {Object}       Only return if getting. 'state' and 'key' keys
+	 */
+	function formStatus(state, key) {
+		if (state) {
+			currentFormStatus.state = state;
+			currentFormStatus.key = key;
+		} else {
+			return currentFormStatus;
+		}
 	}
 
 	/**

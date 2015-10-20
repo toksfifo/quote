@@ -1,7 +1,7 @@
 angular.module('quote')
 	.directive('packageDctv', packageDctv);
 
-function packageDctv(DataSvc) {
+function packageDctv(DataSvc, AuthSvc) {
 
 	/**
 	 * Directive for packages.
@@ -11,6 +11,7 @@ function packageDctv(DataSvc) {
 		replace: true, /* for transition */
 		scope: {
 			package: '=',
+			openForm: '&',
 			type: '@'
 		},
 		templateUrl: 'components/settings/packages/package/package.html',
@@ -19,12 +20,14 @@ function packageDctv(DataSvc) {
 
 	function link(scope) {
 
+		scope.uid = AuthSvc.getAuthStatus().uid;
 		scope.addPackage = addPackage;
 		scope.removePackage = removePackage;
 		scope.show = {
 			options: false
 		};
 		scope.package;
+		scope.openForm;
 		scope.type;
 
 		/**

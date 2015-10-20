@@ -15,6 +15,12 @@ $clr-button-light: transparentize($clr-black, 0.8);
 	&:active {
 		background-color: shade($color, 10%);
 	}
+	&:disabled {
+		border: $bw-base solid $clr-button-base;
+		color: $clr-white;
+		background-color: $color;
+		border-color: shade($color, 20%);
+	}
 }
 
 .button {
@@ -34,6 +40,12 @@ $clr-button-light: transparentize($clr-black, 0.8);
 	}
 	&:active {
 		background-color: $clr-button-light;
+	}
+	&:disabled {
+		opacity: 0.2;
+		cursor: default;
+		border: $bw-base solid $clr-button-base;
+		color: $clr-button-base;
 	}
 }
 

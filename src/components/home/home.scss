@@ -20,10 +20,12 @@ body {
 	height: $height-quote-wrapper;
 	width: $width-quote-wrapper;
 	display: table;
-	transition: filter 0.2s ease-in-out 0.4s;
+	opacity: 1;
+	transition: filter 0.2s ease-in-out 0.4s, opacity 0.2s ease-in-out 0.4s;
 	&.is-blurred {
 		filter: blur(8px);
-		transition: filter 0.2s ease-in-out;
+		opacity: 0.5;
+		transition: filter 0.2s ease-in-out, opacity 0.2s ease-in-out;
 	}
 }
 

@@ -17,10 +17,17 @@
 	<div class="package-options" ng-show="show.options">
 		
 		<!-- view option -->
-		<div class="package-view">
+		<div class="package-view"
+			ng-click="package.creator === uid ? openForm({ state: 'edit', key: package.$id }) : openForm({ state: 'view', key: package.$id })">
 			
 			<!-- view -->
-			<i class="icon ion-eye package-button--view"></i>
+			<i class="icon ion-eye package-button--view"
+				ng-if="::package.creator !== uid"></i>
+
+			<!-- edit -->
+			<i class="icon ion-edit package-button--view"
+				ng-if="::package.creator === uid"></i>
+		
 		</div>
 
 		<!-- action option -->
