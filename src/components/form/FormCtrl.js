@@ -145,8 +145,10 @@ function FormCtrl($scope, DataSvc) {
 	 */
 	function deletePackage() {
 		DataSvc.deletePackage(formKey).then(function() {
+			return DataSvc.generateQuoteList();
+		}).then(function() {
 			$scope.home.closeForm();
-		}, function(err) {
+		}).catch(function(err) {
 			console.log('error deleting package:', err);
 		});
 	}
@@ -156,8 +158,10 @@ function FormCtrl($scope, DataSvc) {
 	 */
 	function updatePackage() {
 		DataSvc.updatePackage(vm.packageName, vm.quotesAdded, formKey).then(function() {
+			return DataSvc.generateQuoteList();
+		}).then(function() {
 			$scope.home.closeForm();
-		}, function(err) {
+		}).catch(function(err) {
 			console.log('error updating package:', err);
 		});
 	}
@@ -167,8 +171,10 @@ function FormCtrl($scope, DataSvc) {
 	 */
 	function subscribePackage() {
 		DataSvc.subscribePackage(formKey).then(function() {
+			return DataSvc.generateQuoteList();
+		}).then(function() {
 			$scope.home.closeForm();
-		}, function(err) {
+		}).catch(function(err) {
 			console.log('error subscribing to package:', err);
 		});
 	}
@@ -179,8 +185,10 @@ function FormCtrl($scope, DataSvc) {
 	 */
 	function unsubscribePackage() {
 		DataSvc.unsubscribePackage(formKey).then(function() {
+			return DataSvc.generateQuoteList();
+		}).then(function() {
 			$scope.home.closeForm();
-		}, function(err) {
+		}).catch(function(err) {
 			console.log('error unsubscribing to package:', err);
 		});
 	}

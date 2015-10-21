@@ -59,7 +59,7 @@ function DataSvc($q, $firebaseArray, $firebaseObject, Const, AuthSvc) {
 	}
 
 	/**
-	 * Generates list of quotes to select master quote from, based on the packages a user is subscribed to. Only happens every now and then, if the user subscribes to a new package, for example.
+	 * Generates list of quotes to select master quote from, based on the packages a user is subscribed to. Only happens every now and then, if the user subscribes to a new package, unsubscribes, updates, or deletes
 	 * @return {Promise}     Resolves after quotes are generated.
 	 */
 	function generateQuoteList() {
