@@ -10,6 +10,7 @@ function DataSvc($q, $firebaseArray, $firebaseObject, Const, AuthSvc) {
 		{ name: 'gray-pastel' },
 		{ name: 'white' }
 	];
+	var currentFormStatus = {};
 
 	var DataSvc = {
 		getQuote: getQuote,
@@ -17,111 +18,104 @@ function DataSvc($q, $firebaseArray, $firebaseObject, Const, AuthSvc) {
 		getPackagesAll: getPackagesAll,
 		getPackagesOwn: getPackagesOwn,
 		getPackagesSubscribed: getPackagesSubscribed,
+		getPackage: getPackage,
+		getQuotesFromPackage: getQuotesFromPackage,
 		subscribePackage: subscribePackage,
 		unsubscribePackage: unsubscribePackage,
 		createPackage: createPackage,
+		updatePackage: updatePackage,
+		deletePackage: deletePackage,
 		getColorOptions: getColorOptions,
 		getColor: getColor,
-		setColor: setColor
+		setColor: setColor,
+		formStatus: formStatus
 	};
 
 	return DataSvc;
 
 	/**
-	 * Get aster quote to display on new tab.
+	 * Get master quote to display on new tab.
 	 * @return {Promise}     Resolves with quote, or 0 if there are no quotes to display (user is out of quotes, or hasn't subscribed to any packages)
 	 */
 	function getQuote() {
 		return $q(function(resolve, reject) {
-			var quoteList = $firebaseArray(Const.ref.child('users')
+			Const.ref.child('users')
 				.child(AuthSvc.getAuthStatus().uid)
-				.child('quotes'));
-
-			quoteList.$loaded().then(function() {
-				if (quoteList.length === 0) {
-					resolve(0);
-				} else {
-					var index = randomNumber(0, quoteList.length - 1);
-					var quoteRef = quoteList[index];
-					var quote = $firebaseObject(Const.ref.child('quotes')
-						.child(quoteRef.packageID)
-						.child(quoteRef.quoteID));
-
-					// remove quote from list
-					quoteList.$remove(index);
-
+				.child('quotes')
+				.once('value', function(quotesRef) {
+					var quotes = quotesRef.val();
+					if (!quotes) {
+						resolve(0);
+						return;
+					}
+					var quoteKeys = Object.keys(quotes);
+					var index = randomNumber(0, quoteKeys.length - 1);
+					var quote = quotes[quoteKeys[index]];
 					resolve(quote);
-				}
-			}, function(err) {
-				reject(err);
-			});
+				}, function(err) {
+					reject(err);
+				});
 		});
 	}
 
 	/**
 	 * Generates list of quotes to select master quote from, based on the packages a user is subscribed to. Only happens every now and then, if the user subscribes to a new package, for example.
-	 * @return {Promise}     Resolves after quotes are generated. This is tricky, and note that rn it won't work if there is a package with no quotes.
+	 * @return {Promise}     Resolves after quotes are generated.
 	 */
 	function generateQuoteList() {
 		return $q(function(resolve, reject) {
-			var subscribed = Const.ref.child('users')
-				.child(AuthSvc.getAuthStatus().uid)
-				.child('packages')
-				.child('subscribed');
 
-			var quoteList = Const.ref.child('users')
-				.child(AuthSvc.getAuthStatus().uid)
-				.child('quotes');
+			var dataGenerateQuotes = {};
 
-			// 1st, empty quote list
-			quoteList.remove(function(err) {
-				if (err) {
-					reject(err);
-					return;
+			// completely replace data at this location (like a set)
+			var setPathQuotes = 'users/' + AuthSvc.getAuthStatus().uid + '/quotes';
+			dataGenerateQuotes[setPathQuotes] = {};
+
+			// join subscribed packages with quotes
+			new Firebase.util.NormalizedCollection(
+				Const.ref.child('users')
+					.child(AuthSvc.getAuthStatus().uid)
+					.child('packages')
+					.child('subscribed'),
+				Const.ref.child('quotes')
+			).select(
+				{ 'key': 'quotes.$value', 'alias': 'quotes' }
+			).ref().once('value', function(packagesRef) {
+				
+				var packages = packagesRef.val();
+
+				for (var i = 0, packageKeys = Object.keys(packages); i < packageKeys.length; i++) {
+					var packageKey = packageKeys[i];
+					var quotes = packages[packageKey].quotes;
+
+					// "unsubscribe" user from packages that are deleted (or have 0 quotes)
+					if (!quotes) {
+						dataGenerateQuotes['users/' + AuthSvc.getAuthStatus().uid + '/packages/subscribed/' + packageKey] = null;
+					}
+
+					for (var j = 0, quoteKeys = Object.keys(quotes); j < quoteKeys.length; j++) {
+						var quoteKey = quoteKeys[j];
+						var quote = quotes[quoteKey];
+						var pushQuoteKey = Const.ref.child('users')
+							.child(AuthSvc.getAuthStatus().uid)
+							.child('quotes').push().key();
+
+						// save actual quote data, not reference to quote
+						dataGenerateQuotes[setPathQuotes][pushQuoteKey] = {
+							author: quote.author,
+							body: quote.body,
+							link: quote.link
+						};
+					}
 				}
 
-				subscribed.once('value', function(packages) {
-
-					// package counter for knowing when to resolve
-					var numPackages = packages.numChildren();
-					var counterPackages = 0;
-
-					packages.forEach(function(package) {
-						Const.ref.child('quotes')
-							.child(package.key())
-							.once('value', function(quotes) {
-
-								// quote counter for knowing when to resolve
-								var numQuotes = quotes.numChildren();
-								var counterQuotes = 0;
-
-								quotes.forEach(function(quote) {
-									quoteList.push({
-										packageID: package.key(),
-										quoteID: quote.key()
-									}, function(err) {
-										if (err) {
-											reject(err);
-											return;
-										}
-
-										// resolve after adding last quote of last package
-										if (counterQuotes === (numQuotes - 1) && counterPackages === (numPackages - 1)) {
-											resolve();
-										} else if (counterQuotes === (numQuotes - 1)) {
-											counterPackages++;
-											counterQuotes++;
-										} else {
-											counterQuotes++;
-										}
-
-									});
-								});
-								
-							});
-					});
+				// multi-location update
+				Const.ref.update(dataGenerateQuotes, function(err) {
+					err ? reject(err) : resolve();
 				});
+
 			});
+
 		});
 	}
 
@@ -162,6 +156,40 @@ function DataSvc($q, $firebaseArray, $firebaseObject, Const, AuthSvc) {
 	}
 
 	/**
+	 * Get package from key/id
+	 * @param  {String} key $id of package
+	 * @return {Promise}     Resolves with package object
+	 */
+	function getPackage(key) {
+		return $q(function(resolve, reject) {
+			Const.ref.child('packages')
+				.child(key)
+				.once('value', function(package) {
+					resolve(package.val());
+				}, function(err) {
+					reject(err);
+				});
+		});
+	}
+
+	/**
+	 * Get quotes of package
+	 * @param  {String} key $id of package
+	 * @return {Promise}     Resolves with quotes object - keys: $id of quotes, vals: quote Objects
+	 */
+	function getQuotesFromPackage(key) {
+		return $q(function(resolve, reject) {
+			Const.ref.child('quotes')
+				.child(key)
+				.once('value', function(quotes) {
+					resolve(quotes.val());
+				}, function(err) {
+					reject(err);
+				});
+		});
+	}
+
+	/**
 	 * Subscribe to a package
 	 * @param  {String} key push key of package
 	 * @return {Promise}     Resolves when user subscribes to package
@@ -198,10 +226,10 @@ function DataSvc($q, $firebaseArray, $firebaseObject, Const, AuthSvc) {
 	}
 
 	/**
-	 * Create new package
+	 * Create new package in /packages and /quotes
 	 * @param  {String} name   name/title of package
 	 * @param  {Array} quotes array of quote objects
-	 * @return {Promise}        Resolves when package has been created and quotes are added to db. Note that it won't resolve rn if there are no quotes added to package
+	 * @return {Promise}        Resolves when package has been created and quotes are added to db.
 	 */
 	function createPackage(name, quotes) {
 		return $q(function(resolve, reject) {
@@ -211,45 +239,106 @@ function DataSvc($q, $firebaseArray, $firebaseObject, Const, AuthSvc) {
 				.child(AuthSvc.getAuthStatus().uid)
 				.child('info/name').once('value', function(username) {
 
-					// now, create the package
-					var package = Const.ref.child('packages').push({
+					var packageKey = Const.ref.child('packages').push().key();
+					
+					var dataCreatePackage = {};
+
+					// create package
+					dataCreatePackage['packages/' + packageKey] = {
 						name: name,
 						creator: AuthSvc.getAuthStatus().uid,
 						creatorName: username.val(),
 						length: quotes.length
-					}, function(err) {
-						if (err) {
-							reject(err);
-							return;
-						}
+					};
 
-						// counter to know when to resolve
-						var counter = 0;
+					// push each quote
+					for (var i = 0; i < quotes.length; i++) {
+						var quoteKey = Const.ref.child('quotes')
+							.child(packageKey).push().key();
+						
+						dataCreatePackage['quotes/' + packageKey + '/' + quoteKey] = {
+							body: quotes[i].body,
+							author: quotes[i].author,
+							link: quotes[i].link
+						};
+					}
 
-						// push the quotes on the newly created package
-						for (var i = 0; i < quotes.length; i++) {
-							Const.ref.child('quotes')
-								.child(package.key())
-								.push({
-									body: quotes[i].body,
-									author: quotes[i].author,
-									link: quotes[i].link
-								}, function(err) {
-									if (err) {
-										reject(err);
-										return;
-									}
-
-									// resolve on final push
-									(counter === quotes.length - 1) && resolve(package);
-									counter++;
-								});
-						}
+					// multi-location update
+					Const.ref.update(dataCreatePackage, function(err) {
+						err ? reject(err) : resolve();
 					});
-				}, function(err) {
-					reject(err);
+
 				});
 			
+		});
+	}
+
+	/**
+	 * Update package by deleting previous quotes and adding new ones
+	 * @param  {String} name   New name of package
+	 * @param  {Array} quotes New (all) quotes to add to package
+	 * @param  {String} key    Package $id
+	 * @return {Promise}        Resolves when package has been updated and quotes are added to db.
+	 */
+	function updatePackage(name, quotes, key) {
+		return $q(function(resolve, reject) {
+
+			// 1st, get the name of the package's owner
+			Const.ref.child('users')
+				.child(AuthSvc.getAuthStatus().uid)
+				.child('info/name').once('value', function(username) {
+
+					var dataUpdatePackage = {};
+
+					// completely replace data at this location (like a set)
+					var setPathPackages = 'quotes/' + key;
+					dataUpdatePackage[setPathPackages] = {};
+
+					// update package
+					dataUpdatePackage['packages/' + key] = {
+						name: name,
+						creator: AuthSvc.getAuthStatus().uid,
+						creatorName: username.val(),
+						length: quotes.length
+					};
+
+					// push each quote
+					for (var i = 0; i < quotes.length; i++) {
+						var quoteKey = Const.ref.child('quotes')
+							.child(key).push().key();
+
+						dataUpdatePackage[setPathPackages][quoteKey] = {
+							body: quotes[i].body,
+							author: quotes[i].author,
+							link: quotes[i].link
+						};
+					}
+
+					// multi-location update
+					Const.ref.update(dataUpdatePackage, function(err) {
+						err ? reject(err) : resolve();
+					});
+
+				});
+			
+		});
+	}
+
+	/**
+	 * Delete package. remove from /quotes and /packages
+	 * @param  {String} key Package $id
+	 * @return {Promise}     Resolves when package is deleted from both /quotes and /packages
+	 */
+	function deletePackage(key) {
+		return $q(function(resolve, reject) {
+			var dataRemovePackages = {};
+			dataRemovePackages['packages/' + key] = null;
+			dataRemovePackages['quotes/' + key] = null;
+			
+			// multi-location update
+			Const.ref.update(dataRemovePackages, function(err) {
+				err ? reject(err) : resolve();
+			});
 		});
 	}
 
@@ -286,6 +375,21 @@ function DataSvc($q, $firebaseArray, $firebaseObject, Const, AuthSvc) {
 					err ? reject(err) : resolve();
 				});
 		});
+	}
+
+	/**
+	 * Get or set form status (state and key/$id)
+	 * @param  {String} state One of 'create', 'view', 'edit'
+	 * @param  {String} key   $id of package to create, view, or edit
+	 * @return {Object}       Only return if getting. 'state' and 'key' keys
+	 */
+	function formStatus(state, key) {
+		if (state) {
+			currentFormStatus.state = state;
+			currentFormStatus.key = key;
+		} else {
+			return currentFormStatus;
+		}
 	}
 
 	/**

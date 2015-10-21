@@ -46,6 +46,12 @@ $fw-light: 300;
 $fw-base: 400;
 
 /*
+font family
+ */
+// $ff-head: 300;
+$ff-body: 'Open Sans', sans-serif;
+
+/*
 letter spacing
  */
 $ls-base: 0;
@@ -87,3 +93,9 @@ $bw-base: 4px;
 easing functions
  */
 $ef-ease-in-out-back: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+$ef-ease-out-back: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+/*
+pctg
+ */
+$pctg-transform-slab: -30%;

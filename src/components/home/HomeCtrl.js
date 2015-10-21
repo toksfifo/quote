@@ -12,10 +12,12 @@ function HomeCtrl($q, authStatus, DataSvc, AuthSvc) {
 	var vm = this;
 
 	vm.show = {
-		settings: true,
+		settings: false,
 		form: false
 	};
 	vm.generateQuoteList = generateQuoteList;
+	vm.openForm = openForm;
+	vm.closeForm = closeForm;
 	vm.quote = {};
 	vm.currentColor;
 
@@ -71,9 +73,30 @@ function HomeCtrl($q, authStatus, DataSvc, AuthSvc) {
 	 */
 	function generateQuoteList() {
 		DataSvc.generateQuoteList().then(function() {
+			// console.log('done generating quotes');
 		}, function(err) {
 			console.log('error generating quote list:', err);
 		});
+	}
+
+	/**
+	 * Show form and hide settings
+	 * @param  {String} state One of 'create', 'view', or 'edit'
+	 * @param  {String} key   $id of current package, or null if creating
+	 */
+	function openForm(state, key) {
+		DataSvc.formStatus(state, key);
+		vm.show.settings = false;
+		vm.show.form = true;
+	}
+
+	/**
+	 * Hide form and show settings
+	 * @return {[type]} [description]
+	 */
+	function closeForm() {
+		vm.show.settings = true;
+		vm.show.form = false;
 	}
 
 }
