@@ -104,9 +104,6 @@ $height-form-input: 30px;
 	overflow-x: hidden;
 	overflow-y: scroll;
 	// border: 1px solid black;
-	&::-webkit-scrollbar {
-		display: none;
-	}
 	&.is-disabled {
 		opacity: 0.3;
 		pointer-events: none;
