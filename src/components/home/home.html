@@ -21,7 +21,7 @@
 		ng-class="{ 'is-blurred': home.show.settings || home.show.form }">
 		<div class="quote">
 			<p class="quote-body">{{ home.quote.body }}</p>
-			<p class="quote-author">&#8212; {{ home.quote.author | uppercase}}</p>
+			<p class="quote-author" ng-if="::home.quote.author">&#8212; {{ home.quote.author | uppercase}}</p>
 		</div>
 	</div>
 

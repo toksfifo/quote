@@ -32,7 +32,8 @@
 		
 		<!-- save changes -->
 		<button class="form-options-button3 button button--success" 
-			ng-click="form.updatePackage()">Save Changes
+			ng-click="form.updatePackage()"
+			ng-disabled="!form.quotesAdded.length">Save Changes
 	
 	</div>
 
@@ -73,14 +74,14 @@
 		<p class="form-quote" ng-repeat="quote in form.quotesAdded"
 			ng-click="form.editQuote(quote, $index)"
 			ng-class="{ 'is-hover': $index === form.quoteCurrentIndex }">
-			{{ quote.body }} &nbsp; &#8212; {{ quote.author }}
+			{{ quote.body }} <span ng-if="::quote.author">&nbsp; &#8212; {{ quote.author }}</span>
 		</p>
 	</div>
 
 	<!-- quotes (view mode) -->
 	<div class="form-quotes-view" ng-if="::form.formState === 'view'">
 		<p class="form-quote-view" ng-repeat="quote in form.quotesAdded">
-			{{ quote.body }} &nbsp; &#8212; {{ quote.author }}
+			{{ quote.body }} <span ng-if="::quote.author">&nbsp; &#8212; {{ quote.author }}</span>
 		</p>
 	</div>
 
