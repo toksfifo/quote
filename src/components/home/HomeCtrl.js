@@ -18,6 +18,7 @@ function HomeCtrl($q, authStatus, DataSvc, AuthSvc) {
 	vm.generateQuoteList = generateQuoteList;
 	vm.openForm = openForm;
 	vm.closeForm = closeForm;
+	vm.isAuthenticated = isAuthenticated;
 	vm.quote = {};
 	vm.currentColor;
 
@@ -97,6 +98,14 @@ function HomeCtrl($q, authStatus, DataSvc, AuthSvc) {
 	function closeForm() {
 		vm.show.settings = true;
 		vm.show.form = false;
+	}
+
+	/**
+	 * Check if user is authenticated
+	 * @return {Boolean} True if authenticated, false otherwise
+	 */
+	function isAuthenticated() {
+		return AuthSvc.getAuthStatus();
 	}
 
 }

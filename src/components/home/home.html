@@ -15,8 +15,7 @@
 		<button ng-click="home.show.settings = !home.show.settings">Settings</button>
 		<button ng-click="home.generateQuoteList()">Generate Quotes</button>
 		<a ng-href="{{ home.quote.link }}">link</a>
-
-		
+	
 	<!-- quote -->
 	<div class="quote-wrapper u-centerXY" 
 		ng-if="::home.quote.body" 
@@ -27,16 +26,22 @@
 		</div>
 	</div>
 
-	<!-- click to close settings -->
-	<div class="settings-close" 
-		ng-show="home.show.settings" 
-		ng-click="home.show.settings = false"></div>
+	<div ng-if="home.isAuthenticated()">
+		
+		<!-- click to close settings -->
+		<div class="settings-close" 
+			ng-show="home.show.settings" 
+			ng-click="home.show.settings = false"></div>
 
-	<!-- settings -->
-	<div ng-include="'components/settings/settings.html'"></div>
+		<!-- settings -->
+		<div ng-include="'components/settings/settings.html'"></div>
 
-	<!-- form -->
-	<div ng-include="'components/form/form.html'"></div>
+		<!-- form -->
+		<div ng-include="'components/form/form.html'"></div>
+		
+	</div>
+		
+	
 	
 </div>
 
