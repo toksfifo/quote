@@ -50,11 +50,11 @@ $clr-button-light: transparentize($clr-black, 0.8);
 }
 
 .button--success {
-	@include button-color($clr-green-pastel);
+	@include button-color($clr-green-button);
 }
 
 .button--warning {
-	@include button-color($clr-red-pastel);
+	@include button-color($clr-red-button);
 }
 
 .button--active {

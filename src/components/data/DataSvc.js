@@ -3,14 +3,16 @@ angular.module('quote')
 
 function DataSvc($q, $firebaseArray, $firebaseObject, Const, AuthSvc) {
 
-	var colorOptions = [
-		{ name: 'red-pastel' },
-		{ name: 'green-pastel' },
-		{ name: 'blue-pastel' },
-		{ name: 'gray-pastel' },
-		{ name: 'white' }
-	];
 	var currentFormStatus = {};
+
+	// change also in variables.scss, colors.scss, utilities.scss, buttons.scss, UserSvc.js (move colors manipulation to js)
+	var colorOptions = [
+		{ name: 'blue' },
+		{ name: 'bluegreen' },
+		{ name: 'gray' },
+		{ name: 'purple' },
+		{ name: 'yellow' }
+	];
 
 	var DataSvc = {
 		getQuote: getQuote,

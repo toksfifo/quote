@@ -15,7 +15,6 @@ function HomeCtrl($q, authStatus, DataSvc, AuthSvc) {
 		settings: false,
 		form: false
 	};
-	vm.generateQuoteList = generateQuoteList;
 	vm.openForm = openForm;
 	vm.closeForm = closeForm;
 	vm.isAuthenticated = isAuthenticated;
@@ -66,17 +65,6 @@ function HomeCtrl($q, authStatus, DataSvc, AuthSvc) {
 					reject(err);
 				});
 			}
-		});
-	}
-
-	/**
-	 * Generate list of quotes to pull main quote from
-	 */
-	function generateQuoteList() {
-		DataSvc.generateQuoteList().then(function() {
-			// console.log('done generating quotes');
-		}, function(err) {
-			console.log('error generating quote list:', err);
 		});
 	}
 

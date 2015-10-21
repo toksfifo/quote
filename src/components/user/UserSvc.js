@@ -20,7 +20,7 @@ function UserSvc($q, Const) {
 				.child(authData.uid)
 				.set({
 					info: { name: 'anon frog' },
-					color: { name: 'blue-pastel' }
+					color: { name: 'gray' }
 				}, function(err) {
 					if (err) {
 						reject(err);

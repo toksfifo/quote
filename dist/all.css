@@ -1604,17 +1604,20 @@ pctg
 .u-textRight {
   text-align: right; }
 
-.u-bgc-red-pastel {
-  background-color: #ff6961; }
+.u-bgc-blue {
+  background-color: #1b304e; }
 
-.u-bgc-green-pastel {
-  background-color: #77be77; }
+.u-bgc-bluegreen {
+  background-color: #17545f; }
 
-.u-bgc-blue-pastel {
-  background-color: #779ecb; }
+.u-bgc-gray {
+  background-color: #646464; }
 
-.u-bgc-gray-pastel {
-  background-color: #cfcfc4; }
+.u-bgc-purple {
+  background-color: #3e1b45; }
+
+.u-bgc-yellow {
+  background-color: #6d5900; }
 
 .u-bgc-white {
   background-color: white; }
@@ -1826,35 +1829,40 @@ body {
   text-align: center;
   background-color: white; }
 
-.color, .color--red-pastel, .color--green-pastel, .color--blue-pastel, .color--gray-pastel, .color--white {
+.color, .color--blue, .color--bluegreen, .color--gray, .color--purple, .color--yellow, .color--white {
   position: relative;
   display: inline-block;
   width: 70px;
   height: 70px;
   cursor: pointer;
   border: 4px solid white; }
-  .color:not(:first-of-type), .color--red-pastel:not(:first-of-type), .color--green-pastel:not(:first-of-type), .color--blue-pastel:not(:first-of-type), .color--gray-pastel:not(:first-of-type), .color--white:not(:first-of-type) {
-    margin-left: 40px; }
+  .color:not(:first-of-type), .color--blue:not(:first-of-type), .color--bluegreen:not(:first-of-type), .color--gray:not(:first-of-type), .color--purple:not(:first-of-type), .color--yellow:not(:first-of-type), .color--white:not(:first-of-type) {
+    margin-left: 33.33333px; }
 
-.color--red-pastel {
-  background-color: #ff6961; }
-  .color--red-pastel.is-active {
-    border-color: #bf4f49; }
+.color--blue {
+  background-color: #1b304e; }
+  .color--blue.is-active {
+    border-color: #14243b; }
 
-.color--green-pastel {
-  background-color: #77be77; }
-  .color--green-pastel.is-active {
-    border-color: #598f59; }
+.color--bluegreen {
+  background-color: #17545f; }
+  .color--bluegreen.is-active {
+    border-color: #113f47; }
 
-.color--blue-pastel {
-  background-color: #779ecb; }
-  .color--blue-pastel.is-active {
-    border-color: #597798; }
+.color--gray {
+  background-color: #646464; }
+  .color--gray.is-active {
+    border-color: #4b4b4b; }
 
-.color--gray-pastel {
-  background-color: #cfcfc4; }
-  .color--gray-pastel.is-active {
-    border-color: #9b9b93; }
+.color--purple {
+  background-color: #3e1b45; }
+  .color--purple.is-active {
+    border-color: #2f1434; }
+
+.color--yellow {
+  background-color: #6d5900; }
+  .color--yellow.is-active {
+    border-color: #524300; }
 
 .color--white {
   background-color: white;
