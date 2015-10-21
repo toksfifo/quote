@@ -2156,8 +2156,6 @@ body {
   font-size: 15px;
   overflow-x: hidden;
   overflow-y: scroll; }
-  .form-quotes::-webkit-scrollbar, .form-quotes-view::-webkit-scrollbar {
-    display: none; }
   .form-quotes.is-disabled, .is-disabled.form-quotes-view {
     opacity: 0.3;
     pointer-events: none; }

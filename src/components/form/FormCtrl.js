@@ -120,13 +120,13 @@ function FormCtrl($scope, DataSvc) {
 	 * @return {[type]} [description]
 	 */
 	function cancelEdit() {
+		vm.quoteCurrentIndex = null;
+		vm.stateEditing = false;
 		vm.quoteCurrent = {
 			body: '',
 			author: '',
 			link: ''
 		};
-		vm.quoteCurrentIndex = null;
-		vm.stateEditing = false;
 	}
 
 	/**
