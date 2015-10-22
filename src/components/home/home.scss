@@ -1,5 +1,17 @@
 $height-quote-wrapper: 200px;
 $width-quote-wrapper: 700px;
+$clr-home-items: rgba(0, 0, 0, 0.4);
+$clr-home-items-dark: rgba(0, 0, 0, 0.7);
+
+%blur {
+	opacity: 1;
+	transition: filter 0.2s ease-in-out 0.4s, opacity 0.2s ease-in-out 0.4s;
+	&.is-blurred {
+		filter: blur(8px);
+		opacity: 0.5;
+		transition: filter 0.2s ease-in-out, opacity 0.2s ease-in-out;
+	}
+}
 
 html,
 body {
@@ -20,13 +32,7 @@ body {
 	height: $height-quote-wrapper;
 	width: $width-quote-wrapper;
 	display: table;
-	opacity: 1;
-	transition: filter 0.2s ease-in-out 0.4s, opacity 0.2s ease-in-out 0.4s;
-	&.is-blurred {
-		filter: blur(8px);
-		opacity: 0.5;
-		transition: filter 0.2s ease-in-out, opacity 0.2s ease-in-out;
-	}
+	@extend %blur;
 }
 
 .quote-wrapper.ng-enter {
@@ -45,12 +51,14 @@ body {
 	vertical-align: middle;
 	line-height: $lh-loose;
 	color: $clr-white;
+	// border: 1px solid black;
 }
 
 .quote-body {
 	text-align: left;
 	font-size: $fs-large;
 	font-style: italic;
+	// border: 1px solid black;
 }
 
 .quote-author {
@@ -58,4 +66,50 @@ body {
 	font-size: $fs-base;
 	letter-spacing: $ls-looser;
 	margin-top: $mgn-large;
+	color: $clr-home-items;
+	font-weight: $fw-base;
+	// border: 1px solid black;
+}
+
+.home-options {
+	// border: 1px solid black;
+	width: 80px;
+	height: 40px;
+	position: absolute;
+	bottom: 16px;
+	right: 28px;
+	color: $clr-home-items;
+	@extend %blur;
+}
+
+%home-options-buttons {
+	cursor: pointer;
+	&:hover {
+		color: $clr-home-items-dark;
+	}
+	&:active {
+		color: $clr-home-items;
+	}
+}
+
+.home-options-settings {
+	float: left;
+	font-size: 38px;
+	@extend %home-options-buttons;
+}
+
+.home-options-more {
+	float: right;
+	font-size: 32px;
+	margin-top: 4px;
+	@extend %home-options-buttons;
+	.home-options-link.is-disabled & {
+		opacity: 0.2;
+	}
+}
+
+.home-options-link {
+	&.is-disabled {
+		pointer-events: none;
+	}
 }

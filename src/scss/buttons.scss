@@ -16,7 +16,7 @@ $clr-button-light: transparentize($clr-black, 0.8);
 		background-color: shade($color, 10%);
 	}
 	&:disabled {
-		border: $bw-base solid $clr-button-base;
+		border: $bw-small solid $clr-button-base;
 		color: $clr-white;
 		background-color: $color;
 		border-color: shade($color, 20%);
@@ -28,7 +28,7 @@ $clr-button-light: transparentize($clr-black, 0.8);
 	width: $width-button;
 	font-size: $fs-small;
 	font-weight: $fw-base;
-	border: $bw-base solid $clr-button-base;
+	border: $bw-small solid $clr-button-base;
 	color: $clr-button-base;
 	background-color: transparent;
 	outline: 0;
@@ -44,7 +44,7 @@ $clr-button-light: transparentize($clr-black, 0.8);
 	&:disabled {
 		opacity: 0.2;
 		cursor: default;
-		border: $bw-base solid $clr-button-base;
+		border: $bw-small solid $clr-button-base;
 		color: $clr-button-base;
 	}
 }

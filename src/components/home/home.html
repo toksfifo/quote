@@ -1,19 +1,5 @@
 <!-- HomeCtrl as home -->
-
-
-
-
 <div class="home-wrapper u-bgc-{{ home.currentColor.name }}">
-	
-
-	
-
-
-		<br>
-		<br>
-
-		<button ng-click="home.show.settings = !home.show.settings">Settings</button>
-		<a ng-href="{{ home.quote.link }}">link</a>
 	
 	<!-- quote -->
 	<div class="quote-wrapper u-centerXY" 
@@ -25,6 +11,22 @@
 		</div>
 	</div>
 
+	<!-- settings button, link button -->
+	<div class="home-options"
+		ng-class="{ 'is-blurred': home.show.settings || home.show.form }">
+
+		<i class="home-options-settings icon ion-gear-b"
+			ng-click="home.show.settings = true"></i>
+		
+		<a ng-href="{{ home.quote.link }}"
+			class="home-options-link"
+			ng-class="{ 'is-disabled': !home.quote.link }">
+			<i class="home-options-more icon ion-information-circled"></i>
+		</a>
+
+	</div>
+
+	<!-- settings, form -->
 	<div ng-if="home.isAuthenticated()">
 		
 		<!-- click to close settings -->
@@ -40,8 +42,6 @@
 		
 	</div>
 		
-	
-	
 </div>
 
 
