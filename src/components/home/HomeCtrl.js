@@ -39,9 +39,7 @@ function HomeCtrl($q, authStatus, DataSvc, AuthSvc) {
 	function getQuote() {
 		DataSvc.getQuote().then(function(quote) {
 			if (quote === 0) {
-				
-				// prompt to resubscribe or reset current
-				vm.quote.body = 'out of quotes';
+				vm.quote.body = 'Subscribe to a few packages to get started. Then open a new tab!';
 			} else {
 				vm.quote = quote;
 			}

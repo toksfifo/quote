@@ -46128,6 +46128,185 @@ $templateCache.put("components/settings/colors/colors.html","<div ng-controller=
 $templateCache.put("components/settings/packages/packages.html","<div ng-controller=\"PackagesCtrl as packages\"\n	ng-show=\"settings.show.packages\">\n\n	<!-- head -->\n	<div class=\"packages-head\">\n		\n		<!-- search -->\n		<input type=\"text\" class=\"packages-search packages-head-item\"  \n			ng-model=\"packages.filter.search\"\n			ng-class=\"{ \'is-active\': packages.filter.search }\"\n			placeholder=\"Search Packages\">\n\n		<!-- filter packages -->\n		<button class=\"button packages-head-item u-inlineBlock\" \n			ng-click=\"packages.filter.created = !packages.filter.created\"\n			ng-class=\"{ \'button--active\': packages.filter.created }\">{{ packages.filter.created ? \'Show All\' : \'Show Only Yours\' }}</button>\n\n		<!-- create package -->\n		<button class=\"button button--success packages-head-item u-inlineBlock\"\n			ng-click=\"home.openForm(\'create\', null)\">Create Package</button>\n\n	</div>\n\n	<!-- titles -->\n	<div class=\"packages-titles\">\n		<div class=\"packages-title\">Subscribed</div>\n		<div class=\"packages-title\">Other</div>\n	</div>\n\n	<!-- body -->\n	<div class=\"packages-body\">\n\n		<!-- subscribed -->\n		<div class=\"packages-col\">\n			<!-- show subscribed packages. only show packages owned by user on packages.filter.created -->\n			<package-dctv\n				ng-repeat=\"package in packages.packagesSubscribed | \n				packagesFltr: (packages.filter.created ? packages.packagesOwn : \'all\'): \'include\' |\n				filter: packages.filter.search\n				track by package.$id\"\n				package=\"package\"\n				open-form=\"home.openForm(state, key)\"\n				type=\"subscribed\">\n		</div>\n\n		<!-- other -->\n		<div class=\"packages-col\">\n			<!-- show other packages that user is not subscribed to (by excluding subscribed from all), then filter by owned packages on packages.filter.created -->\n			<package-dctv \n				ng-repeat=\"package in packages.packagesAll |\n				packagesFltr: packages.packagesSubscribed: \'exclude\' |\n				packagesFltr: (packages.filter.created ? packages.packagesOwn : \'all\'): \'include\' |\n				filter: packages.filter.search\n				track by package.$id\"\n				package=\"package\"\n				open-form=\"home.openForm(state, key)\"\n				type=\"all\">\n		</div>\n\n	</div>\n\n</div>");
 $templateCache.put("components/settings/packages/package/package.html","<div class=\"package--{{ type }} u-centerX\" \n	ng-click=\"show.options = true\" \n	ng-mouseleave=\"show.options = false\">\n	\n	<!-- primary -->\n	<div class=\"package-pri\">\n		<span class=\"package-name\">{{ package.name }}</span>\n	</div>\n\n	<!-- secondary -->\n	<div class=\"package-sec\">\n		<span class=\"package-author\">by {{ package.creatorName || \'Toks Fifo\' }}</span>\n		<span class=\"package-length\">{{ package.length || 5 }}</span>\n	</div>\n\n	<!-- options -->\n	<div class=\"package-options\" ng-show=\"show.options\">\n		\n		<!-- view option -->\n		<div class=\"package-view\"\n			ng-click=\"package.creator === uid ? openForm({ state: \'edit\', key: package.$id }) : openForm({ state: \'view\', key: package.$id })\">\n			\n			<!-- view -->\n			<i class=\"icon ion-eye package-button--view\"\n				ng-if=\"::package.creator !== uid\"></i>\n\n			<!-- edit -->\n			<i class=\"icon ion-edit package-button--view\"\n				ng-if=\"::package.creator === uid\"></i>\n		\n		</div>\n\n		<!-- action option -->\n		<div class=\"package-action--{{ type }}\"\n			ng-click=\"(type === \'all\' && addPackage(package.$id)) || (type === \'subscribed\' && removePackage(package.$id))\">\n\n			<!-- add -->\n			<i class=\"icon ion-plus package-button\" \n				ng-if=\"::type === \'all\'\"></i>\n\n			<!-- remove -->\n			<i class=\"icon ion-close package-button\"\n				ng-if=\"::type === \'subscribed\'\"></i>\n\n		</div>\n\n	</div>\n\n</div>");}]);
 angular.module('quote')
+	.factory('AuthSvc', AuthSvc);
+
+function AuthSvc($q, $firebaseAuth, Const) {
+
+	var auth = $firebaseAuth(Const.ref);
+	var authStatus;
+
+	var AuthSvc = {
+		checkAuth: checkAuth,
+		signupAnon: signupAnon,
+		logout: logout,
+		getAuthStatus: getAuthStatus,
+		setAuthStatus: setAuthStatus,
+		updateUsername: updateUsername
+	};
+
+	return AuthSvc;
+
+	/**
+	 * Check if user is authenticated
+	 * @return {Promise} Resolves with authentication data || null
+	 */
+	function checkAuth() {
+		return auth.$waitForAuth();
+	}
+
+	/**
+	 * Sign up anonymously
+	 * @return {Promise} Resolves after new user has been created
+	 */
+	function signupAnon() {
+		return $q(function(resolve, reject) {
+			auth.$authAnonymously().then(function(authData) {
+				return createUser(authData);
+			}, function(err) {
+				reject(err);
+			}).then(function(authData) {
+				resolve(authData);
+			});
+		});
+	}
+
+	/**
+	 * Logout
+	 */
+	function logout() {
+		auth.$unauth();
+	}
+
+	/**
+	 * Get auth status
+	 * @return {Object} Auth stauts
+	 */
+	function getAuthStatus() {
+		return authStatus;
+	}
+
+	/**
+	 * Set auth status
+	 * @param {Object} newAuthStatus new auth status
+	 */
+	function setAuthStatus(newAuthStatus) {
+		authStatus = newAuthStatus;
+	}
+
+	/**
+	 * Add user to db/users
+	 * @param  {Object} authData User's auth data
+	 * @return {Promise}     Resolves with auth data when user is saved to db
+	 */
+	function createUser(authData) {
+		return $q(function(resolve, reject) {
+			var dataCreateUser = {};
+			generateAnonUsername().then(function(name) {
+				dataCreateUser['users/' + authData.uid] = {
+					info: { name: name },
+					color: { name: 'gray' }
+				};
+				dataCreateUser['usernames/list/' + name] = true;
+				Const.ref.update(dataCreateUser, function(err) {
+					err ? reject(err) : resolve(authData);
+				});
+			});
+		});
+	}
+
+	/**
+	 * Create anonymous (unique) username
+	 * @return {Promise} Resovles with new name generated
+	 */
+	function generateAnonUsername() {
+		return $q(function(resolve, reject) {
+			Const.ref.child('usernames/auto').once('value', function(namesRef) {
+				var names = namesRef.val();
+				var keys = Object.keys(names);
+				var index = randomNumber(0, keys.length - 1);
+				var name = keys[index];
+				var nameGenerated = 'anon-' + keys[index] + names[name];
+
+				// increment counter on db
+				Const.ref.child('usernames/auto')
+					.child(name)
+					.set(names[name] + 1, function(err) {
+						err ? reject(err) : resolve(nameGenerated);
+					});
+			});
+		});
+	}
+
+	/**
+	 * Update username. Also update names of all user's packages.
+	 * @param  {String} name New name
+	 * @return {Promise}      Resolves when everything is updated. Rejects if new name already exists for some other user
+	 */
+	function updateUsername(name) {
+		return $q(function(resolve, reject) {
+			var dataUpdateUsername = {};
+
+			Const.ref.child('usernames/list').once('value', function(namesRef) {
+				var names = namesRef.val();
+
+				// only continue if name doesn't already exist (is unique)
+				if (!names || !names[name]) {
+
+					// get current name
+					Const.ref.child('users')
+						.child(authStatus.uid)
+						.child('info/name').once('value', function(oldnameRef) {
+
+							// get user's packages
+							Const.ref.child('packages')
+								.orderByChild('creator')
+								.equalTo(authStatus.uid)
+								.once('value', function(packagesRef) {
+
+									var packages = packagesRef.val();
+									if (packages) {
+										// update names of all user's packages
+										for (var i = 0, keys = Object.keys(packages); i < keys.length; i++) {
+											var packageKey = keys[i];
+											dataUpdateUsername['packages/' + packageKey + '/creatorName'] = name;
+										}
+									}
+
+									// update user's name
+									dataUpdateUsername['users/' + authStatus.uid + '/info/name'] = name;
+
+									// add new name to names list
+									dataUpdateUsername['usernames/list/' + name] = true;
+
+									// remove old name from names list
+									dataUpdateUsername['usernames/list/' + oldnameRef.val()] = null;
+
+									Const.ref.update(dataUpdateUsername, function(err) {
+										err ? reject(err) : resolve();
+									});
+								});
+						});
+				} else {
+					// name already exists
+					resolve(0);
+				}
+			});
+		});
+	}
+
+	/**
+	 * Generate random number from [min, max]
+	 * @param  {Number} min min, inclusive
+	 * @param  {Number} max max, inclusive
+	 * @return {Number}     random number
+	 */
+	function randomNumber(min, max) {
+		return Math.floor(Math.random() * (max - min + 1)) + min;
+	}
+
+}
+AuthSvc.$inject = ["$q", "$firebaseAuth", "Const"];
+angular.module('quote')
 	.factory('DataSvc', DataSvc);
 
 function DataSvc($q, $firebaseArray, $firebaseObject, Const, AuthSvc) {
@@ -46539,72 +46718,6 @@ function DataSvc($q, $firebaseArray, $firebaseObject, Const, AuthSvc) {
 }
 DataSvc.$inject = ["$q", "$firebaseArray", "$firebaseObject", "Const", "AuthSvc"];
 angular.module('quote')
-	.factory('AuthSvc', AuthSvc);
-
-function AuthSvc($q, $firebaseAuth, Const, UserSvc) {
-
-	var auth = $firebaseAuth(Const.ref);
-	var authStatus;
-
-	var AuthSvc = {
-		checkAuth: checkAuth,
-		signupAnon: signupAnon,
-		logout: logout,
-		getAuthStatus: getAuthStatus,
-		setAuthStatus: setAuthStatus
-	};
-
-	return AuthSvc;
-
-	/**
-	 * Check if user is authenticated
-	 * @return {Promise} Resolves with authentication data || null
-	 */
-	function checkAuth() {
-		return auth.$waitForAuth();
-	}
-
-	/**
-	 * Sign up anonymously
-	 * @return {Promise} Resolves after new user has been created
-	 */
-	function signupAnon() {
-		return $q(function(resolve, reject) {
-			auth.$authAnonymously().then(function(authData) {
-				return UserSvc.createUser(authData);
-			}, function(err) {
-				reject(err);
-			}).then(function(authData) {
-				resolve(authData);
-			});
-		});
-	}
-
-	/**
-	 * Logout
-	 */
-	function logout() {
-		auth.$unauth();
-	}
-
-	/**
-	 * Get auth status
-	 * @return {Object} Auth stauts
-	 */
-	function getAuthStatus() {
-		return authStatus;
-	}
-
-	/**
-	 * Set auth status
-	 * @param {Object} newAuthStatus new auth status
-	 */
-	function setAuthStatus(newAuthStatus) {
-		authStatus = newAuthStatus;
-	}
-}
-AuthSvc.$inject = ["$q", "$firebaseAuth", "Const", "UserSvc"];
-angular.module('quote')
 	.filter('packagesFltr', packagesFltr);
 
 function packagesFltr() {
@@ -46644,6 +46757,104 @@ function packagesFltr() {
 	}
 
 }
+angular.module('quote')
+	.controller('HomeCtrl', HomeCtrl);
+
+HomeCtrl.resolve = /*@ngInject*/ {
+	authStatus: ["AuthSvc", function(AuthSvc) {
+		return AuthSvc.checkAuth();
+	}]
+};
+
+function HomeCtrl($q, authStatus, DataSvc, AuthSvc) {
+
+	var vm = this;
+
+	vm.show = {
+		settings: false,
+		form: false
+	};
+	vm.openForm = openForm;
+	vm.closeForm = closeForm;
+	vm.isAuthenticated = isAuthenticated;
+	vm.quote = {};
+	vm.currentColor;
+
+	init();
+
+	function init() {
+		getAuth().then(function(authStatus) {
+			AuthSvc.setAuthStatus(authStatus);
+			getQuote();
+			vm.currentColor = DataSvc.getColor();
+		}, function(err) {
+			console.log('error getting auth:', err);
+		});
+	}
+
+	/**
+	 * Get main quote to display on new tab
+	 */
+	function getQuote() {
+		DataSvc.getQuote().then(function(quote) {
+			if (quote === 0) {
+				vm.quote.body = 'Subscribe to a few packages to get started. Then open a new tab!';
+			} else {
+				vm.quote = quote;
+			}
+		}, function(err) {
+			console.log('couldn\'t get quote:', err);
+		});
+	}
+
+	/**
+	 * Get auth data if it exists, or signup anonymously
+	 * @return {Promise} Resolves with auth data
+	 */
+	function getAuth() {
+		return $q(function(resolve, reject) {
+			if (authStatus) {
+				resolve(authStatus);
+			} else {
+				AuthSvc.signupAnon().then(function(authData) {
+					resolve(authData);
+				}, function(err) {
+					reject(err);
+				});
+			}
+		});
+	}
+
+	/**
+	 * Show form and hide settings
+	 * @param  {String} state One of 'create', 'view', or 'edit'
+	 * @param  {String} key   $id of current package, or null if creating
+	 */
+	function openForm(state, key) {
+		DataSvc.formStatus(state, key);
+		vm.show.settings = false;
+		vm.show.form = true;
+	}
+
+	/**
+	 * Hide form and show settings
+	 * @return {[type]} [description]
+	 */
+	function closeForm() {
+		vm.show.settings = true;
+		vm.show.form = false;
+	}
+
+	/**
+	 * Check if user is authenticated
+	 * @return {Boolean} True if authenticated, false otherwise
+	 */
+	function isAuthenticated() {
+		return AuthSvc.getAuthStatus();
+	}
+
+}
+HomeCtrl.$inject = ["$q", "authStatus", "DataSvc", "AuthSvc"];
 angular.module('quote')
 	.controller('FormCtrl', FormCtrl);
 
@@ -46877,140 +47088,6 @@ function SettingsCtrl() {
 
 }
 angular.module('quote')
-	.factory('UserSvc', UserSvc);
-
-function UserSvc($q, Const) {
-
-	var UserSvc = {
-		createUser: createUser
-	};
-
-	return UserSvc;
-
-	/**
-	 * Add user to db/users
-	 * @param  {Object} authData User's auth data
-	 * @return {Promise}     Resolves with auth data when user is saved to db
-	 */
-	function createUser(authData) {
-		return $q(function(resolve, reject) {
-			Const.ref.child('users')
-				.child(authData.uid)
-				.set({
-					info: { name: 'anon frog' },
-					color: { name: 'gray' }
-				}, function(err) {
-					if (err) {
-						reject(err);
-					} else {
-						resolve(authData);
-					}
-				});
-		});
-	}
-}
-UserSvc.$inject = ["$q", "Const"];
-angular.module('quote')
-	.controller('HomeCtrl', HomeCtrl);
-
-HomeCtrl.resolve = /*@ngInject*/ {
-	authStatus: ["AuthSvc", function(AuthSvc) {
-		return AuthSvc.checkAuth();
-	}]
-};
-
-function HomeCtrl($q, authStatus, DataSvc, AuthSvc) {
-
-	var vm = this;
-
-	vm.show = {
-		settings: false,
-		form: false
-	};
-	vm.openForm = openForm;
-	vm.closeForm = closeForm;
-	vm.isAuthenticated = isAuthenticated;
-	vm.quote = {};
-	vm.currentColor;
-
-	init();
-
-	function init() {
-		getAuth().then(function(authStatus) {
-			AuthSvc.setAuthStatus(authStatus);
-			getQuote();
-			vm.currentColor = DataSvc.getColor();
-		}, function(err) {
-			console.log('error getting auth:', err);
-		});
-	}
-
-	/**
-	 * Get main quote to display on new tab
-	 */
-	function getQuote() {
-		DataSvc.getQuote().then(function(quote) {
-			if (quote === 0) {
-				
-				// prompt to resubscribe or reset current
-				vm.quote.body = 'out of quotes';
-			} else {
-				vm.quote = quote;
-			}
-		}, function(err) {
-			console.log('couldn\'t get quote:', err);
-		});
-	}
-
-	/**
-	 * Get auth data if it exists, or signup anonymously
-	 * @return {Promise} Resolves with auth data
-	 */
-	function getAuth() {
-		return $q(function(resolve, reject) {
-			if (authStatus) {
-				resolve(authStatus);
-			} else {
-				AuthSvc.signupAnon().then(function(authData) {
-					resolve(authData);
-				}, function(err) {
-					reject(err);
-				});
-			}
-		});
-	}
-
-	/**
-	 * Show form and hide settings
-	 * @param  {String} state One of 'create', 'view', or 'edit'
-	 * @param  {String} key   $id of current package, or null if creating
-	 */
-	function openForm(state, key) {
-		DataSvc.formStatus(state, key);
-		vm.show.settings = false;
-		vm.show.form = true;
-	}
-
-	/**
-	 * Hide form and show settings
-	 * @return {[type]} [description]
-	 */
-	function closeForm() {
-		vm.show.settings = true;
-		vm.show.form = false;
-	}
-
-	/**
-	 * Check if user is authenticated
-	 * @return {Boolean} True if authenticated, false otherwise
-	 */
-	function isAuthenticated() {
-		return AuthSvc.getAuthStatus();
-	}
-
-}
-HomeCtrl.$inject = ["$q", "authStatus", "DataSvc", "AuthSvc"];
-angular.module('quote')
 	.directive('hoverClassDctv', hoverClassDctv);
 
 function hoverClassDctv() {
@@ -47037,31 +47114,6 @@ function hoverClassDctv() {
 
 }
 angular.module('quote')
-	.controller('ColorsCtrl', ColorsCtrl);
-
-function ColorsCtrl(DataSvc) {
-
-	var vm = this;
-
-	vm.colors = DataSvc.getColorOptions();
-	vm.currentColor = DataSvc.getColor();
-	vm.selectColor = selectColor;
-
-	/**
-	 * Set new background color
-	 * @param  {Object} color new color
-	 */
-	function selectColor(color) {
-		DataSvc.setColor(color).then(function() {
-
-		}, function(err) {
-			console.log('error setting color', err);
-		});
-	}
-	
-}
-ColorsCtrl.$inject = ["DataSvc"];
-angular.module('quote')
 	.controller('PackagesCtrl', PackagesCtrl);
 
 function PackagesCtrl(DataSvc) {
@@ -47086,6 +47138,31 @@ function PackagesCtrl(DataSvc) {
 
 }
 PackagesCtrl.$inject = ["DataSvc"];
+angular.module('quote')
+	.controller('ColorsCtrl', ColorsCtrl);
+
+function ColorsCtrl(DataSvc) {
+
+	var vm = this;
+
+	vm.colors = DataSvc.getColorOptions();
+	vm.currentColor = DataSvc.getColor();
+	vm.selectColor = selectColor;
+
+	/**
+	 * Set new background color
+	 * @param  {Object} color new color
+	 */
+	function selectColor(color) {
+		DataSvc.setColor(color).then(function() {
+
+		}, function(err) {
+			console.log('error setting color', err);
+		});
+	}
+	
+}
+ColorsCtrl.$inject = ["DataSvc"];
 angular.module('quote')
 	.directive('packageDctv', packageDctv);
 
