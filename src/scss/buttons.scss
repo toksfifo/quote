@@ -1,8 +1,8 @@
 $height-button: 36px;
 $width-button: 150px;
-$clr-button-dark: transparentize($clr-black, 0.5);
-$clr-button-base: transparentize($clr-black, 0.6);
-$clr-button-light: transparentize($clr-black, 0.8);
+$clr-button-dark: transparentize($clr-black, 0.3);
+$clr-button-base: transparentize($clr-black, 0.45);
+$clr-button-light: transparentize($clr-black, 0.6);
 
 @mixin button-color($color) {
 	background-color: $color;

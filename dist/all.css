@@ -1609,19 +1609,19 @@ pctg
   text-align: right; }
 
 .u-bgc-blue {
-  background-color: #1b304e; }
+  background-color: #284774; }
 
 .u-bgc-bluegreen {
-  background-color: #17545f; }
+  background-color: #2e656f; }
 
 .u-bgc-gray {
   background-color: #646464; }
 
 .u-bgc-purple {
-  background-color: #3e1b45; }
+  background-color: #5f296a; }
 
 .u-bgc-yellow {
-  background-color: #6d5900; }
+  background-color: #a08300; }
 
 .u-bgc-white {
   background-color: white; }
@@ -1631,23 +1631,23 @@ pctg
   width: 150px;
   font-size: 15px;
   font-weight: 400;
-  border: 2px solid rgba(0, 0, 0, 0.4);
-  color: rgba(0, 0, 0, 0.4);
+  border: 2px solid rgba(0, 0, 0, 0.55);
+  color: rgba(0, 0, 0, 0.55);
   background-color: transparent;
   outline: 0;
   cursor: pointer;
   -webkit-transition: color 0.15s ease-in-out;
           transition: color 0.15s ease-in-out; }
   .button:hover {
-    border-color: rgba(0, 0, 0, 0.5);
-    color: rgba(0, 0, 0, 0.5); }
+    border-color: rgba(0, 0, 0, 0.7);
+    color: rgba(0, 0, 0, 0.7); }
   .button:active {
-    background-color: rgba(0, 0, 0, 0.2); }
+    background-color: rgba(0, 0, 0, 0.4); }
   .button:disabled {
     opacity: 0.2;
     cursor: default;
-    border: 2px solid rgba(0, 0, 0, 0.4);
-    color: rgba(0, 0, 0, 0.4); }
+    border: 2px solid rgba(0, 0, 0, 0.55);
+    color: rgba(0, 0, 0, 0.55); }
 
 .button--success {
   background-color: #77be77;
@@ -1659,7 +1659,7 @@ pctg
   .button--success:active {
     background-color: #6bab6b; }
   .button--success:disabled {
-    border: 2px solid rgba(0, 0, 0, 0.4);
+    border: 2px solid rgba(0, 0, 0, 0.55);
     color: white;
     background-color: #77be77;
     border-color: #5f985f; }
@@ -1674,13 +1674,13 @@ pctg
   .button--warning:active {
     background-color: #e65f57; }
   .button--warning:disabled {
-    border: 2px solid rgba(0, 0, 0, 0.4);
+    border: 2px solid rgba(0, 0, 0, 0.55);
     color: white;
     background-color: #ff6961;
     border-color: #cc544e; }
 
 .button--active {
-  background-color: rgba(0, 0, 0, 0.2); }
+  background-color: rgba(0, 0, 0, 0.4); }
   .button--active:active {
     background-color: white; }
 
@@ -1743,7 +1743,7 @@ body {
   font-size: 16px;
   letter-spacing: 2px;
   margin-top: 10px;
-  color: rgba(0, 0, 0, 0.4);
+  color: rgba(0, 0, 0, 0.6);
   font-weight: 400; }
 
 .home-options {
@@ -1752,14 +1752,14 @@ body {
   position: absolute;
   bottom: 16px;
   right: 28px;
-  color: rgba(0, 0, 0, 0.4); }
+  color: rgba(0, 0, 0, 0.6); }
 
 .home-options-settings, .home-options-more {
   cursor: pointer; }
   .home-options-settings:hover, .home-options-more:hover {
-    color: rgba(0, 0, 0, 0.7); }
+    color: rgba(0, 0, 0, 0.8); }
   .home-options-settings:active, .home-options-more:active {
-    color: rgba(0, 0, 0, 0.4); }
+    color: rgba(0, 0, 0, 0.6); }
 
 .home-options-settings {
   float: left;
@@ -1877,14 +1877,14 @@ body {
     margin-left: 33.33333px; }
 
 .color--blue {
-  background-color: #1b304e; }
+  background-color: #284774; }
   .color--blue.is-active {
-    border-color: #14243b; }
+    border-color: #1e3557; }
 
 .color--bluegreen {
-  background-color: #17545f; }
+  background-color: #2e656f; }
   .color--bluegreen.is-active {
-    border-color: #113f47; }
+    border-color: #234c53; }
 
 .color--gray {
   background-color: #646464; }
@@ -1892,14 +1892,14 @@ body {
     border-color: #4b4b4b; }
 
 .color--purple {
-  background-color: #3e1b45; }
+  background-color: #5f296a; }
   .color--purple.is-active {
-    border-color: #2f1434; }
+    border-color: #471f50; }
 
 .color--yellow {
-  background-color: #6d5900; }
+  background-color: #a08300; }
   .color--yellow.is-active {
-    border-color: #524300; }
+    border-color: #786200; }
 
 .color--white {
   background-color: white;
@@ -1925,14 +1925,14 @@ body {
   line-height: 35px;
   padding: 4px;
   display: inline-block;
-  border: 1px solid rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(0, 0, 0, 0.4);
   outline: 0;
   -webkit-transition: background-color 0.15s ease-in-out;
           transition: background-color 0.15s ease-in-out;
   text-align: center;
   font-size: 15px; }
   .packages-search.is-active {
-    background-color: rgba(0, 0, 0, 0.2); }
+    background-color: rgba(0, 0, 0, 0.4); }
 
 .packages-body {
   width: 100%;
@@ -2123,7 +2123,7 @@ body {
 .username-input {
   height: 36px;
   width: 200px;
-  border: 1px solid rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(0, 0, 0, 0.4);
   margin-left: 10px;
   vertical-align: top;
   padding-left: 4px;
@@ -2161,7 +2161,7 @@ body {
 .form-name-edit, .form-edit-text, .form-edit-author, .form-edit-link {
   outline: 0;
   border: 0;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.4);
   display: block;
   width: 100%;
   color: white;
@@ -2259,7 +2259,7 @@ body {
   line-height: 1.5; }
 
 .form-quote:hover, .form-quote.is-hover {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.4);
   cursor: pointer; }
 
 .form-edit {
