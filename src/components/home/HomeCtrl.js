@@ -15,9 +15,9 @@ function HomeCtrl($q, authStatus, DataSvc, AuthSvc) {
 		settings: false,
 		form: false
 	};
-	vm.generateQuoteList = generateQuoteList;
 	vm.openForm = openForm;
 	vm.closeForm = closeForm;
+	vm.isAuthenticated = isAuthenticated;
 	vm.quote = {};
 	vm.currentColor;
 
@@ -39,9 +39,7 @@ function HomeCtrl($q, authStatus, DataSvc, AuthSvc) {
 	function getQuote() {
 		DataSvc.getQuote().then(function(quote) {
 			if (quote === 0) {
-				
-				// prompt to resubscribe or reset current
-				vm.quote.body = 'out of quotes';
+				vm.quote.body = 'Subscribe to a few packages to get started. Then open a new tab!';
 			} else {
 				vm.quote = quote;
 			}
@@ -69,17 +67,6 @@ function HomeCtrl($q, authStatus, DataSvc, AuthSvc) {
 	}
 
 	/**
-	 * Generate list of quotes to pull main quote from
-	 */
-	function generateQuoteList() {
-		DataSvc.generateQuoteList().then(function() {
-			// console.log('done generating quotes');
-		}, function(err) {
-			console.log('error generating quote list:', err);
-		});
-	}
-
-	/**
 	 * Show form and hide settings
 	 * @param  {String} state One of 'create', 'view', or 'edit'
 	 * @param  {String} key   $id of current package, or null if creating
@@ -97,6 +84,14 @@ function HomeCtrl($q, authStatus, DataSvc, AuthSvc) {
 	function closeForm() {
 		vm.show.settings = true;
 		vm.show.form = false;
+	}
+
+	/**
+	 * Check if user is authenticated
+	 * @return {Boolean} True if authenticated, false otherwise
+	 */
+	function isAuthenticated() {
+		return AuthSvc.getAuthStatus();
 	}
 
 }

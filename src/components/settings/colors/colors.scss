@@ -1,5 +1,7 @@
+$width-settings-wrapper: $width-settings-wrapper;
 $size-color: 70px;
 $pctg-shade: 25%;
+$number-colors: 5;
 
 .color-wrapper {
 	// border: 1px solid black;
@@ -17,39 +19,47 @@ $pctg-shade: 25%;
 	cursor: pointer;
 	border: $bw-base solid $clr-light;
 	&:not(:first-of-type) {
-		margin-left: (2 * $mgn-larger);
+		margin-left: ($width-settings-wrapper - ($number-colors * $size-color)) / ($number-colors + 1);
 	}
 }
 
-.color--red-pastel {
+.color--blue {
 	@extend .color;
-	background-color: $clr-red-pastel;
+	background-color: $clr-blue;
 	&.is-active {
-		border-color: shade($clr-red-pastel, $pctg-shade);
+		border-color: shade($clr-blue, $pctg-shade);
 	}
 }
 
-.color--green-pastel {
+.color--bluegreen {
 	@extend .color;
-	background-color: $clr-green-pastel;
+	background-color: $clr-bluegreen;
 	&.is-active {
-		border-color: shade($clr-green-pastel, $pctg-shade);
+		border-color: shade($clr-bluegreen, $pctg-shade);
 	}
 }
 
-.color--blue-pastel {
+.color--gray {
 	@extend .color;
-	background-color: $clr-blue-pastel;
+	background-color: $clr-gray;
 	&.is-active {
-		border-color: shade($clr-blue-pastel, $pctg-shade);
+		border-color: shade($clr-gray, $pctg-shade);
 	}
 }
 
-.color--gray-pastel {
+.color--purple {
 	@extend .color;
-	background-color: $clr-gray-pastel;
+	background-color: $clr-purple;
 	&.is-active {
-		border-color: shade($clr-gray-pastel, $pctg-shade);
+		border-color: shade($clr-purple, $pctg-shade);
+	}
+}
+
+.color--yellow {
+	@extend .color;
+	background-color: $clr-yellow;
+	&.is-active {
+		border-color: shade($clr-yellow, $pctg-shade);
 	}
 }
 

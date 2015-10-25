@@ -14,10 +14,14 @@ $clr-gray-lighter: rgba(240, 240, 240, 1.0);
 
 $clr-blue-active: rgba(40, 137, 228, 1.0);
 
-$clr-red-pastel: rgba(255, 105, 97, 1.0);
-$clr-green-pastel: rgba(119, 190, 119, 1.0);
-$clr-blue-pastel: rgba(119, 158, 203, 1.0);
-$clr-gray-pastel: rgba(207, 207, 196, 1.0);
+$clr-red-button: rgba(255, 105, 97, 1.0);
+$clr-green-button: rgba(119, 190, 119, 1.0);
+
+$clr-blue: rgba(40, 71, 116, 1.0);
+$clr-bluegreen: rgba(46, 101, 111, 1.0);
+$clr-gray: rgba(100, 100, 100, 1.0);
+$clr-purple: rgba(95, 41, 106, 1.0);
+$clr-yellow: rgba(160, 131, 0, 1.0);
 
 // color functions
 @function tint($color, $pctg) {
@@ -72,6 +76,7 @@ $mgn-small: 2px;
 $mgn-base: 4px;
 $mgn-large: 10px;
 $mgn-larger: 20px;
+$mgn-largest: 50px;
 
 /*
 padding

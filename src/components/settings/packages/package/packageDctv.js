@@ -36,7 +36,10 @@ function packageDctv(DataSvc, AuthSvc) {
 		 */
 		function addPackage(key) {
 			DataSvc.subscribePackage(key).then(function() {
-			}, function(err) {
+				return DataSvc.generateQuoteList();
+			}).then(function() {
+
+			}).catch(function(err) {
 				console.log('error subscribing to package:', err);
 			});
 		}
@@ -47,7 +50,10 @@ function packageDctv(DataSvc, AuthSvc) {
 		 */
 		function removePackage(key) {
 			DataSvc.unsubscribePackage(key).then(function() {
-			}, function(err) {
+				return DataSvc.generateQuoteList();
+			}).then(function() {
+
+			}).catch(function(err) {
 				console.log('error unsubscribing to package:', err);
 			});
 		}

@@ -1,43 +1,47 @@
 <!-- HomeCtrl as home -->
-
-
-
-
 <div class="home-wrapper u-bgc-{{ home.currentColor.name }}">
 	
-
-	
-
-
-		<br>
-		<br>
-
-		<button ng-click="home.show.settings = !home.show.settings">Settings</button>
-		<button ng-click="home.generateQuoteList()">Generate Quotes</button>
-		<a ng-href="{{ home.quote.link }}">link</a>
-
-		
 	<!-- quote -->
 	<div class="quote-wrapper u-centerXY" 
 		ng-if="::home.quote.body" 
 		ng-class="{ 'is-blurred': home.show.settings || home.show.form }">
 		<div class="quote">
 			<p class="quote-body">{{ home.quote.body }}</p>
-			<p class="quote-author">&#8212; {{ home.quote.author | uppercase}}</p>
+			<p class="quote-author" ng-if="::home.quote.author">&#8212; {{ home.quote.author | uppercase}}</p>
 		</div>
 	</div>
 
-	<!-- click to close settings -->
-	<div class="settings-close" 
-		ng-show="home.show.settings" 
-		ng-click="home.show.settings = false"></div>
+	<!-- settings button, link button -->
+	<div class="home-options"
+		ng-class="{ 'is-blurred': home.show.settings || home.show.form }">
 
-	<!-- settings -->
-	<div ng-include="'components/settings/settings.html'"></div>
+		<i class="home-options-settings icon ion-gear-b"
+			ng-click="home.show.settings = true"></i>
+		
+		<a ng-href="{{ home.quote.link }}"
+			class="home-options-link"
+			ng-class="{ 'is-disabled': !home.quote.link }">
+			<i class="home-options-more icon ion-information-circled"></i>
+		</a>
 
-	<!-- form -->
-	<div ng-include="'components/form/form.html'"></div>
-	
+	</div>
+
+	<!-- settings, form -->
+	<div ng-if="home.isAuthenticated()">
+		
+		<!-- click to close settings -->
+		<div class="settings-close" 
+			ng-show="home.show.settings" 
+			ng-click="home.show.settings = false"></div>
+
+		<!-- settings -->
+		<div ng-include="'components/settings/settings.html'"></div>
+
+		<!-- form -->
+		<div ng-include="'components/form/form.html'"></div>
+		
+	</div>
+		
 </div>
 
 

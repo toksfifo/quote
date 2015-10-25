@@ -1,0 +1,26 @@
+<div ng-controller="AccountCtrl as account"
+	ng-show="settings.show.account">
+	
+	<div class="username">
+		
+		<!-- label -->
+		<span class="username-label">Username</span>
+		
+		<!-- input -->
+		<input type="text" class="username-input"
+			ng-model="account.username">
+
+		<!-- button update -->
+		<button class="username-button button button--success"
+			ng-click="account.updateUsername()"
+			ng-disabled="!account.isUsernameUpdateable()">Update</button>
+
+		<!-- feedback text -->
+		<div class="username-feedback"
+			ng-show="account.usernameFeedback.show"
+			ng-class="{ 'is-success': account.usernameFeedback.type === 'success', 
+			'is-warning': account.usernameFeedback.type === 'warning' }">{{ account.usernameFeedback.text }}</div>
+
+	</div>
+
+</div>

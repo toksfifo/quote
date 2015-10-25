@@ -3,14 +3,16 @@ angular.module('quote')
 
 function DataSvc($q, $firebaseArray, $firebaseObject, Const, AuthSvc) {
 
-	var colorOptions = [
-		{ name: 'red-pastel' },
-		{ name: 'green-pastel' },
-		{ name: 'blue-pastel' },
-		{ name: 'gray-pastel' },
-		{ name: 'white' }
-	];
 	var currentFormStatus = {};
+
+	// change also in variables.scss, colors.scss, utilities.scss, buttons.scss, UserSvc.js (move colors manipulation to js)
+	var colorOptions = [
+		{ name: 'blue' },
+		{ name: 'bluegreen' },
+		{ name: 'gray' },
+		{ name: 'purple' },
+		{ name: 'yellow' }
+	];
 
 	var DataSvc = {
 		getQuote: getQuote,
@@ -59,7 +61,7 @@ function DataSvc($q, $firebaseArray, $firebaseObject, Const, AuthSvc) {
 	}
 
 	/**
-	 * Generates list of quotes to select master quote from, based on the packages a user is subscribed to. Only happens every now and then, if the user subscribes to a new package, for example.
+	 * Generates list of quotes to select master quote from, based on the packages a user is subscribed to. Only happens every now and then, if the user subscribes to a new package, unsubscribes, updates, or deletes
 	 * @return {Promise}     Resolves after quotes are generated.
 	 */
 	function generateQuoteList() {
@@ -84,28 +86,31 @@ function DataSvc($q, $firebaseArray, $firebaseObject, Const, AuthSvc) {
 				
 				var packages = packagesRef.val();
 
-				for (var i = 0, packageKeys = Object.keys(packages); i < packageKeys.length; i++) {
-					var packageKey = packageKeys[i];
-					var quotes = packages[packageKey].quotes;
+				if (packages) {
+					for (var i = 0, packageKeys = Object.keys(packages); i < packageKeys.length; i++) {
+						var packageKey = packageKeys[i];
+						var quotes = packages[packageKey].quotes;
 
-					// "unsubscribe" user from packages that are deleted (or have 0 quotes)
-					if (!quotes) {
-						dataGenerateQuotes['users/' + AuthSvc.getAuthStatus().uid + '/packages/subscribed/' + packageKey] = null;
-					}
+						// "unsubscribe" user from packages that are deleted (or have 0 quotes)
+						if (!quotes) {
+							dataGenerateQuotes['users/' + AuthSvc.getAuthStatus().uid + '/packages/subscribed/' + packageKey] = null;
+							continue;
+						}
 
-					for (var j = 0, quoteKeys = Object.keys(quotes); j < quoteKeys.length; j++) {
-						var quoteKey = quoteKeys[j];
-						var quote = quotes[quoteKey];
-						var pushQuoteKey = Const.ref.child('users')
-							.child(AuthSvc.getAuthStatus().uid)
-							.child('quotes').push().key();
+						for (var j = 0, quoteKeys = Object.keys(quotes); j < quoteKeys.length; j++) {
+							var quoteKey = quoteKeys[j];
+							var quote = quotes[quoteKey];
+							var pushQuoteKey = Const.ref.child('users')
+								.child(AuthSvc.getAuthStatus().uid)
+								.child('quotes').push().key();
 
-						// save actual quote data, not reference to quote
-						dataGenerateQuotes[setPathQuotes][pushQuoteKey] = {
-							author: quote.author,
-							body: quote.body,
-							link: quote.link
-						};
+							// save actual quote data, not reference to quote
+							dataGenerateQuotes[setPathQuotes][pushQuoteKey] = {
+								author: quote.author,
+								body: quote.body,
+								link: quote.link
+							};
+						}
 					}
 				}
 
