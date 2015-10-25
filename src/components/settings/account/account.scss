@@ -1,0 +1,60 @@
+$height-username: 75px;
+
+.username {
+	// border: 1px solid black;
+	width: 100%;
+	height: $height-username;
+	text-align: center;
+	margin-top: $mgn-largest;
+}
+
+.username-label {
+
+}
+
+.username-input {
+	height: $height-button;
+	width: 200px;
+	border: 1px solid $clr-button-light;
+	margin-left: $mgn-large;
+	vertical-align: top;
+	padding-left: $pdg-base;
+	outline: 0;
+}
+
+.username-button {
+	margin-left: $mgn-largest;
+}
+
+.username-feedback {
+	float: left;
+	width: 100%;
+	margin-top: $mgn-large;
+	&.is-success {
+		color: $clr-green-button;
+	}
+	&.is-warning {
+		color: $clr-red-button;
+	}
+}
+
+.username-feedback.ng-hide-add,
+.username-feedback.ng-hide-remove {
+	transition: opacity 0.25s ease-in-out;
+}
+
+.username-feedback.ng-hide-remove {
+	opacity: 0;
+}
+
+.username-feedback.ng-hide-remove.ng-hide-remove-active {
+	opacity: 1;
+}
+
+.username-feedback.ng-hide-add {
+	opacity: 1;
+}
+
+.username-feedback.ng-hide-add.ng-hide-add-active {
+	opacity: 0;
+}

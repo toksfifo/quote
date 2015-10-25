@@ -155,8 +155,8 @@ pctg
   background-color: transparent;
   outline: 0;
   cursor: pointer;
-  -webkit-transition: border-color 0.15s ease-in-out, color 0.15s ease-in-out;
-          transition: border-color 0.15s ease-in-out, color 0.15s ease-in-out; }
+  -webkit-transition: color 0.15s ease-in-out;
+          transition: color 0.15s ease-in-out; }
   .button:hover {
     border-color: rgba(0, 0, 0, 0.5);
     color: rgba(0, 0, 0, 0.5); }
@@ -632,6 +632,50 @@ body {
 
 .package-button--view {
   color: gray; }
+
+.username {
+  width: 100%;
+  height: 75px;
+  text-align: center;
+  margin-top: 50px; }
+
+.username-input {
+  height: 36px;
+  width: 200px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  margin-left: 10px;
+  vertical-align: top;
+  padding-left: 4px;
+  outline: 0; }
+
+.username-button {
+  margin-left: 50px; }
+
+.username-feedback {
+  float: left;
+  width: 100%;
+  margin-top: 10px; }
+  .username-feedback.is-success {
+    color: #77be77; }
+  .username-feedback.is-warning {
+    color: #ff6961; }
+
+.username-feedback.ng-hide-add,
+.username-feedback.ng-hide-remove {
+  -webkit-transition: opacity 0.25s ease-in-out;
+          transition: opacity 0.25s ease-in-out; }
+
+.username-feedback.ng-hide-remove {
+  opacity: 0; }
+
+.username-feedback.ng-hide-remove.ng-hide-remove-active {
+  opacity: 1; }
+
+.username-feedback.ng-hide-add {
+  opacity: 1; }
+
+.username-feedback.ng-hide-add.ng-hide-add-active {
+  opacity: 0; }
 
 .form-name-edit, .form-edit-text, .form-edit-author, .form-edit-link {
   outline: 0;

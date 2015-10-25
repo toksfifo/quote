@@ -12,7 +12,8 @@ function AuthSvc($q, $firebaseAuth, Const) {
 		logout: logout,
 		getAuthStatus: getAuthStatus,
 		setAuthStatus: setAuthStatus,
-		updateUsername: updateUsername
+		updateUsername: updateUsername,
+		getUsername: getUsername
 	};
 
 	return AuthSvc;
@@ -162,6 +163,20 @@ function AuthSvc($q, $firebaseAuth, Const) {
 					resolve(0);
 				}
 			});
+		});
+	}
+
+	/**
+	 * Get current user's username
+	 * @return {Promise} Resolves with name
+	 */
+	function getUsername() {
+		return $q(function(resolve) {
+			Const.ref.child('users')
+				.child(authStatus.uid)
+				.child('info/name').once('value', function(nameRef) {
+					resolve(nameRef.val());
+				});
 		});
 	}
 

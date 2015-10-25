@@ -33,7 +33,7 @@ $clr-button-light: transparentize($clr-black, 0.8);
 	background-color: transparent;
 	outline: 0;
 	cursor: pointer;
-	transition: border-color 0.15s ease-in-out, color 0.15s ease-in-out;
+	transition: color 0.15s ease-in-out;
 	&:hover {
 		border-color: $clr-button-dark;
 		color: $clr-button-dark;
