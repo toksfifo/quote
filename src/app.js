@@ -24,6 +24,6 @@ angular.module('quote', [
 })
 
 .constant('Const', {
-	db: /*gulp-replace-db*/'https://quoteextension.firebaseio.com/dev'/*end*/,
-	ref: /*gulp-replace-ref*/new Firebase('https://quoteextension.firebaseio.com/dev')/*end*/
+	db: /*gulp-replace-db*/'https://quoteextension.firebaseio.com/prod'/*end*/,
+	ref: /*gulp-replace-ref*/new Firebase('https://quoteextension.firebaseio.com/prod')/*end*/
 });
