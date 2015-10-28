@@ -1959,7 +1959,7 @@ body {
   text-align: center;
   font-size: 15px; }
   .packages-search.is-active {
-    background-color: rgba(0, 0, 0, 0.4); }
+    background-color: #77be77; }
 
 .packages-body {
   width: 100%;
