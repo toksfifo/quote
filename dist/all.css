@@ -2275,7 +2275,7 @@ body {
   overflow-x: hidden;
   overflow-y: scroll; }
   .form-quotes.is-disabled, .is-disabled.form-quotes-view {
-    opacity: 0.3;
+    opacity: 0.2;
     pointer-events: none; }
 
 .form-quotes-view {
