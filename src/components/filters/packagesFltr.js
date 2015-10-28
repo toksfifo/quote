@@ -19,17 +19,17 @@ function packagesFltr() {
 			return [];
 		}
 
-		// inluding all doesn't filter at all. excluding all filters out all elements
+		// "inlude + all" doesn't filter at all. "exclude + all" filters out all elements
 		if (packagesToFilterBy === 'all') {
 			if (direction === 'include') return packagesBase;
 			else if (direction === 'exclude') return [];
 		}
 
-		var packagesToFilterById = _.map(packagesToFilterBy, function(package) {
+		var packagesToFilterById = packagesToFilterBy.map(function(package) {
 			return package.$id;
 		});
 
-		return _.filter(packagesBase, function(package) {
+		return packagesBase.filter(function(package) {
 			if (direction === 'include') return packagesToFilterById.indexOf(package.$id) > -1;
 			else if (direction === 'exclude') return packagesToFilterById.indexOf(package.$id) === -1;
 			else return [];
