@@ -3,7 +3,8 @@ $width-package: 200px;
 $height-package-pri: 60%;
 $height-package-sec: 100% - $height-package-pri;
 $size-package-view: $height-package - (2 * $bw-base);
-$size-package-action: $height-package;
+$size-package-action: $height-package - (1 * $bw-base);
+$pctg-button-active: 20%;
 
 .package {
 	height: $height-package;
@@ -99,6 +100,8 @@ $size-package-action: $height-package;
 	// border: 1px solid blue;
 	font-size: $fs-smaller;
 	display: table;
+	color: $clr-gray-base;
+	font-weight: $fw-base;
 }
 
 .package-author {
@@ -154,23 +157,32 @@ $size-package-action: $height-package;
 	width: $size-package-view;
 	background-color: $clr-gray-light;
 	text-align: center;
+	&:active {
+		background-color: shade($clr-gray-light, $pctg-button-active);
+	}
 }
 
 .package-action {
 	float: left;
 	height: 100%;
-	width: $height-package;
+	width: $size-package-action;
 	text-align: center;
 }
 
 .package-action--subscribed {
 	@extend .package-action;
 	background-color: $clr-red-button;
+	&:active {
+		background-color: shade($clr-red-button, $pctg-button-active);
+	}
 }
 
 .package-action--all {
 	@extend .package-action;
 	background-color: $clr-green-button;
+	&:active {
+		background-color: shade($clr-green-button, $pctg-button-active);
+	}
 }
 
 .package-button {

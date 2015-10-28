@@ -232,20 +232,6 @@ body {
   width: 700px;
   display: table; }
 
-.quote-wrapper.ng-enter {
-  -webkit-transition: all ease-in-out 1.5s;
-          transition: all ease-in-out 1.5s;
-  -webkit-transform: translate(-50%, -35%);
-      -ms-transform: translate(-50%, -35%);
-          transform: translate(-50%, -35%);
-  opacity: 0; }
-
-.quote-wrapper.ng-enter.ng-enter-active {
-  -webkit-transform: translate(-50%, -50%);
-      -ms-transform: translate(-50%, -50%);
-          transform: translate(-50%, -50%);
-  opacity: 1; }
-
 .quote {
   display: table-cell;
   vertical-align: middle;
@@ -257,6 +243,26 @@ body {
   font-size: 26px;
   font-style: italic; }
 
+.quote-instructions {
+  text-align: left;
+  font-size: 26px; }
+
+.quote-body.ng-enter,
+.quote-icon.ng-enter {
+  -webkit-transition: all ease-out 1.5s;
+          transition: all ease-out 1.5s;
+  -webkit-transform: translateY(20px);
+      -ms-transform: translateY(20px);
+          transform: translateY(20px);
+  opacity: 0; }
+
+.quote-body.ng-enter.ng-enter-active,
+.quote-icon.ng-enter.ng-enter-active {
+  -webkit-transform: translateY(0);
+      -ms-transform: translateY(0);
+          transform: translateY(0);
+  opacity: 1; }
+
 .quote-author {
   text-align: right;
   font-size: 16px;
@@ -264,6 +270,27 @@ body {
   margin-top: 10px;
   color: rgba(0, 0, 0, 0.6);
   font-weight: 400; }
+
+.quote-author.ng-enter {
+  -webkit-transition: all ease-out 1.5s;
+          transition: all ease-out 1.5s;
+  -webkit-transform: translateY(40px);
+      -ms-transform: translateY(40px);
+          transform: translateY(40px);
+  opacity: 0; }
+
+.quote-author.ng-enter.ng-enter-active {
+  -webkit-transform: translateY(0);
+      -ms-transform: translateY(0);
+          transform: translateY(0);
+  opacity: 1; }
+
+.quote-icon {
+  position: relative;
+  left: -30px;
+  top: 30px;
+  color: rgba(0, 0, 0, 0.4);
+  font-size: 30px; }
 
 .home-options {
   width: 80px;
@@ -295,11 +322,11 @@ body {
   pointer-events: none; }
 
 .settings-wrapper {
-  width: 550px;
+  width: 650px;
   height: 550px;
   background-color: white;
   color: gray;
-  border: 4px solid gray; }
+  border: 2px solid gray; }
 
 .settings-wrapper.ng-hide-remove {
   -webkit-transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.2s;
@@ -333,7 +360,7 @@ body {
   position: absolute;
   top: 0;
   left: 0;
-  width: 542px;
+  width: 646px;
   height: 60px;
   background-color: #f0f0f0;
   border-bottom: 1px solid #cdcdcd;
@@ -344,8 +371,8 @@ body {
   position: absolute;
   top: 60px;
   left: 0;
-  width: 542px;
-  height: 482px; }
+  width: 646px;
+  height: 486px; }
 
 .settings-tab {
   float: left;
@@ -393,7 +420,7 @@ body {
   cursor: pointer;
   border: 4px solid white; }
   .color:not(:first-of-type), .color--blue:not(:first-of-type), .color--bluegreen:not(:first-of-type), .color--gray:not(:first-of-type), .color--purple:not(:first-of-type), .color--yellow:not(:first-of-type), .color--white:not(:first-of-type) {
-    margin-left: 33.33333px; }
+    margin-left: 50px; }
 
 .color--blue {
   background-color: #284774; }
@@ -436,7 +463,7 @@ body {
 .packages-head-item {
   margin-top: 20px; }
   .packages-head-item:not(:nth-child(1)) {
-    margin-left: 20px; }
+    margin-left: 50px; }
 
 .packages-search {
   height: 36px;
@@ -451,11 +478,11 @@ body {
   text-align: center;
   font-size: 15px; }
   .packages-search.is-active {
-    background-color: rgba(0, 0, 0, 0.4); }
+    background-color: #77be77; }
 
 .packages-body {
   width: 100%;
-  height: 386px; }
+  height: 390px; }
 
 .packages-titles {
   width: 100%;
@@ -566,7 +593,9 @@ body {
   height: 40%;
   width: 100%;
   font-size: 11px;
-  display: table; }
+  display: table;
+  color: #a6a6a6;
+  font-weight: 400; }
 
 .package-author {
   width: 50%;
@@ -584,7 +613,7 @@ body {
 .package-options {
   position: absolute;
   height: 100%;
-  width: 92px;
+  width: 88px;
   top: 0;
   right: -4px;
   cursor: pointer; }
@@ -595,7 +624,7 @@ body {
           transition: right 0.15s ease-in-out; }
 
 .package-options.ng-hide-remove {
-  right: -92px; }
+  right: -88px; }
 
 .package-options.ng-hide-remove.ng-hide-remove-active {
   right: -4px; }
@@ -604,7 +633,7 @@ body {
   right: -4px; }
 
 .package-options.ng-hide-add.ng-hide-add-active {
-  right: -92px; }
+  right: -88px; }
 
 .package-view {
   float: left;
@@ -612,18 +641,24 @@ body {
   width: 42px;
   background-color: #cdcdcd;
   text-align: center; }
+  .package-view:active {
+    background-color: #a4a4a4; }
 
 .package-action, .package-action--subscribed, .package-action--all {
   float: left;
   height: 100%;
-  width: 50px;
+  width: 46px;
   text-align: center; }
 
 .package-action--subscribed {
   background-color: #ff6961; }
+  .package-action--subscribed:active {
+    background-color: #cc544e; }
 
 .package-action--all {
   background-color: #77be77; }
+  .package-action--all:active {
+    background-color: #5f985f; }
 
 .package-button, .package-button--view {
   font-size: 26px;
@@ -686,16 +721,20 @@ body {
   color: white;
   padding: 4px; }
   .form-name-edit::-webkit-input-placeholder, .form-edit-text::-webkit-input-placeholder, .form-edit-author::-webkit-input-placeholder, .form-edit-link::-webkit-input-placeholder {
-    color: rgba(255, 255, 255, 0.5); }
+    color: rgba(255, 255, 255, 0.5);
+    line-height: 21px; }
   .form-name-edit:-moz-placeholder, .form-edit-text:-moz-placeholder, .form-edit-author:-moz-placeholder, .form-edit-link:-moz-placeholder {
-    color: rgba(255, 255, 255, 0.5); }
+    color: rgba(255, 255, 255, 0.5);
+    line-height: 21px; }
   .form-name-edit::-moz-placeholder, .form-edit-text::-moz-placeholder, .form-edit-author::-moz-placeholder, .form-edit-link::-moz-placeholder {
-    color: rgba(255, 255, 255, 0.5); }
+    color: rgba(255, 255, 255, 0.5);
+    line-height: 21px; }
   .form-name-edit:-ms-input-placeholder, .form-edit-text:-ms-input-placeholder, .form-edit-author:-ms-input-placeholder, .form-edit-link:-ms-input-placeholder {
-    color: rgba(255, 255, 255, 0.5); }
+    color: rgba(255, 255, 255, 0.5);
+    line-height: 21px; }
 
 .form-wrapper {
-  width: 550px;
+  width: 650px;
   height: 550px; }
 
 .form-wrapper.ng-enter {
@@ -736,10 +775,10 @@ body {
 .form-options-button2, .form-options-button3 {
   display: inline-block; }
   .form-options-button2:not(:nth-of-type(1)), .form-options-button3:not(:nth-of-type(1)) {
-    margin-left: 250px; }
+    margin-left: 350px; }
 
 .form-options-button3:not(:nth-of-type(1)) {
-  margin-left: 50px; }
+  margin-left: 100px; }
 
 .form-name {
   float: left;
@@ -748,10 +787,12 @@ body {
   /* 9.1 + 7.3 + 50 + 24.5 + 9.1 */ }
 
 .form-name-edit {
-  height: 30px; }
+  height: 30px;
+  font-size: 15px; }
 
 .form-name-view {
   height: 30px;
+  font-size: 15px;
   color: white;
   padding: 4px; }
 
@@ -765,7 +806,7 @@ body {
   overflow-x: hidden;
   overflow-y: scroll; }
   .form-quotes.is-disabled, .is-disabled.form-quotes-view {
-    opacity: 0.3;
+    opacity: 0.2;
     pointer-events: none; }
 
 .form-quotes-view {
@@ -775,7 +816,48 @@ body {
 .form-quote, .form-quote-view {
   margin-bottom: 10px;
   padding: 4px;
-  line-height: 1.5; }
+  line-height: 1.5;
+  max-height: 100px; }
+
+.ng-enter.form-quote,
+.ng-enter.form-quote-view,
+.ng-leave.form-quote,
+.ng-leave.form-quote-view,
+.ng-move.form-quote, .ng-move.form-quote-view {
+  -webkit-transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+          transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); }
+
+.ng-enter.form-quote,
+.ng-enter.form-quote-view,
+.ng-move.form-quote, .ng-move.form-quote-view {
+  opacity: 0;
+  max-height: 0;
+  margin-bottom: 0;
+  padding-top: 0;
+  padding-bottom: 0; }
+
+.ng-enter.ng-enter-active.form-quote,
+.ng-enter.ng-enter-active.form-quote-view,
+.ng-move.ng-move-active.form-quote, .ng-move.ng-move-active.form-quote-view {
+  opacity: 1;
+  max-height: 100px;
+  margin-bottom: 10px;
+  padding-top: 4px;
+  padding-bottom: 4px; }
+
+.ng-leave.form-quote, .ng-leave.form-quote-view {
+  opacity: 1;
+  max-height: 100px;
+  margin-bottom: 10px;
+  padding-top: 4px;
+  padding-bottom: 4px; }
+
+.ng-leave.ng-leave-active.form-quote, .ng-leave.ng-leave-active.form-quote-view {
+  opacity: 0;
+  max-height: 0;
+  margin-bottom: 0;
+  padding-top: 0;
+  padding-bottom: 0; }
 
 .form-quote:hover, .form-quote.is-hover {
   background-color: rgba(0, 0, 0, 0.4);
