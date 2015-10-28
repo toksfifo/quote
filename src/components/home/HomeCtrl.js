@@ -20,6 +20,7 @@ function HomeCtrl($q, authStatus, DataSvc, AuthSvc) {
 	vm.isAuthenticated = isAuthenticated;
 	vm.quote = {};
 	vm.currentColor;
+	vm.instructions;
 
 	init();
 
@@ -39,7 +40,7 @@ function HomeCtrl($q, authStatus, DataSvc, AuthSvc) {
 	function getQuote() {
 		DataSvc.getQuote().then(function(quote) {
 			if (quote === 0) {
-				vm.quote.body = 'Subscribe to a few packages to get started. Then open a new tab!';
+				vm.instructions = 'Subscribe to a few packages to get started. Then open a new tab!';
 			} else {
 				vm.quote = quote;
 			}

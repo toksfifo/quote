@@ -1713,20 +1713,6 @@ body {
   width: 700px;
   display: table; }
 
-.quote-wrapper.ng-enter {
-  -webkit-transition: all ease-in-out 1.5s;
-          transition: all ease-in-out 1.5s;
-  -webkit-transform: translate(-50%, -35%);
-      -ms-transform: translate(-50%, -35%);
-          transform: translate(-50%, -35%);
-  opacity: 0; }
-
-.quote-wrapper.ng-enter.ng-enter-active {
-  -webkit-transform: translate(-50%, -50%);
-      -ms-transform: translate(-50%, -50%);
-          transform: translate(-50%, -50%);
-  opacity: 1; }
-
 .quote {
   display: table-cell;
   vertical-align: middle;
@@ -1738,6 +1724,26 @@ body {
   font-size: 26px;
   font-style: italic; }
 
+.quote-instructions {
+  text-align: left;
+  font-size: 26px; }
+
+.quote-body.ng-enter,
+.quote-icon.ng-enter {
+  -webkit-transition: all ease-out 1.5s;
+          transition: all ease-out 1.5s;
+  -webkit-transform: translateY(20px);
+      -ms-transform: translateY(20px);
+          transform: translateY(20px);
+  opacity: 0; }
+
+.quote-body.ng-enter.ng-enter-active,
+.quote-icon.ng-enter.ng-enter-active {
+  -webkit-transform: translateY(0);
+      -ms-transform: translateY(0);
+          transform: translateY(0);
+  opacity: 1; }
+
 .quote-author {
   text-align: right;
   font-size: 16px;
@@ -1745,6 +1751,27 @@ body {
   margin-top: 10px;
   color: rgba(0, 0, 0, 0.6);
   font-weight: 400; }
+
+.quote-author.ng-enter {
+  -webkit-transition: all ease-out 1.5s;
+          transition: all ease-out 1.5s;
+  -webkit-transform: translateY(40px);
+      -ms-transform: translateY(40px);
+          transform: translateY(40px);
+  opacity: 0; }
+
+.quote-author.ng-enter.ng-enter-active {
+  -webkit-transform: translateY(0);
+      -ms-transform: translateY(0);
+          transform: translateY(0);
+  opacity: 1; }
+
+.quote-icon {
+  position: relative;
+  left: -30px;
+  top: 30px;
+  color: rgba(0, 0, 0, 0.4);
+  font-size: 30px; }
 
 .home-options {
   width: 80px;

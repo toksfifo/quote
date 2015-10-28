@@ -1,6 +1,7 @@
 $height-quote-wrapper: 200px;
 $width-quote-wrapper: 700px;
-$clr-home-items: rgba(0, 0, 0, 0.6);
+$clr-home-items-light: rgba(0, 0, 0, 0.4);
+$clr-home-items-base: rgba(0, 0, 0, 0.6);
 $clr-home-items-dark: rgba(0, 0, 0, 0.8);
 
 %blur {
@@ -35,17 +36,6 @@ body {
 	@extend %blur;
 }
 
-.quote-wrapper.ng-enter {
-	transition: all ease-in-out 1.5s;
-	transform: translate(-50%, -35%);
-	opacity: 0;
-}
-
-.quote-wrapper.ng-enter.ng-enter-active {
-	transform: translate(-50%, -50%);
-	opacity: 1;
-}
-
 .quote {
 	display: table-cell;
 	vertical-align: middle;
@@ -61,14 +51,51 @@ body {
 	// border: 1px solid black;
 }
 
+.quote-instructions {
+	text-align: left;
+	font-size: $fs-large;
+}
+
+.quote-body.ng-enter,
+.quote-icon.ng-enter {
+	transition: all ease-out 1.5s;
+	transform: translateY(20px);
+	opacity: 0;
+}
+
+.quote-body.ng-enter.ng-enter-active,
+.quote-icon.ng-enter.ng-enter-active {
+	transform: translateY(0);
+	opacity: 1;
+}
+
 .quote-author {
 	text-align: right;
 	font-size: $fs-base;
 	letter-spacing: $ls-looser;
 	margin-top: $mgn-large;
-	color: $clr-home-items;
+	color: $clr-home-items-base;
 	font-weight: $fw-base;
 	// border: 1px solid black;
+}
+
+.quote-author.ng-enter {
+	transition: all ease-out 1.5s;
+	transform: translateY(40px);
+	opacity: 0;
+}
+
+.quote-author.ng-enter.ng-enter-active {
+	transform: translateY(0);
+	opacity: 1;
+}
+
+.quote-icon {
+	position: relative;
+	left: -$fs-larger;
+	top: $fs-larger;
+	color: $clr-home-items-light;
+	font-size: $fs-larger;
 }
 
 .home-options {
@@ -78,7 +105,7 @@ body {
 	position: absolute;
 	bottom: 16px;
 	right: 28px;
-	color: $clr-home-items;
+	color: $clr-home-items-base;
 	@extend %blur;
 }
 
@@ -88,7 +115,7 @@ body {
 		color: $clr-home-items-dark;
 	}
 	&:active {
-		color: $clr-home-items;
+		color: $clr-home-items-base;
 	}
 }
 
