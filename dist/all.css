@@ -2047,7 +2047,9 @@ body {
   height: 40%;
   width: 100%;
   font-size: 11px;
-  display: table; }
+  display: table;
+  color: #a6a6a6;
+  font-weight: 400; }
 
 .package-author {
   width: 50%;

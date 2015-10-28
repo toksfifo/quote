@@ -99,6 +99,8 @@ $size-package-action: $height-package;
 	// border: 1px solid blue;
 	font-size: $fs-smaller;
 	display: table;
+	color: $clr-gray-base;
+	font-weight: $fw-base;
 }
 
 .package-author {
