@@ -613,7 +613,7 @@ body {
 .package-options {
   position: absolute;
   height: 100%;
-  width: 92px;
+  width: 88px;
   top: 0;
   right: -4px;
   cursor: pointer; }
@@ -624,7 +624,7 @@ body {
           transition: right 0.15s ease-in-out; }
 
 .package-options.ng-hide-remove {
-  right: -92px; }
+  right: -88px; }
 
 .package-options.ng-hide-remove.ng-hide-remove-active {
   right: -4px; }
@@ -633,7 +633,7 @@ body {
   right: -4px; }
 
 .package-options.ng-hide-add.ng-hide-add-active {
-  right: -92px; }
+  right: -88px; }
 
 .package-view {
   float: left;
@@ -641,18 +641,24 @@ body {
   width: 42px;
   background-color: #cdcdcd;
   text-align: center; }
+  .package-view:active {
+    background-color: #a4a4a4; }
 
 .package-action, .package-action--subscribed, .package-action--all {
   float: left;
   height: 100%;
-  width: 50px;
+  width: 46px;
   text-align: center; }
 
 .package-action--subscribed {
   background-color: #ff6961; }
+  .package-action--subscribed:active {
+    background-color: #cc544e; }
 
 .package-action--all {
   background-color: #77be77; }
+  .package-action--all:active {
+    background-color: #5f985f; }
 
 .package-button, .package-button--view {
   font-size: 26px;
