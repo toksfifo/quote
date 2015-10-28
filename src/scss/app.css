@@ -816,7 +816,48 @@ body {
 .form-quote, .form-quote-view {
   margin-bottom: 10px;
   padding: 4px;
-  line-height: 1.5; }
+  line-height: 1.5;
+  max-height: 100px; }
+
+.ng-enter.form-quote,
+.ng-enter.form-quote-view,
+.ng-leave.form-quote,
+.ng-leave.form-quote-view,
+.ng-move.form-quote, .ng-move.form-quote-view {
+  -webkit-transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+          transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); }
+
+.ng-enter.form-quote,
+.ng-enter.form-quote-view,
+.ng-move.form-quote, .ng-move.form-quote-view {
+  opacity: 0;
+  max-height: 0;
+  margin-bottom: 0;
+  padding-top: 0;
+  padding-bottom: 0; }
+
+.ng-enter.ng-enter-active.form-quote,
+.ng-enter.ng-enter-active.form-quote-view,
+.ng-move.ng-move-active.form-quote, .ng-move.ng-move-active.form-quote-view {
+  opacity: 1;
+  max-height: 100px;
+  margin-bottom: 10px;
+  padding-top: 4px;
+  padding-bottom: 4px; }
+
+.ng-leave.form-quote, .ng-leave.form-quote-view {
+  opacity: 1;
+  max-height: 100px;
+  margin-bottom: 10px;
+  padding-top: 4px;
+  padding-bottom: 4px; }
+
+.ng-leave.ng-leave-active.form-quote, .ng-leave.ng-leave-active.form-quote-view {
+  opacity: 0;
+  max-height: 0;
+  margin-bottom: 0;
+  padding-top: 0;
+  padding-bottom: 0; }
 
 .form-quote:hover, .form-quote.is-hover {
   background-color: rgba(0, 0, 0, 0.4);

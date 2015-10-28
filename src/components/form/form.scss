@@ -4,6 +4,7 @@ $width-button: $width-button;
 $clr-form-input-background: transparentize($clr-black, 0.6);
 $clr-form-placeholder: transparentize($clr-white, 0.5);
 $height-form-input: 30px;
+$height-max-form-quote: 100px;
 
 %form-input-area {
 	outline: 0;
@@ -125,6 +126,47 @@ $height-form-input: 30px;
 	margin-bottom: $mgn-large;
 	padding: $pdg-base;
 	line-height: $lh-loose;
+	max-height: $height-max-form-quote;
+}
+
+%form-quote.ng-enter,
+%form-quote.ng-leave,
+%form-quote.ng-move, {
+	transition: all 0.5s $ef-ease-in-out-back;
+}
+
+%form-quote.ng-enter,
+%form-quote.ng-move, {
+	opacity: 0;
+	max-height: 0;
+	margin-bottom: 0;
+	padding-top: 0;
+	padding-bottom: 0;
+}
+
+%form-quote.ng-enter.ng-enter-active,
+%form-quote.ng-move.ng-move-active {
+	opacity: 1;
+	max-height: $height-max-form-quote;
+	margin-bottom: $mgn-large;
+	padding-top: $pdg-base;
+	padding-bottom: $pdg-base;
+}
+
+%form-quote.ng-leave {
+	opacity: 1;
+	max-height: $height-max-form-quote;
+	margin-bottom: $mgn-large;
+	padding-top: $pdg-base;
+	padding-bottom: $pdg-base;
+}
+
+%form-quote.ng-leave.ng-leave-active {
+	opacity: 0;
+	max-height: 0;
+	margin-bottom: 0;
+	padding-top: 0;
+	padding-bottom: 0;
 }
 
 .form-quote {

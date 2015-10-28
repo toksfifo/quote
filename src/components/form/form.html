@@ -73,7 +73,7 @@
 	<div class="form-quotes" ng-class="{ 'is-disabled': form.stateEditing }"
 		ng-if="::form.formState !== 'view'"
 		scroll-bottom-dctv="form.quotesAdded">
-		<p class="form-quote" ng-repeat="quote in form.quotesAdded track by $index"
+		<p class="form-quote" ng-repeat="quote in form.quotesAdded"
 			ng-click="form.editQuote(quote, $index)"
 			ng-class="{ 'is-hover': $index === form.quoteCurrentIndex }">
 			{{ quote.body }} <span ng-if="::quote.author">&nbsp; &#8212; {{ quote.author }}</span>
@@ -82,7 +82,7 @@
 
 	<!-- quotes (view mode) -->
 	<div class="form-quotes-view" ng-if="::form.formState === 'view'">
-		<p class="form-quote-view" ng-repeat="quote in form.quotesAdded track by $index">
+		<p class="form-quote-view" ng-repeat="quote in form.quotesAdded">
 			{{ quote.body }} <span ng-if="::quote.author">&nbsp; &#8212; {{ quote.author }}</span>
 		</p>
 	</div>
