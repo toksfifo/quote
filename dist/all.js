@@ -44578,7 +44578,201 @@ $templateCache.put("components/settings/settings.html","<div ng-controller=\"Set
 $templateCache.put("components/settings/account/account.html","<div ng-controller=\"AccountCtrl as account\"\n	ng-show=\"settings.show.account\">\n	\n	<div class=\"username\">\n		\n		<!-- label -->\n		<span class=\"username-label\">Username</span>\n		\n		<!-- input -->\n		<input type=\"text\" class=\"username-input\"\n			ng-model=\"account.username\">\n\n		<!-- button update -->\n		<button class=\"username-button button button--success\"\n			ng-click=\"account.updateUsername()\"\n			ng-disabled=\"!account.isUsernameUpdateable()\">Update</button>\n\n		<!-- feedback text -->\n		<div class=\"username-feedback\"\n			ng-show=\"account.usernameFeedback.show\"\n			ng-class=\"{ \'is-success\': account.usernameFeedback.type === \'success\', \n			\'is-warning\': account.usernameFeedback.type === \'warning\' }\">{{ account.usernameFeedback.text }}</div>\n\n	</div>\n\n</div>");
 $templateCache.put("components/settings/colors/colors.html","<div ng-controller=\"ColorsCtrl as colors\"\n	ng-show=\"settings.show.colors\">\n\n	<div class=\"color-wrapper u-centerXY\">\n		<div class=\"color--{{ color.name }} u-centerY\" \n			ng-repeat=\"color in ::colors.colors track by $index\" \n			ng-click=\"colors.selectColor(color)\"\n			ng-class=\"{ \'is-active\': color.name === colors.currentColor.name }\">\n		</div>\n	</div>\n\n</div>");
 $templateCache.put("components/settings/packages/packages.html","<div ng-controller=\"PackagesCtrl as packages\"\n	ng-show=\"settings.show.packages\">\n\n	<!-- head -->\n	<div class=\"packages-head\">\n		\n		<!-- search -->\n		<input type=\"text\" class=\"packages-search packages-head-item\"  \n			ng-model=\"packages.filter.search\"\n			ng-class=\"{ \'is-active\': packages.filter.search }\"\n			placeholder=\"Search Packages\">\n\n		<!-- filter packages -->\n		<button class=\"button packages-head-item u-inlineBlock\" \n			ng-click=\"packages.filter.created = !packages.filter.created\"\n			ng-class=\"{ \'button--active\': packages.filter.created }\">{{ packages.filter.created ? \'Show All\' : \'Show Only Yours\' }}</button>\n\n		<!-- create package -->\n		<button class=\"button button--success packages-head-item u-inlineBlock\"\n			ng-click=\"home.openForm(\'create\', null)\">Create Package</button>\n\n	</div>\n\n	<!-- titles -->\n	<div class=\"packages-titles\">\n		<div class=\"packages-title\">Subscribed</div>\n		<div class=\"packages-title\">Other</div>\n	</div>\n\n	<!-- body -->\n	<div class=\"packages-body\">\n\n		<!-- subscribed -->\n		<div class=\"packages-col\">\n			<!-- show subscribed packages. only show packages owned by user on packages.filter.created -->\n			<package-dctv\n				ng-repeat=\"package in packages.packagesSubscribed | \n				packagesFltr: (packages.filter.created ? packages.packagesOwn : \'all\'): \'include\' |\n				filter: packages.filter.search\n				track by package.$id\"\n				package=\"package\"\n				open-form=\"home.openForm(state, key)\"\n				type=\"subscribed\">\n		</div>\n\n		<!-- other -->\n		<div class=\"packages-col\">\n			<!-- show other packages that user is not subscribed to (by excluding subscribed from all), then filter by owned packages on packages.filter.created -->\n			<package-dctv \n				ng-repeat=\"package in packages.packagesAll |\n				packagesFltr: packages.packagesSubscribed: \'exclude\' |\n				packagesFltr: (packages.filter.created ? packages.packagesOwn : \'all\'): \'include\' |\n				filter: packages.filter.search\n				track by package.$id\"\n				package=\"package\"\n				open-form=\"home.openForm(state, key)\"\n				type=\"all\">\n		</div>\n\n	</div>\n\n</div>");
-$templateCache.put("components/settings/packages/package/package.html","<div class=\"package--{{ type }} u-centerX\" \n	ng-click=\"show.options = true\" \n	ng-mouseleave=\"show.options = false\">\n	\n	<!-- primary -->\n	<div class=\"package-pri\">\n		<span class=\"package-name\">{{ package.name }}</span>\n	</div>\n\n	<!-- secondary -->\n	<div class=\"package-sec\">\n		<span class=\"package-author\">by {{ package.creatorName || \'Toks Fifo\' }}</span>\n		<span class=\"package-length\">{{ package.length || 5 }}</span>\n	</div>\n\n	<!-- options -->\n	<div class=\"package-options\" ng-show=\"show.options\">\n		\n		<!-- view option -->\n		<div class=\"package-view\"\n			ng-click=\"package.creator === uid ? openForm({ state: \'edit\', key: package.$id }) : openForm({ state: \'view\', key: package.$id })\">\n			\n			<!-- view -->\n			<i class=\"icon ion-eye package-button--view\"\n				ng-if=\"::package.creator !== uid\"></i>\n\n			<!-- edit -->\n			<i class=\"icon ion-edit package-button--view\"\n				ng-if=\"::package.creator === uid\"></i>\n		\n		</div>\n\n		<!-- action option -->\n		<div class=\"package-action--{{ type }}\"\n			ng-click=\"(type === \'all\' && addPackage(package.$id)) || (type === \'subscribed\' && removePackage(package.$id))\">\n\n			<!-- add -->\n			<i class=\"icon ion-plus package-button\" \n				ng-if=\"::type === \'all\'\"></i>\n\n			<!-- remove -->\n			<i class=\"icon ion-close package-button\"\n				ng-if=\"::type === \'subscribed\'\"></i>\n\n		</div>\n\n	</div>\n\n</div>");}]);
+$templateCache.put("components/settings/packages/package/package.html","<div class=\"package--{{ type }} u-centerX\" \n	ng-click=\"show.options = true\" \n	ng-mouseleave=\"show.options = false\">\n	\n	<!-- primary -->\n	<div class=\"package-pri\">\n		<span class=\"package-name\">{{ package.name }}</span>\n	</div>\n\n	<!-- secondary -->\n	<div class=\"package-sec\">\n		<span class=\"package-author\">by {{ package.creatorName }}</span>\n		<span class=\"package-length\">{{ package.length }}</span>\n	</div>\n\n	<!-- options -->\n	<div class=\"package-options\" ng-show=\"show.options\">\n		\n		<!-- view option -->\n		<div class=\"package-view\"\n			ng-click=\"package.creator === uid ? openForm({ state: \'edit\', key: package.$id }) : openForm({ state: \'view\', key: package.$id })\">\n			\n			<!-- view -->\n			<i class=\"icon ion-eye package-button--view\"\n				ng-if=\"::package.creator !== uid\"></i>\n\n			<!-- edit -->\n			<i class=\"icon ion-edit package-button--view\"\n				ng-if=\"::package.creator === uid\"></i>\n		\n		</div>\n\n		<!-- action option -->\n		<div class=\"package-action--{{ type }}\"\n			ng-click=\"(type === \'all\' && addPackage(package.$id)) || (type === \'subscribed\' && removePackage(package.$id))\">\n\n			<!-- add -->\n			<i class=\"icon ion-plus package-button\" \n				ng-if=\"::type === \'all\'\"></i>\n\n			<!-- remove -->\n			<i class=\"icon ion-close package-button\"\n				ng-if=\"::type === \'subscribed\'\"></i>\n\n		</div>\n\n	</div>\n\n</div>");}]);
+angular.module('quote')
+	.factory('AuthSvc', AuthSvc);
+
+function AuthSvc($q, $firebaseAuth, Const) {
+
+	var auth = $firebaseAuth(Const.ref);
+	var authStatus;
+
+	var AuthSvc = {
+		checkAuth: checkAuth,
+		signupAnon: signupAnon,
+		logout: logout,
+		getAuthStatus: getAuthStatus,
+		setAuthStatus: setAuthStatus,
+		updateUsername: updateUsername,
+		getUsername: getUsername
+	};
+
+	return AuthSvc;
+
+	/**
+	 * Check if user is authenticated
+	 * @return {Promise} Resolves with authentication data || null
+	 */
+	function checkAuth() {
+		return auth.$waitForAuth();
+	}
+
+	/**
+	 * Sign up anonymously
+	 * @return {Promise} Resolves after new user has been created
+	 */
+	function signupAnon() {
+		return $q(function(resolve, reject) {
+			auth.$authAnonymously().then(function(authData) {
+				return createUser(authData);
+			}, function(err) {
+				reject(err);
+			}).then(function(authData) {
+				resolve(authData);
+			});
+		});
+	}
+
+	/**
+	 * Logout
+	 */
+	function logout() {
+		auth.$unauth();
+	}
+
+	/**
+	 * Get auth status
+	 * @return {Object} Auth stauts
+	 */
+	function getAuthStatus() {
+		return authStatus;
+	}
+
+	/**
+	 * Set auth status
+	 * @param {Object} newAuthStatus new auth status
+	 */
+	function setAuthStatus(newAuthStatus) {
+		authStatus = newAuthStatus;
+	}
+
+	/**
+	 * Add user to db/users
+	 * @param  {Object} authData User's auth data
+	 * @return {Promise}     Resolves with auth data when user is saved to db
+	 */
+	function createUser(authData) {
+		return $q(function(resolve, reject) {
+			var dataCreateUser = {};
+			generateAnonUsername().then(function(name) {
+				dataCreateUser['users/' + authData.uid] = {
+					info: { name: name },
+					color: { name: 'gray' }
+				};
+				dataCreateUser['usernames/list/' + name] = true;
+				Const.ref.update(dataCreateUser, function(err) {
+					err ? reject(err) : resolve(authData);
+				});
+			});
+		});
+	}
+
+	/**
+	 * Create anonymous (unique) username
+	 * @return {Promise} Resovles with new name generated
+	 */
+	function generateAnonUsername() {
+		return $q(function(resolve, reject) {
+			Const.ref.child('usernames/auto').once('value', function(namesRef) {
+				var names = namesRef.val();
+				var keys = Object.keys(names);
+				var index = randomNumber(0, keys.length - 1);
+				var name = keys[index];
+				var nameGenerated = 'anon-' + keys[index] + names[name];
+
+				// increment counter on db
+				Const.ref.child('usernames/auto')
+					.child(name)
+					.set(names[name] + 1, function(err) {
+						err ? reject(err) : resolve(nameGenerated);
+					});
+			});
+		});
+	}
+
+	/**
+	 * Update username. Also update names of all user's packages.
+	 * @param  {String} name New name
+	 * @return {Promise}      Resolves when everything is updated. Rejects if new name already exists for some other user
+	 */
+	function updateUsername(name) {
+		return $q(function(resolve, reject) {
+			var dataUpdateUsername = {};
+
+			Const.ref.child('usernames/list').once('value', function(namesRef) {
+				var names = namesRef.val();
+
+				// only continue if name doesn't already exist (is unique)
+				if (!names || !names[name]) {
+
+					// get current name
+					Const.ref.child('users')
+						.child(authStatus.uid)
+						.child('info/name').once('value', function(oldnameRef) {
+
+							// get user's packages
+							Const.ref.child('packages')
+								.orderByChild('creator')
+								.equalTo(authStatus.uid)
+								.once('value', function(packagesRef) {
+
+									var packages = packagesRef.val();
+									if (packages) {
+										// update names of all user's packages
+										for (var i = 0, keys = Object.keys(packages); i < keys.length; i++) {
+											var packageKey = keys[i];
+											dataUpdateUsername['packages/' + packageKey + '/creatorName'] = name;
+										}
+									}
+
+									// update user's name
+									dataUpdateUsername['users/' + authStatus.uid + '/info/name'] = name;
+
+									// add new name to names list
+									dataUpdateUsername['usernames/list/' + name] = true;
+
+									// remove old name from names list
+									dataUpdateUsername['usernames/list/' + oldnameRef.val()] = null;
+
+									Const.ref.update(dataUpdateUsername, function(err) {
+										err ? reject(err) : resolve();
+									});
+								});
+						});
+				} else {
+					// name already exists
+					resolve(0);
+				}
+			});
+		});
+	}
+
+	/**
+	 * Get current user's username
+	 * @return {Promise} Resolves with name
+	 */
+	function getUsername() {
+		return $q(function(resolve) {
+			Const.ref.child('users')
+				.child(authStatus.uid)
+				.child('info/name').once('value', function(nameRef) {
+					resolve(nameRef.val());
+				});
+		});
+	}
+
+	/**
+	 * Generate random number from [min, max]
+	 * @param  {Number} min min, inclusive
+	 * @param  {Number} max max, inclusive
+	 * @return {Number}     random number
+	 */
+	function randomNumber(min, max) {
+		return Math.floor(Math.random() * (max - min + 1)) + min;
+	}
+
+}
+AuthSvc.$inject = ["$q", "$firebaseAuth", "Const"];
 angular.module('quote')
 	.factory('DataSvc', DataSvc);
 
@@ -45030,200 +45224,6 @@ function packagesFltr() {
 	}
 
 }
-angular.module('quote')
-	.factory('AuthSvc', AuthSvc);
-
-function AuthSvc($q, $firebaseAuth, Const) {
-
-	var auth = $firebaseAuth(Const.ref);
-	var authStatus;
-
-	var AuthSvc = {
-		checkAuth: checkAuth,
-		signupAnon: signupAnon,
-		logout: logout,
-		getAuthStatus: getAuthStatus,
-		setAuthStatus: setAuthStatus,
-		updateUsername: updateUsername,
-		getUsername: getUsername
-	};
-
-	return AuthSvc;
-
-	/**
-	 * Check if user is authenticated
-	 * @return {Promise} Resolves with authentication data || null
-	 */
-	function checkAuth() {
-		return auth.$waitForAuth();
-	}
-
-	/**
-	 * Sign up anonymously
-	 * @return {Promise} Resolves after new user has been created
-	 */
-	function signupAnon() {
-		return $q(function(resolve, reject) {
-			auth.$authAnonymously().then(function(authData) {
-				return createUser(authData);
-			}, function(err) {
-				reject(err);
-			}).then(function(authData) {
-				resolve(authData);
-			});
-		});
-	}
-
-	/**
-	 * Logout
-	 */
-	function logout() {
-		auth.$unauth();
-	}
-
-	/**
-	 * Get auth status
-	 * @return {Object} Auth stauts
-	 */
-	function getAuthStatus() {
-		return authStatus;
-	}
-
-	/**
-	 * Set auth status
-	 * @param {Object} newAuthStatus new auth status
-	 */
-	function setAuthStatus(newAuthStatus) {
-		authStatus = newAuthStatus;
-	}
-
-	/**
-	 * Add user to db/users
-	 * @param  {Object} authData User's auth data
-	 * @return {Promise}     Resolves with auth data when user is saved to db
-	 */
-	function createUser(authData) {
-		return $q(function(resolve, reject) {
-			var dataCreateUser = {};
-			generateAnonUsername().then(function(name) {
-				dataCreateUser['users/' + authData.uid] = {
-					info: { name: name },
-					color: { name: 'gray' }
-				};
-				dataCreateUser['usernames/list/' + name] = true;
-				Const.ref.update(dataCreateUser, function(err) {
-					err ? reject(err) : resolve(authData);
-				});
-			});
-		});
-	}
-
-	/**
-	 * Create anonymous (unique) username
-	 * @return {Promise} Resovles with new name generated
-	 */
-	function generateAnonUsername() {
-		return $q(function(resolve, reject) {
-			Const.ref.child('usernames/auto').once('value', function(namesRef) {
-				var names = namesRef.val();
-				var keys = Object.keys(names);
-				var index = randomNumber(0, keys.length - 1);
-				var name = keys[index];
-				var nameGenerated = 'anon-' + keys[index] + names[name];
-
-				// increment counter on db
-				Const.ref.child('usernames/auto')
-					.child(name)
-					.set(names[name] + 1, function(err) {
-						err ? reject(err) : resolve(nameGenerated);
-					});
-			});
-		});
-	}
-
-	/**
-	 * Update username. Also update names of all user's packages.
-	 * @param  {String} name New name
-	 * @return {Promise}      Resolves when everything is updated. Rejects if new name already exists for some other user
-	 */
-	function updateUsername(name) {
-		return $q(function(resolve, reject) {
-			var dataUpdateUsername = {};
-
-			Const.ref.child('usernames/list').once('value', function(namesRef) {
-				var names = namesRef.val();
-
-				// only continue if name doesn't already exist (is unique)
-				if (!names || !names[name]) {
-
-					// get current name
-					Const.ref.child('users')
-						.child(authStatus.uid)
-						.child('info/name').once('value', function(oldnameRef) {
-
-							// get user's packages
-							Const.ref.child('packages')
-								.orderByChild('creator')
-								.equalTo(authStatus.uid)
-								.once('value', function(packagesRef) {
-
-									var packages = packagesRef.val();
-									if (packages) {
-										// update names of all user's packages
-										for (var i = 0, keys = Object.keys(packages); i < keys.length; i++) {
-											var packageKey = keys[i];
-											dataUpdateUsername['packages/' + packageKey + '/creatorName'] = name;
-										}
-									}
-
-									// update user's name
-									dataUpdateUsername['users/' + authStatus.uid + '/info/name'] = name;
-
-									// add new name to names list
-									dataUpdateUsername['usernames/list/' + name] = true;
-
-									// remove old name from names list
-									dataUpdateUsername['usernames/list/' + oldnameRef.val()] = null;
-
-									Const.ref.update(dataUpdateUsername, function(err) {
-										err ? reject(err) : resolve();
-									});
-								});
-						});
-				} else {
-					// name already exists
-					resolve(0);
-				}
-			});
-		});
-	}
-
-	/**
-	 * Get current user's username
-	 * @return {Promise} Resolves with name
-	 */
-	function getUsername() {
-		return $q(function(resolve) {
-			Const.ref.child('users')
-				.child(authStatus.uid)
-				.child('info/name').once('value', function(nameRef) {
-					resolve(nameRef.val());
-				});
-		});
-	}
-
-	/**
-	 * Generate random number from [min, max]
-	 * @param  {Number} min min, inclusive
-	 * @param  {Number} max max, inclusive
-	 * @return {Number}     random number
-	 */
-	function randomNumber(min, max) {
-		return Math.floor(Math.random() * (max - min + 1)) + min;
-	}
-
-}
-AuthSvc.$inject = ["$q", "$firebaseAuth", "Const"];
 angular.module('quote')
 	.controller('FormCtrl', FormCtrl);
 
