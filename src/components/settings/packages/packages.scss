@@ -5,6 +5,7 @@ $height-packages-titles: 36px;
 $height-settings-wrapper: $height-settings-wrapper;
 $height-settings-head: $height-settings-head;
 $clr-button-light: $clr-button-light;
+$width-settings-wrapper: $width-settings-wrapper;
 
 .packages-head {
 	width: 100%;
@@ -16,7 +17,7 @@ $clr-button-light: $clr-button-light;
 .packages-head-item {
 	margin-top: $mgn-larger;
 	&:not(:nth-child(1)) {
-		margin-left: $mgn-larger;
+		margin-left: ( $width-settings-wrapper - ( (2 * $width-button) + $width-packages-search ) ) / 4;
 	}
 }
 
@@ -38,7 +39,7 @@ $clr-button-light: $clr-button-light;
 
 .packages-body {
 	width: 100%;
-	height: $height-settings-wrapper - $height-settings-head - (2 * $bw-base) - $height-packages-head - $height-packages-titles;
+	height: $height-settings-wrapper - $height-settings-head - (2 * $bw-small) - $height-packages-head - $height-packages-titles;
 	// border: 1px solid red;
 }
 

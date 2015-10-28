@@ -1776,11 +1776,11 @@ body {
   pointer-events: none; }
 
 .settings-wrapper {
-  width: 550px;
+  width: 650px;
   height: 550px;
   background-color: white;
   color: gray;
-  border: 4px solid gray; }
+  border: 2px solid gray; }
 
 .settings-wrapper.ng-hide-remove {
   -webkit-transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.2s;
@@ -1814,7 +1814,7 @@ body {
   position: absolute;
   top: 0;
   left: 0;
-  width: 542px;
+  width: 646px;
   height: 60px;
   background-color: #f0f0f0;
   border-bottom: 1px solid #cdcdcd;
@@ -1825,8 +1825,8 @@ body {
   position: absolute;
   top: 60px;
   left: 0;
-  width: 542px;
-  height: 482px; }
+  width: 646px;
+  height: 486px; }
 
 .settings-tab {
   float: left;
@@ -1874,7 +1874,7 @@ body {
   cursor: pointer;
   border: 4px solid white; }
   .color:not(:first-of-type), .color--blue:not(:first-of-type), .color--bluegreen:not(:first-of-type), .color--gray:not(:first-of-type), .color--purple:not(:first-of-type), .color--yellow:not(:first-of-type), .color--white:not(:first-of-type) {
-    margin-left: 33.33333px; }
+    margin-left: 50px; }
 
 .color--blue {
   background-color: #284774; }
@@ -1917,7 +1917,7 @@ body {
 .packages-head-item {
   margin-top: 20px; }
   .packages-head-item:not(:nth-child(1)) {
-    margin-left: 20px; }
+    margin-left: 50px; }
 
 .packages-search {
   height: 36px;
@@ -1936,7 +1936,7 @@ body {
 
 .packages-body {
   width: 100%;
-  height: 386px; }
+  height: 390px; }
 
 .packages-titles {
   width: 100%;
@@ -2176,7 +2176,7 @@ body {
     color: rgba(255, 255, 255, 0.5); }
 
 .form-wrapper {
-  width: 550px;
+  width: 650px;
   height: 550px; }
 
 .form-wrapper.ng-enter {
@@ -2217,10 +2217,10 @@ body {
 .form-options-button2, .form-options-button3 {
   display: inline-block; }
   .form-options-button2:not(:nth-of-type(1)), .form-options-button3:not(:nth-of-type(1)) {
-    margin-left: 250px; }
+    margin-left: 350px; }
 
 .form-options-button3:not(:nth-of-type(1)) {
-  margin-left: 50px; }
+  margin-left: 100px; }
 
 .form-name {
   float: left;

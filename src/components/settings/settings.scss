@@ -1,4 +1,4 @@
-$width-settings-wrapper: 550px;
+$width-settings-wrapper: 650px;
 $height-settings-wrapper: 550px;
 $height-settings-head: 60px;
 $height-settings-tab-icon: 36px;
@@ -10,7 +10,7 @@ $height-settings-tab-text: $height-settings-head - $height-settings-tab-icon;
 	height: $height-settings-wrapper;
 	background-color: $clr-light;
 	color: $clr-gray-dark;
-	border: $bw-base solid $clr-gray-dark;
+	border: $bw-small solid $clr-gray-dark;
 }
 
 .settings-wrapper.ng-hide-remove {
@@ -40,7 +40,7 @@ $height-settings-tab-text: $height-settings-head - $height-settings-tab-icon;
 	position: absolute;
 	top: 0;
 	left: 0;
-	width: $width-settings-wrapper - (2 * $bw-base);
+	width: $width-settings-wrapper - (2 * $bw-small);
 	height: $height-settings-head;
 	background-color: $clr-gray-lighter;
 	border-bottom: $bw-smaller solid $clr-gray-light;
@@ -53,8 +53,8 @@ $height-settings-tab-text: $height-settings-head - $height-settings-tab-icon;
 	position: absolute;
 	top: $height-settings-head;
 	left: 0;
-	width: $width-settings-wrapper - (2 * $bw-base);
-	height: $height-settings-wrapper - $height-settings-head - (2 * $bw-base);
+	width: $width-settings-wrapper - (2 * $bw-small);
+	height: $height-settings-wrapper - $height-settings-head - (2 * $bw-small);
 }
 
 .settings-tab {
